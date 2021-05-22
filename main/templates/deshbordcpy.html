@@ -1,0 +1,2292 @@
+<!DOCTYPE html>
+<html lang="en" style="position: relative;">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'icon/fav.svg' %}" type="image/svg">
+    <title>deshbord</title>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzscb1NF7BS9BUTR17ftaAobbJ9t84cZQ&callback=initMap&libraries=&v=3">
+    </script>
+    <link rel="stylesheet" href="{% static 'css/deshbordcpy.css' %}">
+    <script src="{% static 'js/deshbordcpy.js' %}"></script>
+</head>
+
+
+<body>
+
+    <!-- nav bar -->
+
+    <div class="stickynav" id="navbar">
+        <div class="site-logo-container">
+            <img class="site-logo" src="{% static 'icon/siteLogo1.svg' %}" alt="site logo">
+        </div>
+        <div class="navbar-buttons-container">
+            <a href="/">
+                <div class="navbar-button">Home</div>
+            </a>
+            <a href="#features">
+                <div class="navbar-button">Features</div>
+            </a>
+            <a href="#contactus">
+                <div class="navbar-button">Contact</div>
+            </a>
+            <a href="">
+                <div class="navbar-button">About</div>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- deshboard container -->
+    <div class="deshboard-container">
+        <div class="deshboard-side-menu">
+
+            <div class="deshboard-sidemenu-tab" id="sidemenu_profile">
+                <div class="deshboard-sidemenu-tab-icon-container">
+                    <!-- <img class="deshboard-sidemenu-tab-icon" src="{% static 'icon/user.svg' %}" alt="no icon"> -->
+                    <svg id="sidemenu_profile_icon" class="deshboard-sidemenu-tab-icon"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt"
+                        height="30.000001pt" viewBox="0 0 30 30.000001" version="1.2">
+                        <defs>
+                            <clipPath id="clip1">
+                                <path
+                                    d="M 5.671875 14 L 24.535156 14 L 24.535156 25.253906 L 5.671875 25.253906 Z M 5.671875 14 " />
+                            </clipPath>
+                            <clipPath id="clip2">
+                                <path d="M 9 3.480469 L 22 3.480469 L 22 16 L 9 16 Z M 9 3.480469 " />
+                            </clipPath>
+                        </defs>
+                        <g id="surface1">
+                            <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                <path fill="currentColor" style=" stroke:none;fill-rule:nonzero;;fill-opacity:1;"
+                                    d="M 21.734375 14.519531 C 21.578125 14.363281 21.359375 14.277344 21.132812 14.277344 C 20.660156 14.277344 20.273438 14.652344 20.273438 15.113281 C 20.273438 15.335938 20.367188 15.550781 20.53125 15.710938 C 21.992188 17.121094 22.816406 19.054688 22.816406 21.066406 C 22.816406 22.085938 19.804688 23.578125 15.097656 23.578125 C 10.390625 23.578125 7.378906 22.085938 7.378906 21.066406 C 7.375 19.066406 8.1875 17.148438 9.632812 15.730469 C 9.964844 15.410156 9.964844 14.875 9.632812 14.550781 C 9.300781 14.230469 8.753906 14.230469 8.425781 14.550781 C 6.652344 16.273438 5.652344 18.621094 5.664062 21.066406 C 5.664062 23.785156 10.523438 25.25 15.097656 25.25 C 19.671875 25.25 24.535156 23.785156 24.535156 21.066406 C 24.539062 18.605469 23.53125 16.246094 21.734375 14.519531 " />
+                            </g>
+                            <g clip-path="url(#clip2)" clip-rule="nonzero">
+                                <path fill="currentColor" style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                    d="M 15.097656 15.207031 C 18.390625 15.207031 21.101562 12.558594 21.101562 9.34375 C 21.101562 6.132812 18.390625 3.484375 15.097656 3.484375 C 11.804688 3.484375 9.09375 6.132812 9.09375 9.34375 C 9.09375 12.558594 11.804688 15.207031 15.097656 15.207031 Z M 15.097656 5.160156 C 17.449219 5.160156 19.386719 7.050781 19.386719 9.34375 C 19.386719 11.640625 17.449219 13.53125 15.097656 13.53125 C 12.746094 13.53125 10.808594 11.640625 10.808594 9.34375 C 10.808594 7.050781 12.746094 5.160156 15.097656 5.160156 " />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="deshboard-sidemenu-tab-text">Profile details</div>
+            </div>
+
+            <div class="deshboard-sidemenu-tab" id="sidemenu_add">
+                <div class="deshboard-sidemenu-tab-icon-container">
+                    <!-- <img class="deshboard-sidemenu-tab-icon" src="{% static 'icon/add.svg' %}" alt="no icon"> -->
+                    <svg id="sidemenu_add_icon" class="deshboard-sidemenu-tab-icon" xmlns="http://www.w3.org/2000/svg"
+                        width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                        <defs>
+                            <clipPath id="a">
+                                <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
+                            </clipPath>
+                        </defs>
+                        <g clip-path="url(#a)">
+                            <path
+                                d="M339.457 192.082c0 .691-.066 1.375-.2 2.055a10.589 10.589 0 01-1.573 3.793c-.383.578-.82 1.11-1.309 1.597a10.445 10.445 0 01-3.414 2.282c-.64.265-1.297.464-1.977.597-.675.137-1.363.203-2.054.203H202.61v126.32c0 .692-.067 1.38-.204 2.055-.133.68-.332 1.336-.597 1.977-.266.637-.59 1.242-.973 1.82a10.445 10.445 0 01-2.906 2.903 10.589 10.589 0 01-3.793 1.574 10.68 10.68 0 01-4.106 0 10.5 10.5 0 01-1.976-.602 10.445 10.445 0 01-3.414-2.281 10.445 10.445 0 01-2.282-3.414 10.59 10.59 0 01-.601-1.977 10.653 10.653 0 01-.203-2.054V202.61H55.235c-.692 0-1.376-.067-2.055-.204a10.57 10.57 0 01-3.793-1.57 10.445 10.445 0 01-1.594-1.309 10.313 10.313 0 01-1.313-1.597 10.68 10.68 0 01-.972-1.817c-.262-.64-.461-1.297-.598-1.976a10.684 10.684 0 01-.203-2.055 10.613 10.613 0 01.8-4.027 10.47 10.47 0 012.285-3.414c.49-.489 1.02-.926 1.595-1.309.574-.387 1.18-.71 1.82-.973a10.55 10.55 0 011.973-.601c.68-.133 1.363-.203 2.054-.203h126.32V55.235a10.55 10.55 0 01.805-4.027c.262-.642.586-1.247.973-1.821.383-.575.82-1.106 1.309-1.594a10.47 10.47 0 013.414-2.285 10.613 10.613 0 014.027-.8c.691-.001 1.375.07 2.055.202.68.137 1.336.336 1.976.598.637.265 1.242.59 1.817.972.578.387 1.11.82 1.597 1.313a10.445 10.445 0 012.282 3.414c.265.637.464 1.297.597 1.973.137.68.203 1.363.203 2.054v126.32h126.32a10.59 10.59 0 015.852 1.777c.574.384 1.106.821 1.594 1.31a10.445 10.445 0 012.281 3.414 10.5 10.5 0 01.602 1.976c.133.676.199 1.36.199 2.051zm0 0"
+                                fill="currentColor" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="deshboard-sidemenu-tab-text">Add task</div>
+            </div>
+
+            <div class="deshboard-sidemenu-tab" id="sidemenu_panding">
+                <div class="deshboard-sidemenu-tab-icon-container">
+                    <!-- <img class="deshboard-sidemenu-tab-icon" src="{% static 'icon/panding.svg' %}" alt="no icon"> -->
+                    <svg id="sidemenu_panding_icon" class="deshboard-sidemenu-tab-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                        <defs>
+                            <clipPath id="a">
+                                <path d="M197 203h125.34v125.434H197zm0 0" />
+                            </clipPath>
+                            <clipPath id="b">
+                                <path d="M83.09 55.648H289v272.786H83.09zm0 0" />
+                            </clipPath>
+                        </defs>
+                        <g clip-path="url(#a)">
+                            <path
+                                d="M320.664 227.719l-22.785-22.75c-2.223-2.215-5.836-2.215-8.055 0l-91.144 91a5.718 5.718 0 00-1.664 4.023v22.75c0 3.14 2.554 5.688 5.699 5.688H225.5c1.516 0 2.96-.602 4.02-1.672l68.324-68.215c.011-.008.023-.008.035-.02.012-.011.012-.023.023-.035l22.762-22.726a5.684 5.684 0 000-8.043zm-97.523 89.336h-14.73v-14.707l62.66-62.559 14.73 14.707zm70.714-70.602l-14.73-14.707 14.73-14.707 14.73 14.707zm0 0"
+                                fill="currentColor" />
+                        </g>
+                        <g clip-path="url(#b)">
+                            <path
+                                d="M179.926 317.055h-79.75a5.692 5.692 0 01-5.696-5.688V95.25c0-3.14 2.551-5.688 5.696-5.688h28.484v5.688c0 3.14 2.55 5.688 5.695 5.688h102.536c3.144 0 5.699-2.547 5.699-5.688v-5.688h28.48a5.692 5.692 0 015.696 5.688v96.684c0 3.14 2.554 5.687 5.699 5.687a5.692 5.692 0 005.695-5.687V95.25c0-9.406-7.668-17.063-17.09-17.063h-29.53c-2.356-6.609-8.626-11.374-16.04-11.374h-20.21c-4.024-6.938-11.485-11.376-19.665-11.376s-15.645 4.438-19.664 11.376H145.75c-7.406 0-13.672 4.765-16.031 11.374h-29.543c-9.422 0-17.086 7.657-17.086 17.063v216.117c0 9.41 7.664 17.063 17.086 17.063h79.75c3.144 0 5.699-2.547 5.699-5.688 0-3.137-2.555-5.687-5.7-5.687zM145.75 78.187h23.832a5.712 5.712 0 005.367-3.785c1.617-4.539 5.914-7.59 10.676-7.59 4.762 0 9.055 3.051 10.676 7.59a5.694 5.694 0 005.363 3.785H225.5a5.692 5.692 0 015.695 5.688v5.688h-91.144v-5.688c0-3.14 2.554-5.688 5.699-5.688zm0 0"
+                                fill="currentColor" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="deshboard-sidemenu-tab-text">Panding tasks</div>
+            </div>
+
+            <div class="deshboard-sidemenu-tab" id="sidemenu_completed">
+                <div class="deshboard-sidemenu-tab-icon-container">
+                    <svg id="sidemenu_completed_icon" class="deshboard-sidemenu-tab-icon"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="384pt"
+                        height="383.999986pt" viewBox="0 0 384 383.999986" version="1.2">
+                        <defs>
+                            <clipPath id="clip1">
+                                <path
+                                    d="M 17.34375 59 L 366.84375 59 L 366.84375 324.960938 L 17.34375 324.960938 Z M 17.34375 59 " />
+                            </clipPath>
+                        </defs>
+                        <g id="surface1">
+                            <path fill="currentColor" style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                d="M 24.425781 212.410156 L 49.898438 186.984375 L 131.25 268.203125 L 334.289062 65.527344 L 359.761719 90.953125 L 131.25 319.058594 Z M 24.425781 212.410156 " />
+                            <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;"
+                                    d="M 334.289062 71.996094 L 353.28125 90.953125 L 131.261719 312.589844 L 30.90625 212.410156 L 49.898438 193.453125 L 124.769531 268.195312 L 131.25 274.664062 L 137.730469 268.195312 L 334.289062 71.996094 M 334.289062 59.058594 L 131.261719 261.734375 L 49.90625 180.527344 L 17.945312 212.410156 L 131.261719 325.527344 L 366.242188 90.953125 Z M 334.289062 59.058594 " />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="deshboard-sidemenu-tab-text">Completed tasks</div>
+            </div>
+
+        </div>
+
+
+        <!-- pages -->
+        <div class="deshboard-pages-container">
+
+
+
+            <!-- profile page -->
+            <div class="deshboard-page-profile" id="deshboard_page_profile">profile</div>
+
+
+
+            <!-- add task page -->
+            <div class="deshboard-page-add" id="deshboard_page_add">
+                <div class="add-page-outer-container">
+                    <div class="add-page-inner-container">
+
+                        <div class="add-page-title">
+                            Add task
+                        </div>
+
+                        <form id="task_form" action="{% url 'payment' %}" method="POST" enctype="multipart/form-data"
+                            class="add-page-form-container">
+
+                            <!-- first row -->
+                            <div class="add-page-form-img-outer-container">
+
+                                <div class="add-page-form-img-inner-container" id="add_form_profile_img_selector">
+                                    <div class="tint-img">
+                                        <img src="{% static 'icon/camara.svg' %}" alt="" class="tint-image">
+                                    </div>
+                                    <svg id="add_form_profile_image_prv_default" class="add-page-img"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="30pt" height="30.000001pt" viewBox="0 0 30 30.000001" version="1.2">
+                                        <defs>
+                                            <clipPath id="clip1">
+                                                <path
+                                                    d="M 5.671875 14 L 24.535156 14 L 24.535156 25.253906 L 5.671875 25.253906 Z M 5.671875 14 " />
+                                            </clipPath>
+                                            <clipPath id="clip2">
+                                                <path d="M 9 3.480469 L 22 3.480469 L 22 16 L 9 16 Z M 9 3.480469 " />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="surface1">
+                                            <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;;fill-opacity:1;"
+                                                    d="M 21.734375 14.519531 C 21.578125 14.363281 21.359375 14.277344 21.132812 14.277344 C 20.660156 14.277344 20.273438 14.652344 20.273438 15.113281 C 20.273438 15.335938 20.367188 15.550781 20.53125 15.710938 C 21.992188 17.121094 22.816406 19.054688 22.816406 21.066406 C 22.816406 22.085938 19.804688 23.578125 15.097656 23.578125 C 10.390625 23.578125 7.378906 22.085938 7.378906 21.066406 C 7.375 19.066406 8.1875 17.148438 9.632812 15.730469 C 9.964844 15.410156 9.964844 14.875 9.632812 14.550781 C 9.300781 14.230469 8.753906 14.230469 8.425781 14.550781 C 6.652344 16.273438 5.652344 18.621094 5.664062 21.066406 C 5.664062 23.785156 10.523438 25.25 15.097656 25.25 C 19.671875 25.25 24.535156 23.785156 24.535156 21.066406 C 24.539062 18.605469 23.53125 16.246094 21.734375 14.519531 " />
+                                            </g>
+                                            <g clip-path="url(#clip2)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                                    d="M 15.097656 15.207031 C 18.390625 15.207031 21.101562 12.558594 21.101562 9.34375 C 21.101562 6.132812 18.390625 3.484375 15.097656 3.484375 C 11.804688 3.484375 9.09375 6.132812 9.09375 9.34375 C 9.09375 12.558594 11.804688 15.207031 15.097656 15.207031 Z M 15.097656 5.160156 C 17.449219 5.160156 19.386719 7.050781 19.386719 9.34375 C 19.386719 11.640625 17.449219 13.53125 15.097656 13.53125 C 12.746094 13.53125 10.808594 11.640625 10.808594 9.34375 C 10.808594 7.050781 12.746094 5.160156 15.097656 5.160156 " />
+                                            </g>
+                                        </g>
+                                    </svg>
+
+                                    <!-- image preview -->
+                                    <img id="add_form_profile_image_prv" src="" alt="" class="hidd">
+
+                                    <!-- image input -->
+                                    <input type="file" name="image" id="add_form_profile_img" class="hidd"
+                                        accept="image/*">
+                                </div>
+
+                                <div class="add-page-name-field-container">
+
+                                    <!-- first name -->
+                                    <input class="add-page-name-filed" type="text" placeholder="First name"
+                                        name="full_name" id="add_form_first_name">
+
+                                    <!-- last name -->
+                                    <input class="add-page-name-filed" type="text" placeholder="Last name" name=""
+                                        id="add_form_last_name">
+
+                                    <!-- switch for gender selection -->
+                                    <div class="add-page-xender-filed-container">
+
+                                        <div class="add-page-xender-text">Gender</div>
+
+                                        <div class="add-page-xender-img-container">
+                                            <!-- this is only indecator switch for gender -->
+                                            <div class="toggle-button">
+                                                <input class="toggle-checkbox" type="checkbox" name="toggle"
+                                                    id="add_form_gender">
+                                                <div class="toggle-text" aria-hidden="true">M</div>
+                                                <div class="toggle-text" aria-hidden="true">F</div>
+                                                <div class="toggle-handle"></div>
+                                            </div>
+
+                                            <!--gender store input to pass it in form data  -->
+                                            <input type="text" id="add_form_gender_text" class="hidd" name="gender">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- secound row -->
+                            <div class="add-page-half-container">
+
+                                <!-- input for mobile number -->
+                                <input class="add-page-mobile-half-text" style="margin-right: 5px;"
+                                    placeholder="Mobile number" type="number" max="9999999999" name="mobile_number"
+                                    id="add_form_mobile_number">
+                                <!-- input for deadline in date time format -->
+                                <input class="add-page-mobile-half-text" type="datetime-local" placeholder="deadline"
+                                    name="deadline_str" id="add_form_deadline">
+                                <!-- this is only store fot time stemp which we will get from above input by using javascript executes when form submits -->
+                                <input class="hidd" type="text" placeholder="deadline" name="deadline"
+                                    id="add_form_deadline_timestp">
+
+                            </div>
+
+                            <!-- third row -->
+                            <textarea class="add-page-address"
+                                placeholder="888 6th 10001 Oakwood Avenue, New York City, USA" name="address"
+                                id="add_form_address" cols="30" rows="10"></textarea>
+
+                            <!-- fourth row -->
+                            <div class="add-page-half-container">
+
+                                <!-- input for pincode -->
+                                <input class="add-page-pincode" style="margin-right: 5px;" placeholder="Pincode"
+                                    type="text" id="add_form_pincode" name="pincode">
+                                <!-- button selector for google map -->
+                                <div class="add-page-form-btn" id="add_form_google_map">Google Map</div>
+                                <!-- langitude and letitude which is choosen by clicking above button is store in this to pass it in out form  -->
+                                <input class="hidd" placeholder="gmap" type="text" id="add_form_gmap" value=""
+                                    name="gmaplink">
+
+                            </div>
+
+                            <!-- fifth row -->
+                            <div class="add-page-half-container">
+
+                                <!-- proof btn selector -->
+                                <div class="add-page-form-btn" id="add_form_add_proof_selector"
+                                    style="margin-right: 5px;">add Proof</div>
+                                <!-- document btn selector -->
+                                <div class="add-page-form-btn" id="add_form_add_document_selector">add Document</div>
+                                <!-- input tag to store proof which is execute while user click on above proof selectore -->
+                                <input type="file" id="add_form_add_proof" name="proof" class="hidd">
+                                <!-- input tag to store document which is execute while user click on above document selectore -->
+                                <input type="file" id="add_form_add_document" name="document" class="hidd">
+
+                            </div>
+
+                            <!-- sixth row -->
+                            <textarea class="add-page-note" name="note"
+                                placeholder="hi i am jaykit your friend and i have to inform you about ..."
+                                id="add_form_note" cols="30" rows="10"></textarea>
+
+                            <!-- seventh row -->
+                            <div class="accept-tandc-container">
+
+                                <!-- check box for accept t and c -->
+                                <input id="add_form_tandcbx" type="checkbox" class="add-page-chkbtn" unchecked>
+                                <div class="accept-tandc-text">
+                                    Accept Terms & Conditions
+                                </div>
+                            </div>
+
+                            <!-- eighth row -->
+                            <div class="add-page-submit-container">
+
+                                <!-- submit button selectore -->
+                                <div class="add-page-submit" id="add_form_submit">Submit</div>
+                            </div>
+
+                            <!-- this is only used to submit form easly  -->
+                            <button class="hidd" type="submit" id="add_submit"></button>
+
+                        </form>
+                    </div>
+
+                    <!-- this is popup for google map which is shown in this div -->
+                    <div class="popup-outer-container hidd" id="map_popup">
+                        <div class="popup-map-box">
+                            <div class="popup-content" id="googlemap_container"></div>
+                            <svg id="map_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg" width="512"
+                                height="512" viewBox="0 0 384 384" version="1.2">
+                                <defs>
+                                    <clipPath id="a">
+                                        <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
+                                    </clipPath>
+                                </defs>
+                                <g clip-path="url(#a)">
+                                    <path
+                                        d="M339.457 192.082c0 .691-.066 1.375-.2 2.055a10.589 10.589 0 01-1.573 3.793c-.383.578-.82 1.11-1.309 1.597a10.445 10.445 0 01-3.414 2.282c-.64.265-1.297.464-1.977.597-.675.137-1.363.203-2.054.203H202.61v126.32c0 .692-.067 1.38-.204 2.055-.133.68-.332 1.336-.597 1.977-.266.637-.59 1.242-.973 1.82a10.445 10.445 0 01-2.906 2.903 10.589 10.589 0 01-3.793 1.574 10.68 10.68 0 01-4.106 0 10.5 10.5 0 01-1.976-.602 10.445 10.445 0 01-3.414-2.281 10.445 10.445 0 01-2.282-3.414 10.59 10.59 0 01-.601-1.977 10.653 10.653 0 01-.203-2.054V202.61H55.235c-.692 0-1.376-.067-2.055-.204a10.57 10.57 0 01-3.793-1.57 10.445 10.445 0 01-1.594-1.309 10.313 10.313 0 01-1.313-1.597 10.68 10.68 0 01-.972-1.817c-.262-.64-.461-1.297-.598-1.976a10.684 10.684 0 01-.203-2.055 10.613 10.613 0 01.8-4.027 10.47 10.47 0 012.285-3.414c.49-.489 1.02-.926 1.595-1.309.574-.387 1.18-.71 1.82-.973a10.55 10.55 0 011.973-.601c.68-.133 1.363-.203 2.054-.203h126.32V55.235a10.55 10.55 0 01.805-4.027c.262-.642.586-1.247.973-1.821.383-.575.82-1.106 1.309-1.594a10.47 10.47 0 013.414-2.285 10.613 10.613 0 014.027-.8c.691-.001 1.375.07 2.055.202.68.137 1.336.336 1.976.598.637.265 1.242.59 1.817.972.578.387 1.11.82 1.597 1.313a10.445 10.445 0 012.282 3.414c.265.637.464 1.297.597 1.973.137.68.203 1.363.203 2.054v126.32h126.32a10.59 10.59 0 015.852 1.777c.574.384 1.106.821 1.594 1.31a10.445 10.445 0 012.281 3.414 10.5 10.5 0 01.602 1.976c.133.676.199 1.36.199 2.051zm0 0"
+                                        fill="currentColor" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- panding task page -->
+            <div class="deshboard-page-panding" id="deshboard_page_panding">
+                <div class="panding-page-container">
+
+                    <div class="panding-page-status-bar hidd" id="panding_task_status_container">
+                        <div class="panding-task-list-btn-container">
+                            <div class="panding-task-list-btn" id="panding_task_list_btn">List</div>
+                        </div>
+                        <div class="panding-task-control-container" id="panding_task_controller_container">
+                            <svg class="panding-task-qr" aria-hidden="true" data-prefix="fas" data-icon="qrcode"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                class="svg-inline--fa fa-qrcode fa-w-14 fa-7x">
+                                <path fill="currentColor"
+                                    d="M0 224h192V32H0v192zM64 96h64v64H64V96zm192-64v192h192V32H256zm128 128h-64V96h64v64zM0 480h192V288H0v192zm64-128h64v64H64v-64zm352-64h32v128h-96v-32h-32v96h-64V288h96v32h64v-32zm0 160h32v32h-32v-32zm-64 0h32v32h-32v-32z" />
+                            </svg>
+                            <div class="panding-task-update-task" id="panding_task_cancel_btn_selector">Cancel Task
+                            </div>
+                            <div class="panding-task-update-task" id="panding_task_update_btn_selector">Update Task
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panding-task-detail-container hidd" id="panding_task_detail_container">
+                        <div class="panding-task-detail-inner-container">
+                            <div class="panding-task-detail-title">
+                                Task Detail
+                            </div>
+                            <!-- panding detail first row container -->
+                            <div class="panding-detail-name-container">
+
+                                <a href="" target="_blank" class="panding-detail-image-container"
+                                    id="panding_details_profile_image_link">
+                                    <!-- this is for temp -->
+                                    <svg id="panding_details_default_profile_image" class="panding-detail-image"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="30pt" height="30.000001pt" viewBox="0 0 30 30.000001" version="1.2">
+                                        <defs>
+                                            <clipPath id="clip1">
+                                                <path
+                                                    d="M 5.671875 14 L 24.535156 14 L 24.535156 25.253906 L 5.671875 25.253906 Z M 5.671875 14 " />
+                                            </clipPath>
+                                            <clipPath id="clip2">
+                                                <path d="M 9 3.480469 L 22 3.480469 L 22 16 L 9 16 Z M 9 3.480469 " />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="surface1">
+                                            <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;;fill-opacity:1;"
+                                                    d="M 21.734375 14.519531 C 21.578125 14.363281 21.359375 14.277344 21.132812 14.277344 C 20.660156 14.277344 20.273438 14.652344 20.273438 15.113281 C 20.273438 15.335938 20.367188 15.550781 20.53125 15.710938 C 21.992188 17.121094 22.816406 19.054688 22.816406 21.066406 C 22.816406 22.085938 19.804688 23.578125 15.097656 23.578125 C 10.390625 23.578125 7.378906 22.085938 7.378906 21.066406 C 7.375 19.066406 8.1875 17.148438 9.632812 15.730469 C 9.964844 15.410156 9.964844 14.875 9.632812 14.550781 C 9.300781 14.230469 8.753906 14.230469 8.425781 14.550781 C 6.652344 16.273438 5.652344 18.621094 5.664062 21.066406 C 5.664062 23.785156 10.523438 25.25 15.097656 25.25 C 19.671875 25.25 24.535156 23.785156 24.535156 21.066406 C 24.539062 18.605469 23.53125 16.246094 21.734375 14.519531 " />
+                                            </g>
+                                            <g clip-path="url(#clip2)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                                    d="M 15.097656 15.207031 C 18.390625 15.207031 21.101562 12.558594 21.101562 9.34375 C 21.101562 6.132812 18.390625 3.484375 15.097656 3.484375 C 11.804688 3.484375 9.09375 6.132812 9.09375 9.34375 C 9.09375 12.558594 11.804688 15.207031 15.097656 15.207031 Z M 15.097656 5.160156 C 17.449219 5.160156 19.386719 7.050781 19.386719 9.34375 C 19.386719 11.640625 17.449219 13.53125 15.097656 13.53125 C 12.746094 13.53125 10.808594 11.640625 10.808594 9.34375 C 10.808594 7.050781 12.746094 5.160156 15.097656 5.160156 " />
+                                            </g>
+                                        </g>
+                                    </svg>
+
+                                    <!-- image  -->
+                                    <img id="panding_details_profile_image" src="" alt=""
+                                        class="panding-detail-image hidd">
+                                </a>
+
+                                <div class="panding-detail-basic-naming-container">
+                                    <div class="panding-details-name" id="panding_details_name">Jaykit kukadiya</div>
+                                    <div class="panding-details-task-waiting-status" id="panding_details_task_waiting">
+                                        Task is in waiting state</div>
+                                    <div class="panding-details-agent-details-btn hidd"
+                                        id="panding_details_task_accepted">Agent details</div>
+                                    <div class="panding-details-deadline" id="panding_details_task_deadline_timer">
+                                        24:15:59</div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="panding-detail-address" id="panding_details_task_address">C-803 Blossom homes,
+                                near abc circle, Mota Varachha,
+                                Surat, Gujarat 394101, India</div>
+                            <div class="panding-detail-pincode" id="panding_details_task_pincode">394101</div>
+                            <div class="panding-detail-mobile" id="panding_details_task_mobile">7878555204</div>
+                            <div class="panding-detail-message" id="panding_details_task_note">hi i am jaykit kukadiya
+                                and i want to talk with you but
+                                i got certain problems related to connection so i hire the agent and i wish you trust on
+                                this agent. and provide those information which we got from seminar to this agent.</div>
+
+                            <div class="panding-detail-gmap-container">
+                                <div class="panding-detail-google-map" id="panding_details_map_container"></div>
+                                <div class="panding-detail-document-btn-container">
+                                    <a href="" target="_blank" id="panding_details_task_document_btn">
+                                        <div class="panding-detail-proof-document-btn">Document</div>
+                                    </a>
+                                    <a href="" target="_blank" id="panding_details_task_proof_btn">
+                                        <div class="panding-detail-proof-document-btn">Proof</div>
+                                    </a>
+                                    <div class="panding-detail-proof-document-btn"
+                                        id="panding_details_task_generate_otp_btn">Generete otp</div>
+                                </div>
+                            </div>
+
+
+                            <div class="panding-task-detail-title">
+                                Payment Detail
+                            </div>
+
+                            <div class="panding-task-payment-field">
+                                <div class="panding-task-payment-name">Payment status : </div>
+                                <div class="panding-task-payment-data" id="panding_details_payment_status">Success</div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="panding-task-payment-name">Payment Id : </div>
+                                <div class="panding-task-payment-data" id="panding_details_payment_id">
+                                    20210506111212800110168295102623134</div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="panding-task-payment-name">Payment mode : </div>
+                                <div class="panding-task-payment-data" id="panding_details_payment_mode">Success</div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="panding-task-payment-name">Payment from : </div>
+                                <div class="panding-task-payment-data" id="panding_details_payment_bank">name </div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="panding-task-payment-name">Payment Date : </div>
+                                <div class="panding-task-payment-data" id="panding_details_payment_date">Success</div>
+                            </div>
+
+
+                            <div id="panding_details_agent_block" class="panding-task-agent-detail-container hidd">
+                                <div class="panding-task-detail-title">
+                                    Agent Detail
+                                </div>
+
+                                <div class="panding-detail-name-container">
+
+                                    <a href="" target="_blank" class="panding-detail-image-container"
+                                        id="panding_details_agent_profile_image_link">
+                                        <!-- this is for temp -->
+                                        <svg id="panding_details_agent_default_profile_image"
+                                            class="panding-detail-image" xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt" height="30.000001pt"
+                                            viewBox="0 0 30 30.000001" version="1.2">
+                                            <defs>
+                                                <clipPath id="clip1">
+                                                    <path
+                                                        d="M 5.671875 14 L 24.535156 14 L 24.535156 25.253906 L 5.671875 25.253906 Z M 5.671875 14 " />
+                                                </clipPath>
+                                                <clipPath id="clip2">
+                                                    <path
+                                                        d="M 9 3.480469 L 22 3.480469 L 22 16 L 9 16 Z M 9 3.480469 " />
+                                                </clipPath>
+                                            </defs>
+                                            <g id="surface1">
+                                                <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                                    <path fill="currentColor"
+                                                        style=" stroke:none;fill-rule:nonzero;;fill-opacity:1;"
+                                                        d="M 21.734375 14.519531 C 21.578125 14.363281 21.359375 14.277344 21.132812 14.277344 C 20.660156 14.277344 20.273438 14.652344 20.273438 15.113281 C 20.273438 15.335938 20.367188 15.550781 20.53125 15.710938 C 21.992188 17.121094 22.816406 19.054688 22.816406 21.066406 C 22.816406 22.085938 19.804688 23.578125 15.097656 23.578125 C 10.390625 23.578125 7.378906 22.085938 7.378906 21.066406 C 7.375 19.066406 8.1875 17.148438 9.632812 15.730469 C 9.964844 15.410156 9.964844 14.875 9.632812 14.550781 C 9.300781 14.230469 8.753906 14.230469 8.425781 14.550781 C 6.652344 16.273438 5.652344 18.621094 5.664062 21.066406 C 5.664062 23.785156 10.523438 25.25 15.097656 25.25 C 19.671875 25.25 24.535156 23.785156 24.535156 21.066406 C 24.539062 18.605469 23.53125 16.246094 21.734375 14.519531 " />
+                                                </g>
+                                                <g clip-path="url(#clip2)" clip-rule="nonzero">
+                                                    <path fill="currentColor"
+                                                        style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                                        d="M 15.097656 15.207031 C 18.390625 15.207031 21.101562 12.558594 21.101562 9.34375 C 21.101562 6.132812 18.390625 3.484375 15.097656 3.484375 C 11.804688 3.484375 9.09375 6.132812 9.09375 9.34375 C 9.09375 12.558594 11.804688 15.207031 15.097656 15.207031 Z M 15.097656 5.160156 C 17.449219 5.160156 19.386719 7.050781 19.386719 9.34375 C 19.386719 11.640625 17.449219 13.53125 15.097656 13.53125 C 12.746094 13.53125 10.808594 11.640625 10.808594 9.34375 C 10.808594 7.050781 12.746094 5.160156 15.097656 5.160156 " />
+                                                </g>
+                                            </g>
+                                        </svg>
+
+                                        <!-- image  -->
+                                        <img id="panding_details_agent_profile_image" src="" alt=""
+                                            class="panding-detail-image hidd">
+                                    </a>
+
+                                    <div class="panding-detail-basic-naming-container">
+                                        <div class="panding-detail-agent-half-field" id="panding_details_agent_name">
+                                            Mayur kukadiya</div>
+                                        <div class="panding-detail-agent-half-field" id="panding_details_agent_mobile">
+                                            7878999636</div>
+                                        <div class="panding-detail-agent-gender-container">
+                                            <div class="panding-task-agent-gender-img-container">
+                                                <img class="panding-task-agent-gender-img"
+                                                    id="panding_details_agent_gender_denoter"
+                                                    src="{% static 'icon/girl.svg' %}" alt="">
+                                            </div>
+                                            <div class="panding-task-agent-gender-text"
+                                                id="panding_details_agent_gender">Female</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="panding-detail-agent-half-field">accepted at : <span
+                                        id="panding_details_agent_accepted_time"></span></div>
+                                <div class="panding-datail-agent-button-container">
+                                    <a href="" id="panding_details_agent_track_agent_btn"
+                                        class="panding-task-agent-button" target="_blank">Track agent</a>
+                                    <div class="panding-task-agent-button" id="panding_details_agent_remove_agent_btn">
+                                        Remove agent</div>
+                                    <div class="panding-task-agent-button" id="panding_details_agent_message_agent_btn">
+                                        Message agent</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="panding_task_empty_detail_container" class="panding-task-empty-detail-container">
+                        No tasks are assigned
+                    </div>
+
+
+                    <div class="popup-outer-container hidd" id="panding_list_popup">
+                        <div class="panding-task-list-inner-container">
+
+                            <div class="panding-task-list-title">
+                                Your Tasks
+                            </div>
+                            <div class="panding-task-list-inner-inner-container" id="panding_task_list_container">
+                                {% for task in panding_tasks %}
+                                <div class="panding-task-list-task" id="panding_task_selector_{{task.id}}">
+                                    <img src="/media/{{task.task_detail_link.image}}" alt=""
+                                        class="panding-task-list-task-img">
+                                    <div class="panding-task-list-task-name">{{task.task_detail_link.name}}</div>
+                                    <div class="panding-task-list-task-select-btn" id="panding_task_select_{{task.id}}">
+                                        Select</div>
+                                </div>
+
+                                <!-- store id in array -->
+                                <script>
+                                    panding_task_detail['id'].push("{{task.id}}");
+                                </script>
+                                {% endfor%}
+                                <script>
+                                    panding_task_select_listener();
+                                </script>
+                            </div>
+
+
+
+
+                            <svg id="panding_list_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                                width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                                <defs>
+                                    <clipPath id="a">
+                                        <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
+                                    </clipPath>
+                                </defs>
+                                <g clip-path="url(#a)">
+                                    <path
+                                        d="M339.457 192.082c0 .691-.066 1.375-.2 2.055a10.589 10.589 0 01-1.573 3.793c-.383.578-.82 1.11-1.309 1.597a10.445 10.445 0 01-3.414 2.282c-.64.265-1.297.464-1.977.597-.675.137-1.363.203-2.054.203H202.61v126.32c0 .692-.067 1.38-.204 2.055-.133.68-.332 1.336-.597 1.977-.266.637-.59 1.242-.973 1.82a10.445 10.445 0 01-2.906 2.903 10.589 10.589 0 01-3.793 1.574 10.68 10.68 0 01-4.106 0 10.5 10.5 0 01-1.976-.602 10.445 10.445 0 01-3.414-2.281 10.445 10.445 0 01-2.282-3.414 10.59 10.59 0 01-.601-1.977 10.653 10.653 0 01-.203-2.054V202.61H55.235c-.692 0-1.376-.067-2.055-.204a10.57 10.57 0 01-3.793-1.57 10.445 10.445 0 01-1.594-1.309 10.313 10.313 0 01-1.313-1.597 10.68 10.68 0 01-.972-1.817c-.262-.64-.461-1.297-.598-1.976a10.684 10.684 0 01-.203-2.055 10.613 10.613 0 01.8-4.027 10.47 10.47 0 012.285-3.414c.49-.489 1.02-.926 1.595-1.309.574-.387 1.18-.71 1.82-.973a10.55 10.55 0 011.973-.601c.68-.133 1.363-.203 2.054-.203h126.32V55.235a10.55 10.55 0 01.805-4.027c.262-.642.586-1.247.973-1.821.383-.575.82-1.106 1.309-1.594a10.47 10.47 0 013.414-2.285 10.613 10.613 0 014.027-.8c.691-.001 1.375.07 2.055.202.68.137 1.336.336 1.976.598.637.265 1.242.59 1.817.972.578.387 1.11.82 1.597 1.313a10.445 10.445 0 012.282 3.414c.265.637.464 1.297.597 1.973.137.68.203 1.363.203 2.054v126.32h126.32a10.59 10.59 0 015.852 1.777c.574.384 1.106.821 1.594 1.31a10.445 10.445 0 012.281 3.414 10.5 10.5 0 01.602 1.976c.133.676.199 1.36.199 2.051zm0 0"
+                                        fill="currentColor" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- this is popup for google map which is shown in this div -->
+                    <div class="popup-outer-container hidd" style="z-index: 9999999;" id="update_map_popup">
+                        <div class="popup-map-box">
+                            <div class="popup-content" id="update_googlemap_container"></div>
+                            <svg id="update_map_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                                width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                                <defs>
+                                    <clipPath id="a">
+                                        <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
+                                    </clipPath>
+                                </defs>
+                                <g clip-path="url(#a)">
+                                    <path
+                                        d="M339.457 192.082c0 .691-.066 1.375-.2 2.055a10.589 10.589 0 01-1.573 3.793c-.383.578-.82 1.11-1.309 1.597a10.445 10.445 0 01-3.414 2.282c-.64.265-1.297.464-1.977.597-.675.137-1.363.203-2.054.203H202.61v126.32c0 .692-.067 1.38-.204 2.055-.133.68-.332 1.336-.597 1.977-.266.637-.59 1.242-.973 1.82a10.445 10.445 0 01-2.906 2.903 10.589 10.589 0 01-3.793 1.574 10.68 10.68 0 01-4.106 0 10.5 10.5 0 01-1.976-.602 10.445 10.445 0 01-3.414-2.281 10.445 10.445 0 01-2.282-3.414 10.59 10.59 0 01-.601-1.977 10.653 10.653 0 01-.203-2.054V202.61H55.235c-.692 0-1.376-.067-2.055-.204a10.57 10.57 0 01-3.793-1.57 10.445 10.445 0 01-1.594-1.309 10.313 10.313 0 01-1.313-1.597 10.68 10.68 0 01-.972-1.817c-.262-.64-.461-1.297-.598-1.976a10.684 10.684 0 01-.203-2.055 10.613 10.613 0 01.8-4.027 10.47 10.47 0 012.285-3.414c.49-.489 1.02-.926 1.595-1.309.574-.387 1.18-.71 1.82-.973a10.55 10.55 0 011.973-.601c.68-.133 1.363-.203 2.054-.203h126.32V55.235a10.55 10.55 0 01.805-4.027c.262-.642.586-1.247.973-1.821.383-.575.82-1.106 1.309-1.594a10.47 10.47 0 013.414-2.285 10.613 10.613 0 014.027-.8c.691-.001 1.375.07 2.055.202.68.137 1.336.336 1.976.598.637.265 1.242.59 1.817.972.578.387 1.11.82 1.597 1.313a10.445 10.445 0 012.282 3.414c.265.637.464 1.297.597 1.973.137.68.203 1.363.203 2.054v126.32h126.32a10.59 10.59 0 015.852 1.777c.574.384 1.106.821 1.594 1.31a10.445 10.445 0 012.281 3.414 10.5 10.5 0 01.602 1.976c.133.676.199 1.36.199 2.051zm0 0"
+                                        fill="currentColor" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- update tasks -->
+                    <div class="popup-outer-container hidd" id="panding_update_popup">
+                        <div class="panding-task-update-inner-container">
+
+                            <div class="panding-task-update-title">
+                                Update Task
+                            </div>
+                            <div class="panding-task-update-inner-inner-container" id="panding_task_update_container">
+                                <div class="add-page-form-img-outer-container">
+
+                                    <div class="add-page-form-img-inner-container"
+                                        id="update_form_profile_img_selector">
+                                        <div class="tint-img">
+                                            <img src="{% static 'icon/camara.svg' %}" alt="" class="tint-image">
+                                        </div>
+
+                                        <!-- image preview -->
+                                        <img id="update_form_profile_image_prv" src="" alt="no img">
+
+                                        <!-- image input -->
+                                        <input type="file" id="update_form_profile_img" class="hidd" accept="image/*">
+                                    </div>
+
+                                    <div class="add-page-name-field-container">
+
+                                        <!-- first name -->
+                                        <input class="add-page-name-filed" type="text" id="update_form_first_name"
+                                            disabled>
+
+                                        <!-- last name -->
+                                        <input class="add-page-name-filed" type="text" id="update_form_last_name"
+                                            disabled>
+
+                                        <!-- switch for gender selection -->
+                                        <div class="add-page-xender-filed-container">
+
+                                            <div class="add-page-xender-text">Gender</div>
+
+                                            <div class="add-page-xender-img-container">
+                                                <!-- this is only indecator switch for gender -->
+                                                <div class="toggle-button">
+                                                    <input class="toggle-checkbox" disabled type="checkbox">
+                                                    <div class="toggle-text" aria-hidden="true">M</div>
+                                                    <div class="toggle-text" aria-hidden="true">F</div>
+                                                    <div class="toggle-handle"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- secound row -->
+                                <div class="add-page-half-container">
+
+                                    <!-- input for mobile number -->
+                                    <input class="add-page-mobile-half-text" style="margin-right: 5px;" type="number"
+                                        max="9999999999" id="update_form_mobile_number">
+                                    <!-- input for deadline in date time format -->
+                                    <input class="add-page-mobile-half-text" type="datetime-local"
+                                        id="update_form_deadline">
+
+                                    <!-- this is only store fot time stemp which we will get from above input by using javascript executes when form submits -->
+                                    <input class="hidd" type="text" placeholder="deadline" name="deadline"
+                                        id="update_form_deadline_timestp">
+
+                                </div>
+
+                                <!-- third row -->
+                                <textarea class="add-page-address" id="update_form_address" cols="30"
+                                    rows="10"></textarea>
+
+                                <!-- fourth row -->
+                                <div class="add-page-half-container">
+
+                                    <!-- input for pincode -->
+                                    <input class="add-page-pincode" disabled style="margin-right: 5px;" type="text"
+                                        id="update_form_pincode">
+                                    <!-- button selector for google map -->
+                                    <div class="add-page-form-btn" id="update_form_google_map">Google Map</div>
+                                    <!-- langitude and letitude which is choosen by clicking above button is store in this to pass it in out form  -->
+                                    <input class="hidd" type="text" id="update_form_gmap" value="">
+
+                                </div>
+
+                                <!-- fifth row -->
+                                <div class="add-page-half-container">
+
+                                    <!-- proof btn selector -->
+                                    <div class="add-page-form-btn" id="update_form_add_proof_selector"
+                                        style="margin-right: 5px;">add Proof</div>
+                                    <!-- document btn selector -->
+                                    <div class="add-page-form-btn" id="update_form_add_document_selector">add Document
+                                    </div>
+                                    <!-- input tag to store proof which is execute while user click on above proof selectore -->
+                                    <input type="file" id="update_form_add_proof" name="proof" class="hidd">
+                                    <!-- input tag to store document which is execute while user click on above document selectore -->
+                                    <input type="file" id="update_form_add_document" name="document" class="hidd">
+
+                                </div>
+
+                                <!-- sixth row -->
+                                <textarea class="add-page-note" id="update_form_note" cols="30" rows="10"></textarea>
+
+                                <!-- seventh row -->
+                                <div class="accept-tandc-container">
+
+                                    <!-- check box for accept t and c -->
+                                    <input id="update_form_tandcbx" type="checkbox" class="add-page-chkbtn" unchecked>
+                                    <div class="accept-tandc-text">
+                                        Accept Terms & Conditions
+                                    </div>
+                                </div>
+
+                                <!-- eighth row -->
+                                <div class="add-page-submit-container">
+
+                                    <!-- submit button selectore -->
+                                    <div class="add-page-submit" id="update_form_submit">Submit</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <svg id="panding_update_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                                width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                                <defs>
+                                    <clipPath id="a">
+                                        <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
+                                    </clipPath>
+                                </defs>
+                                <g clip-path="url(#a)">
+                                    <path
+                                        d="M339.457 192.082c0 .691-.066 1.375-.2 2.055a10.589 10.589 0 01-1.573 3.793c-.383.578-.82 1.11-1.309 1.597a10.445 10.445 0 01-3.414 2.282c-.64.265-1.297.464-1.977.597-.675.137-1.363.203-2.054.203H202.61v126.32c0 .692-.067 1.38-.204 2.055-.133.68-.332 1.336-.597 1.977-.266.637-.59 1.242-.973 1.82a10.445 10.445 0 01-2.906 2.903 10.589 10.589 0 01-3.793 1.574 10.68 10.68 0 01-4.106 0 10.5 10.5 0 01-1.976-.602 10.445 10.445 0 01-3.414-2.281 10.445 10.445 0 01-2.282-3.414 10.59 10.59 0 01-.601-1.977 10.653 10.653 0 01-.203-2.054V202.61H55.235c-.692 0-1.376-.067-2.055-.204a10.57 10.57 0 01-3.793-1.57 10.445 10.445 0 01-1.594-1.309 10.313 10.313 0 01-1.313-1.597 10.68 10.68 0 01-.972-1.817c-.262-.64-.461-1.297-.598-1.976a10.684 10.684 0 01-.203-2.055 10.613 10.613 0 01.8-4.027 10.47 10.47 0 012.285-3.414c.49-.489 1.02-.926 1.595-1.309.574-.387 1.18-.71 1.82-.973a10.55 10.55 0 011.973-.601c.68-.133 1.363-.203 2.054-.203h126.32V55.235a10.55 10.55 0 01.805-4.027c.262-.642.586-1.247.973-1.821.383-.575.82-1.106 1.309-1.594a10.47 10.47 0 013.414-2.285 10.613 10.613 0 014.027-.8c.691-.001 1.375.07 2.055.202.68.137 1.336.336 1.976.598.637.265 1.242.59 1.817.972.578.387 1.11.82 1.597 1.313a10.445 10.445 0 012.282 3.414c.265.637.464 1.297.597 1.973.137.68.203 1.363.203 2.054v126.32h126.32a10.59 10.59 0 015.852 1.777c.574.384 1.106.821 1.594 1.31a10.445 10.445 0 012.281 3.414 10.5 10.5 0 01.602 1.976c.133.676.199 1.36.199 2.051zm0 0"
+                                        fill="currentColor" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+
+            <!-- completed task page -->
+            <div class="deshboard-page-completed" id="deshboard_page_completed">
+
+                <div class="completed-page-outer-container">
+                    <div class="completed-page-inner-container">
+                        <div class="completed-page-title">Task history</div>
+                        <div class="completed-page-part-list-container">
+                            <div class="completed-page-part-selector" id="completed_page_part_selector_completed">
+                                Completed</div>
+                            <div class="completed-page-part-selector" id="completed_page_part_selector_expired">Expired
+                            </div>
+                            <div class="completed-page-part-selector" id="completed_page_part_selector_cancelled">
+                                cancelled</div>
+                        </div>
+                        <div class="completed-page-more-detail-btn-container hidd"
+                            id="completed_page_more_detail_btn_container">
+                            <div class="completed-task-more-detail-btn" id="completed_task_more_detail">Task detail
+                            </div>
+                            <div class="completed-task-more-detail-btn" id="completed_task_query">Task Query</div>
+                        </div>
+                        <div class="completed-page-part-container">
+                            <div id="completed_page_part_completed"
+                                class="completed-page-completed-task-container hidd">
+                                <div class="completed-page-completed-task-header">
+                                    <div class="completed-page-completed-task-header-img">Img</div>
+                                    <div class="completed-page-completed-task-header-name">Name</div>
+                                    <div class="completed-page-completed-task-header-gender">Gender</div>
+                                    <div class="completed-page-completed-task-header-mobile">Mobile</div>
+                                    <div class="completed-page-completed-task-header-refid">Ref Id</div>
+                                    <div class="completed-page-completed-task-header-choose">Choose</div>
+                                </div>
+                                {% for completed_task_completed_obj in completed_task_objs_completed %}
+                                <div class="completed-page-completed-task-detail" >
+                                    <img class="completed-page-completed-task-detail-profile-img"
+                                        src="/media/{{completed_task_completed_obj.task_detail_link.image}}" alt="">
+                                    <div class="completed-page-completed-task-detail-name">
+                                        {{completed_task_completed_obj.task_detail_link.name}}</div>
+                                    {% if completed_task_completed_obj.task_detail_link.gender == "Male" %}
+                                    <img class="completed-page-completed-task-detail-gender"
+                                        src="{% static 'icon/male_symbol.svg' %}" alt="">
+                                    {% else %}
+                                    <img class="completed-page-completed-task-detail-gender"
+                                        src="{% static 'icon/female_symbol.svg' %}" alt="">
+                                    {% endif %}
+                                    <div class="completed-page-completed-task-detail-mobile">
+                                        {{completed_task_completed_obj.task_detail_link.mobile_number}}</div>
+                                    <div class="completed-page-completed-task-detail-refid">
+                                        {{completed_task_completed_obj.task_detail_link.id}}</div>
+                                    <div class="completed-page-completed-task-detail-select-btn-outer-container">
+                                        <div class="completed-page-completed-task-detail-select-btn"
+                                            id="completed_page_completed_task_{{completed_task_completed_obj.task_detail_link.id}}">
+                                            Select</div>
+                                    </div>
+                                </div>
+                                <script>
+                                    completed_task_detail['completed_ids'].push(
+                                        "{{completed_task_completed_obj.task_detail_link.id}}");
+                                </script>
+                                {% endfor%}
+                                <!-- <script>
+                                    completed_task_select_listener();
+                                </script> -->
+                            </div>
+                            <div id="completed_page_part_expired" class="completed-page-expired-task-container hidd">
+                                <div class="completed-page-expired-task-header">
+                                    <div class="completed-page-expired-task-header-img">Img</div>
+                                    <div class="completed-page-expired-task-header-name">Name</div>
+                                    <div class="completed-page-expired-task-header-gender">Gender</div>
+                                    <div class="completed-page-expired-task-header-mobile">Mobile</div>
+                                    <div class="completed-page-expired-task-header-accept">Accepted</div>
+                                    <div class="completed-page-expired-task-header-refid">Ref Id</div>
+                                    <div class="completed-page-expired-task-header-choose">Choose</div>
+                                </div>
+                                {% for completed_task_completed_obj in completed_task_objs_expired %}
+                                <div class="completed-page-expired-task-detail">
+                                    <img class="completed-page-expired-task-detail-profile-img"
+                                        src="/media/{{completed_task_completed_obj.task_detail_link.image}}" alt="">
+                                    <div class="completed-page-expired-task-detail-name">
+                                        {{completed_task_completed_obj.task_detail_link.name}}</div>
+                                    {% if completed_task_completed_obj.task_detail_link.gender == "Male" %}
+                                    <img class="completed-page-expired-task-detail-gender"
+                                        src="{% static 'icon/male_symbol.svg' %}" alt="">
+                                    {% else %}
+                                    <img class="completed-page-expired-task-detail-gender"
+                                        src="{% static 'icon/female_symbol.svg' %}" alt="">
+                                    {% endif %}
+                                    <div class="completed-page-expired-task-detail-mobile">
+                                        {{completed_task_completed_obj.task_detail_link.mobile_number}}</div>
+                                    {% if completed_task_completed_obj.accepted == "accepted" %}
+                                    <img class="completed-page-expired-task-detail-accept"
+                                        src="{% static 'icon/true_round.svg' %}" alt="">
+                                    {% else %}
+                                    <img class="completed-page-expired-task-detail-accept"
+                                        src="{% static 'icon/false_round.svg' %}" alt="">
+                                    {% endif %}
+                                    <div class="completed-page-expired-task-detail-refid">
+                                        {{completed_task_completed_obj.task_detail_link.id}}</div>
+                                    <div class="completed-page-expired-task-detail-select-btn-outer-container">
+                                        <div class="completed-page-expired-task-detail-select-btn"
+                                            id="completed_page_completed_task_{{completed_task_completed_obj.task_detail_link.id}}">
+                                            Select</div>
+                                    </div>
+                                </div>
+                                <script>
+                                    completed_task_detail['completed_ids'].push(
+                                        "{{completed_task_completed_obj.task_detail_link.id}}");
+                                </script>
+                                {% endfor%}
+                                <!-- <script>
+                                    completed_task_select_listener();
+                                </script> -->
+
+                            </div>
+                            <div id="completed_page_part_cancelled"
+                                class="completed-page-cancelled-task-container hidd">
+
+                                <div class="completed-page-cancelled-task-header">
+                                    <div class="completed-page-cancelled-task-header-img">Img</div>
+                                    <div class="completed-page-cancelled-task-header-name">Name</div>
+                                    <div class="completed-page-cancelled-task-header-mobile">mobile</div>
+                                    <div class="completed-page-cancelled-task-header-gender">Gender</div>
+                                    <div class="completed-page-cancelled-task-header-refund">Refund</div>
+                                    <div class="completed-page-cancelled-task-header-accept">Accepted</div>
+                                    <div class="completed-page-cancelled-task-header-refid">Ref Id</div>
+                                    <div class="completed-page-cancelled-task-header-choose">Choose</div>
+                                </div>
+                                {% for completed_task_completed_obj in completed_task_objs_cancelled %}
+                                <div class="completed-page-cancelled-task-detail">
+                                    <img class="completed-page-cancelled-task-detail-profile-img"
+                                        src="/media/{{completed_task_completed_obj.task_detail_link.image}}" alt="">
+                                    <div class="completed-page-cancelled-task-detail-name">
+                                        {{completed_task_completed_obj.task_detail_link.name}}</div>
+                                        <div class="completed-page-cancelled-task-detail-mobile">
+                                            {{completed_task_completed_obj.task_detail_link.mobile_number}}</div>
+                                            
+                                    {% if completed_task_completed_obj.task_detail_link.gender == "Male" %}
+                                    <img class="completed-page-cancelled-task-detail-gender"
+                                        src="{% static 'icon/male_symbol.svg' %}" alt="">
+                                    {% else %}
+                                    <img class="completed-page-cancelled-task-detail-gender"
+                                        src="{% static 'icon/female_symbol.svg' %}" alt="">
+                                    {% endif %}
+                                    
+                                    {% if completed_task_completed_obj.refund_status == "panding" %}
+                                    <img class="completed-page-cancelled-task-detail-refund"
+                                        src="{% static 'icon/panding_round.svg' %}" alt="">
+                                    {% else %}
+                                    <img class="completed-page-cancelled-task-detail-refund"
+                                        src="{% static 'icon/true_round.svg' %}" alt="">
+                                    {% endif %}
+
+                                    {% if completed_task_completed_obj.accepted == "accepted" %}
+                                    <img class="completed-page-cancelled-task-detail-accept"
+                                        src="{% static 'icon/true_round.svg' %}" alt="">
+                                    {% else %}
+                                    <img class="completed-page-cancelled-task-detail-accept"
+                                        src="{% static 'icon/false_round.svg' %}" alt="">
+                                    {% endif %}
+                                    <div class="completed-page-cancelled-task-detail-refid">
+                                        {{completed_task_completed_obj.task_detail_link.id}}</div>
+                                    <div class="completed-page-cancelled-task-detail-select-btn-outer-container">
+                                        <div class="completed-page-cancelled-task-detail-select-btn"
+                                            id="completed_page_completed_task_{{completed_task_completed_obj.task_detail_link.id}}">
+                                            Select</div>
+                                    </div>
+                                </div>
+                                <script>
+                                    completed_task_detail['completed_ids'].push(
+                                        "{{completed_task_completed_obj.task_detail_link.id}}");
+                                </script>
+                                {% endfor%}
+
+                            </div>
+                        </div>
+                        <script>
+                            completed_task_select_listener();
+                        </script>
+                    </div>
+                </div>
+
+
+                <!-- moredetail container -->
+                <div class="popup-outer-container hidd" id="completed_detail_popup">
+                    <div class="panding-task-update-inner-container">
+
+                        <div class="panding-task-update-title">
+                            Task details
+                        </div>
+                        <div class="completed-page-detail-part-list-container">
+                            <div class="completed-page-detail-part-selected "
+                                id="completed_page_detail_part_selector_basic_info">
+                                Basic info</div>
+                            <div class="completed-page-detail-part-selector"
+                                id="completed_page_detail_part_selector_payment_info">
+                                payment info
+                            </div>
+                            <div class="completed-page-detail-part-selector hidd"
+                                id="completed_page_detail_part_selector_agent_info">
+                                agent info</div>
+                            <div class="completed-page-detail-part-selector hidd"
+                                id="completed_page_detail_part_selector_refund_info">
+                                refund info</div>
+                        </div>
+
+                        <svg id="completed_detail_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                            width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                            <defs>
+                                <clipPath id="a">
+                                    <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
+                                </clipPath>
+                            </defs>
+                            <g clip-path="url(#a)">
+                                <path
+                                    d="M339.457 192.082c0 .691-.066 1.375-.2 2.055a10.589 10.589 0 01-1.573 3.793c-.383.578-.82 1.11-1.309 1.597a10.445 10.445 0 01-3.414 2.282c-.64.265-1.297.464-1.977.597-.675.137-1.363.203-2.054.203H202.61v126.32c0 .692-.067 1.38-.204 2.055-.133.68-.332 1.336-.597 1.977-.266.637-.59 1.242-.973 1.82a10.445 10.445 0 01-2.906 2.903 10.589 10.589 0 01-3.793 1.574 10.68 10.68 0 01-4.106 0 10.5 10.5 0 01-1.976-.602 10.445 10.445 0 01-3.414-2.281 10.445 10.445 0 01-2.282-3.414 10.59 10.59 0 01-.601-1.977 10.653 10.653 0 01-.203-2.054V202.61H55.235c-.692 0-1.376-.067-2.055-.204a10.57 10.57 0 01-3.793-1.57 10.445 10.445 0 01-1.594-1.309 10.313 10.313 0 01-1.313-1.597 10.68 10.68 0 01-.972-1.817c-.262-.64-.461-1.297-.598-1.976a10.684 10.684 0 01-.203-2.055 10.613 10.613 0 01.8-4.027 10.47 10.47 0 012.285-3.414c.49-.489 1.02-.926 1.595-1.309.574-.387 1.18-.71 1.82-.973a10.55 10.55 0 011.973-.601c.68-.133 1.363-.203 2.054-.203h126.32V55.235a10.55 10.55 0 01.805-4.027c.262-.642.586-1.247.973-1.821.383-.575.82-1.106 1.309-1.594a10.47 10.47 0 013.414-2.285 10.613 10.613 0 014.027-.8c.691-.001 1.375.07 2.055.202.68.137 1.336.336 1.976.598.637.265 1.242.59 1.817.972.578.387 1.11.82 1.597 1.313a10.445 10.445 0 012.282 3.414c.265.637.464 1.297.597 1.973.137.68.203 1.363.203 2.054v126.32h126.32a10.59 10.59 0 015.852 1.777c.574.384 1.106.821 1.594 1.31a10.445 10.445 0 012.281 3.414 10.5 10.5 0 01.602 1.976c.133.676.199 1.36.199 2.051zm0 0"
+                                    fill="currentColor" />
+                            </g>
+                        </svg>
+
+                        <div class="panding-task-update-inner-inner-container" style="height: calc( 100% - 124px);"
+                            id="completed_detail_popup_detail_container_basic_info">
+
+                            <div class="panding-detail-name-container">
+                                <div class="panding-detail-basic-naming-container">
+                                    <div class="panding-details-name flx">
+                                        <div class="completed-task-more-detail-lable">Task Reference Id</div>
+                                        <div class="completed-task-more-detail-field"
+                                            id="completed_task_more_detail_ref_id">:7845</div>
+                                    </div>
+                                    <div class="panding-details-task-waiting-status flx">
+                                        <div class="completed-task-more-detail-lable">Task Name </div>
+                                        <div class="completed-task-more-detail-field"
+                                            id="completed_task_more_detail_task_name">:Jaykit kukadiya</div>
+                                    </div>
+
+                                    <div class="panding-details-deadline flx">
+                                        <div class="completed-task-more-detail-lable">Task Gender </div>
+                                        <div class="completed-task-more-detail-field"
+                                            id="completed_task_more_detail_task_gender">:Male</div>
+                                    </div>
+                                </div>
+
+                                <a href="" target="_blank" class="panding-detail-image-container"
+                                    id="completed_task_more_details_default_profile_image_link">
+                                    <!-- this is for temp -->
+                                    <svg id="completed_task_more_details_default_profile_image"
+                                        class="panding-detail-image" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt" height="30.000001pt"
+                                        viewBox="0 0 30 30.000001" version="1.2">
+                                        <defs>
+                                            <clipPath id="clip1">
+                                                <path
+                                                    d="M 5.671875 14 L 24.535156 14 L 24.535156 25.253906 L 5.671875 25.253906 Z M 5.671875 14 " />
+                                            </clipPath>
+                                            <clipPath id="clip2">
+                                                <path d="M 9 3.480469 L 22 3.480469 L 22 16 L 9 16 Z M 9 3.480469 " />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="surface1">
+                                            <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;;fill-opacity:1;"
+                                                    d="M 21.734375 14.519531 C 21.578125 14.363281 21.359375 14.277344 21.132812 14.277344 C 20.660156 14.277344 20.273438 14.652344 20.273438 15.113281 C 20.273438 15.335938 20.367188 15.550781 20.53125 15.710938 C 21.992188 17.121094 22.816406 19.054688 22.816406 21.066406 C 22.816406 22.085938 19.804688 23.578125 15.097656 23.578125 C 10.390625 23.578125 7.378906 22.085938 7.378906 21.066406 C 7.375 19.066406 8.1875 17.148438 9.632812 15.730469 C 9.964844 15.410156 9.964844 14.875 9.632812 14.550781 C 9.300781 14.230469 8.753906 14.230469 8.425781 14.550781 C 6.652344 16.273438 5.652344 18.621094 5.664062 21.066406 C 5.664062 23.785156 10.523438 25.25 15.097656 25.25 C 19.671875 25.25 24.535156 23.785156 24.535156 21.066406 C 24.539062 18.605469 23.53125 16.246094 21.734375 14.519531 " />
+                                            </g>
+                                            <g clip-path="url(#clip2)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                                    d="M 15.097656 15.207031 C 18.390625 15.207031 21.101562 12.558594 21.101562 9.34375 C 21.101562 6.132812 18.390625 3.484375 15.097656 3.484375 C 11.804688 3.484375 9.09375 6.132812 9.09375 9.34375 C 9.09375 12.558594 11.804688 15.207031 15.097656 15.207031 Z M 15.097656 5.160156 C 17.449219 5.160156 19.386719 7.050781 19.386719 9.34375 C 19.386719 11.640625 17.449219 13.53125 15.097656 13.53125 C 12.746094 13.53125 10.808594 11.640625 10.808594 9.34375 C 10.808594 7.050781 12.746094 5.160156 15.097656 5.160156 " />
+                                            </g>
+                                        </g>
+                                    </svg>
+
+                                    <!-- image  -->
+                                    <img id="completed_task_more_details_profile_image" src="" alt=""
+                                        class="panding-detail-image hidd">
+                                </a>
+
+
+
+                            </div>
+
+
+                            <div class="panding-detail-address flx">
+                                <div class="completed-task-more-detail-lable">Task Address </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_detail_task_address">: C-803 Blossom homes,
+                                    near abc circle, Mota Varachha,
+                                    Surat, Gujarat 394101, India</div>
+                            </div>
+                            <div class="panding-detail-pincode flx">
+                                <div class="completed-task-more-detail-lable">Task Pincode </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_detail_task_pincode">:394001</div>
+                            </div>
+                            <div class="panding-detail-mobile flx">
+                                <div class="completed-task-more-detail-lable">Task Mobile </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_detail_task_mobile">:7845124578</div>
+                            </div>
+                            <div class="panding-detail-mobile flx">
+                                <div class="completed-task-more-detail-lable">Task accepted </div>
+                                <img src="" alt="" class="completed-task-more-detail-task-accepted-img"
+                                    id="completed_task_more_detail_task_accepted"></img>
+                            </div>
+                            <div class="panding-detail-mobile flx hidd"
+                                id="completed_task_more_detail_task_accepted_time_container">
+                                <div class="completed-task-more-detail-lable">Task Accepted At </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_detail_task_accepted_time">:today</div>
+                            </div>
+                            <div class="panding-detail-mobile flx">
+                                <div class="completed-task-more-detail-lable">Task Completed At </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_detail_task_completed_time">:today</div>
+                            </div>
+                            <div class="panding-detail-message flx">
+
+                                <div class="completed-task-more-detail-lable">Task Note </div>
+                                <div class="completed-task-more-detail-field" id="completed_task_more_detail_task_note">
+                                    :hi i am jaykit kukadiya
+                                    and i want to talk with you but
+                                    i got certain problems related to connection so i hire the agent and i wish you
+                                    trust on
+                                    this agent. and provide those information which we got from seminar to this agent.
+                                </div>
+                            </div>
+
+
+                            <div class="completed-detail-document-btn-container">
+                                <a href="" target="_blank" id="completed_task_more_detail_task_document">
+                                    <div class="panding-detail-proof-document-btn">Document</div>
+                                </a>
+                                <a href="" target="_blank" id="completed_task_more_detail_task_proof">
+                                    <div class="panding-detail-proof-document-btn">Proof</div>
+                                </a>
+                            </div>
+                            <div class="completed-detail-google-map flx" id="completed_details_map_container">
+                                <div class="completed-task-more-detail-lable">Task Map </div>
+                                <div class="completed-task-more-detail-field" id="completed_task_more_detail_task_map">:
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="panding-task-update-inner-inner-container hidd"
+                            id="completed_detail_popup_detail_container_payment_info">
+
+                            <div class="panding-task-payment-field">
+                                <div class="completed-task-more-detail-lable">Payment status : </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_details_payment_status">Success</div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="completed-task-more-detail-lable">Payment Id : </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_details_payment_id">
+                                    20210506111212800110168295102623134</div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="completed-task-more-detail-lable">Payment mode : </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_details_payment_mode">Success</div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="completed-task-more-detail-lable">Payment from : </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_details_payment_bank">name </div>
+                            </div>
+                            <div class="panding-task-payment-field">
+                                <div class="completed-task-more-detail-lable">Payment Date : </div>
+                                <div class="completed-task-more-detail-field"
+                                    id="completed_task_more_details_payment_date">Success</div>
+                            </div>
+
+                        </div>
+                        <div class="panding-task-update-inner-inner-container hidd"
+                            id="completed_detail_popup_detail_container_agent_info">
+
+                            <div class="panding-detail-name-container">
+
+
+                                <!-- <div class="panding-detail-basic-naming-container">
+                                    <div class="panding-detail-agent-half-field" id="panding_details_agent_name">
+                                        Mayur kukadiya</div>
+                                    <div class="panding-detail-agent-half-field" id="panding_details_agent_mobile">
+                                        7878999636</div>
+                                    <div class="panding-detail-agent-gender-container">
+                                        <div class="panding-task-agent-gender-img-container">
+                                            <img class="panding-task-agent-gender-img"
+                                                id="panding_details_agent_gender_denoter"
+                                                src="{% static 'icon/male_symbol.svg' %}" alt="">
+                                        </div>
+                                        <div class="panding-task-agent-gender-text"
+                                            id="panding_details_agent_gender">Female</div>
+                                    </div>
+                                </div> -->
+
+                                <div class="panding-detail-basic-naming-container">
+                                    <div class="panding-details-task-waiting-status flx">
+                                        <div class="completed-task-more-detail-lable">Agent Name </div>
+                                        <div class="completed-task-more-detail-field"
+                                            id="completed_task_more_detail_agent_name">:Jaykit kukadiya</div>
+                                    </div>
+
+                                    <div class="panding-details-name flx">
+                                        <div class="completed-task-more-detail-lable">Agent Mobile</div>
+                                        <div class="completed-task-more-detail-field"
+                                            id="completed_task_more_detail_agent_mobile">:7845</div>
+                                    </div>
+                                    <div class="panding-details-deadline flx">
+                                        <div class="completed-task-more-detail-lable">Agent Gender </div>
+                                        <div class="completed-task-more-detail-field"
+                                            id="completed_task_more_detail_agent_gender">:Male</div>
+                                    </div>
+                                </div>
+
+                                <a href="" target="_blank" class="panding-detail-image-container"
+                                    id="completed_task_more_details_agent_profile_image_link">
+                                    <!-- this is for temp -->
+                                    <svg id="completed_task_more_details_agent_default_profile_image"
+                                        class="panding-detail-image" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt" height="30.000001pt"
+                                        viewBox="0 0 30 30.000001" version="1.2">
+                                        <defs>
+                                            <clipPath id="clip1">
+                                                <path
+                                                    d="M 5.671875 14 L 24.535156 14 L 24.535156 25.253906 L 5.671875 25.253906 Z M 5.671875 14 " />
+                                            </clipPath>
+                                            <clipPath id="clip2">
+                                                <path d="M 9 3.480469 L 22 3.480469 L 22 16 L 9 16 Z M 9 3.480469 " />
+                                            </clipPath>
+                                        </defs>
+                                        <g id="surface1">
+                                            <g clip-path="url(#clip1)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;;fill-opacity:1;"
+                                                    d="M 21.734375 14.519531 C 21.578125 14.363281 21.359375 14.277344 21.132812 14.277344 C 20.660156 14.277344 20.273438 14.652344 20.273438 15.113281 C 20.273438 15.335938 20.367188 15.550781 20.53125 15.710938 C 21.992188 17.121094 22.816406 19.054688 22.816406 21.066406 C 22.816406 22.085938 19.804688 23.578125 15.097656 23.578125 C 10.390625 23.578125 7.378906 22.085938 7.378906 21.066406 C 7.375 19.066406 8.1875 17.148438 9.632812 15.730469 C 9.964844 15.410156 9.964844 14.875 9.632812 14.550781 C 9.300781 14.230469 8.753906 14.230469 8.425781 14.550781 C 6.652344 16.273438 5.652344 18.621094 5.664062 21.066406 C 5.664062 23.785156 10.523438 25.25 15.097656 25.25 C 19.671875 25.25 24.535156 23.785156 24.535156 21.066406 C 24.539062 18.605469 23.53125 16.246094 21.734375 14.519531 " />
+                                            </g>
+                                            <g clip-path="url(#clip2)" clip-rule="nonzero">
+                                                <path fill="currentColor"
+                                                    style=" stroke:none;fill-rule:nonzero;fill-opacity:1;"
+                                                    d="M 15.097656 15.207031 C 18.390625 15.207031 21.101562 12.558594 21.101562 9.34375 C 21.101562 6.132812 18.390625 3.484375 15.097656 3.484375 C 11.804688 3.484375 9.09375 6.132812 9.09375 9.34375 C 9.09375 12.558594 11.804688 15.207031 15.097656 15.207031 Z M 15.097656 5.160156 C 17.449219 5.160156 19.386719 7.050781 19.386719 9.34375 C 19.386719 11.640625 17.449219 13.53125 15.097656 13.53125 C 12.746094 13.53125 10.808594 11.640625 10.808594 9.34375 C 10.808594 7.050781 12.746094 5.160156 15.097656 5.160156 " />
+                                            </g>
+                                        </g>
+                                    </svg>
+
+                                    <!-- image  -->
+                                    <img id="completed_task_more_details_agent_profile_image" src="" alt=""
+                                        class="panding-detail-image hidd">
+                                </a>
+
+
+                            </div>
+
+                            <!-- <div class="panding-detail-agent-half-field">accepted at : <span
+                                    id="panding_details_agent_accepted_time"></span></div> -->
+                            <div class="panding-datail-agent-button-container">
+                                <div class="panding-task-agent-button" id="">
+                                    Message agent</div>
+                            </div>
+
+                        </div>
+                        <div class="panding-task-update-inner-inner-container hidd"
+                            id="completed_detail_popup_detail_container_refund_info">dfg
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- this is activate while scroll is grater then some value and used to smooth scroll up -->
+    <div class="upbtn-container" id="backtohome">
+        <img class="upbtn" src="{% static 'icon/up.png' %}" alt="dsf">
+    </div>
+
+    <!-- this is short notification -->
+
+    <div class="noti-overlay" id="notificationbx">
+        <div class="notification-box" id="notif_name">
+            I am notification.
+        </div>
+    </div>
+
+    <div class="loading-dots-container" id="loading_rounder">
+        <img class="loading-dots-img" src="{% static 'icon/four_dots_loading.svg' %}" alt="">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 384 384" version="1.2">
+            <defs>
+                <clipPath id="a">
+                    <path d="M267 263h74v78h-74zm0 0" />
+                </clipPath>
+                <clipPath id="b">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="c">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="d">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="e">
+                    <path d="M287 260h59v85h-59zm0 0" />
+                </clipPath>
+                <clipPath id="f">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="g">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="h">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="i">
+                    <path d="M282 339h4v2h-4zm0 0" />
+                </clipPath>
+                <clipPath id="j">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="k">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="l">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="m">
+                    <path d="M316 340h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="n">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="o">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="p">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="q">
+                    <path d="M296 342h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="r">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="s">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="t">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="u">
+                    <path d="M289 269h1v2h-1zm0 0" />
+                </clipPath>
+                <clipPath id="v">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="w">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="x">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="y">
+                    <path d="M300 342h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="z">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="A">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="B">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="C">
+                    <path d="M285 271h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="D">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="E">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="F">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="G">
+                    <path d="M320 336h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="H">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="I">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="J">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="K">
+                    <path d="M319 338h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="L">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="M">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="N">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="O">
+                    <path d="M274 280h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="P">
+                    <path d="M326.656 357.953l-75.633-31.031 31.883-77.715 75.63 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="Q">
+                    <path d="M326.672 357.957l-75.633-31.027 31.883-77.715 75.633 31.031zm0 0" />
+                </clipPath>
+                <clipPath id="R">
+                    <path d="M326.672 357.957l-75.742-31.07 31.984-77.965 75.742 31.074zm0 0" />
+                </clipPath>
+                <clipPath id="S">
+                    <path d="M42 265h78v76H42zm0 0" />
+                </clipPath>
+                <clipPath id="T">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="U">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="V">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="W">
+                    <path d="M38 281h85v64H38zm0 0" />
+                </clipPath>
+                <clipPath id="X">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="Y">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="Z">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="aa">
+                    <path d="M45 276h2v4h-2zm0 0" />
+                </clipPath>
+                <clipPath id="ab">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ac">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ad">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="ae">
+                    <path d="M40 310h2v3h-2zm0 0" />
+                </clipPath>
+                <clipPath id="af">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ag">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ah">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="ai">
+                    <path d="M41 290h1v3h-1zm0 0" />
+                </clipPath>
+                <clipPath id="aj">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ak">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="al">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="am">
+                    <path d="M114 292h1v2h-1zm0 0" />
+                </clipPath>
+                <clipPath id="an">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ao">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ap">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="aq">
+                    <path d="M40 294h1v3h-1zm0 0" />
+                </clipPath>
+                <clipPath id="ar">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="as">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="at">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="au">
+                    <path d="M112 288h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="av">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aw">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="ax">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="ay">
+                    <path d="M43 315h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="az">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aA">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aB">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="aC">
+                    <path d="M41 313h2v3h-2zm0 0" />
+                </clipPath>
+                <clipPath id="aD">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aE">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aF">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="aG">
+                    <path d="M104 276h2v3h-2zm0 0" />
+                </clipPath>
+                <clipPath id="aH">
+                    <path d="M22.621 318.434l40.5-71.012 72.965 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aI">
+                    <path d="M22.613 318.43l40.5-71.012 72.969 41.613-40.5 71.012zm0 0" />
+                </clipPath>
+                <clipPath id="aJ">
+                    <path d="M22.613 318.43l40.575-71.145 73.19 41.742-40.573 71.145zm0 0" />
+                </clipPath>
+                <clipPath id="aK">
+                    <path d="M268 42h78v75h-78zm0 0" />
+                </clipPath>
+                <clipPath id="aL">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aM">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aN">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="aO">
+                    <path d="M263 58h86v64h-86zm0 0" />
+                </clipPath>
+                <clipPath id="aP">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aQ">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aR">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="aS">
+                    <path d="M270 53h3v4h-3zm0 0" />
+                </clipPath>
+                <clipPath id="aT">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aU">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aV">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="aW">
+                    <path d="M265 87h3v3h-3zm0 0" />
+                </clipPath>
+                <clipPath id="aX">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aY">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="aZ">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="ba">
+                    <path d="M266 67h2v3h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bb">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bc">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bd">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="be">
+                    <path d="M339 68h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bf">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bg">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bh">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="bi">
+                    <path d="M265 71h2v3h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bj">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bk">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bl">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="bm">
+                    <path d="M338 64h1v2h-1zm0 0" />
+                </clipPath>
+                <clipPath id="bn">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bo">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bp">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="bq">
+                    <path d="M269 92h2v1h-2zm0 0" />
+                </clipPath>
+                <clipPath id="br">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bs">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bt">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="bu">
+                    <path d="M267 90h2v3h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bv">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bw">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bx">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="by">
+                    <path d="M329 53h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="bz">
+                    <path d="M248.41 95.676l39.606-71.516L361.5 64.855l-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bA">
+                    <path d="M248.398 95.691l39.606-71.515 73.484 40.695-39.605 71.516zm0 0" />
+                </clipPath>
+                <clipPath id="bB">
+                    <path d="M248.398 95.691l39.665-71.617 73.718 40.824-39.66 71.618zm0 0" />
+                </clipPath>
+                <clipPath id="bC">
+                    <path d="M41 44h77v78H41zm0 0" />
+                </clipPath>
+                <clipPath id="bD">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="bE">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="bF">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="bG">
+                    <path d="M38 39h77v80H38zm0 0" />
+                </clipPath>
+                <clipPath id="bH">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="bI">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="bJ">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="bK">
+                    <path d="M115 58h2v4h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bL">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="bM">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="bN">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="bO">
+                    <path d="M87 41h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="bP">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="bQ">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="bR">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="bS">
+                    <path d="M105 50h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bT">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="bU">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="bV">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="bW">
+                    <path d="M74 116h2v2h-2zm0 0" />
+                </clipPath>
+                <clipPath id="bX">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="bY">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="bZ">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="ca">
+                    <path d="M101 47h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="cb">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="cc">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="cd">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="ce">
+                    <path d="M78 116h1v2h-1zm0 0" />
+                </clipPath>
+                <clipPath id="cf">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="cg">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="ch">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="ci">
+                    <path d="M82 43h2v1h-2zm0 0" />
+                </clipPath>
+                <clipPath id="cj">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="ck">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="cl">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="cm">
+                    <path d="M83 41h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="cn">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="co">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="cp">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+                <clipPath id="cq">
+                    <path d="M91 114h3v2h-3zm0 0" />
+                </clipPath>
+                <clipPath id="cr">
+                    <path d="M89.043 22.645l48.102 66.097-67.918 49.426L21.125 72.07zm0 0" />
+                </clipPath>
+                <clipPath id="cs">
+                    <path d="M89.031 22.629l48.102 66.098-67.918 49.425-48.102-66.097zm0 0" />
+                </clipPath>
+                <clipPath id="ct">
+                    <path d="M89.031 22.629l48.172 66.191-68.137 49.586-48.171-66.191zm0 0" />
+                </clipPath>
+            </defs>
+            <g clip-path="url(#a)">
+                <g clip-path="url(#b)">
+                    <g clip-path="url(#c)">
+                        <g clip-path="url(#d)">
+                            <path
+                                d="M335.96 302.82c.044 1.75-.144 3.5-.538 5.207-.094.43-.211.688-.332.852.398-1.988.605-3.98.64-5.961.075-.027.153-.059.23-.098zm-2.155 10.778c-.055.093-.102.199-.153.3.305-.816.578-1.636.813-2.46-.02.652-.211 1.367-.66 2.16zm-12.325 15.968c.254-.171.504-.343.75-.523a3.727 3.727 0 01-.582.426c-.054.031-.109.066-.168.097zm-10.128 4.762c-.008-.015-.016-.031-.028-.047a33.371 33.371 0 003.813-1.285 25.445 25.445 0 01-3.785 1.332zm-6.22 1.004a33.051 33.051 0 004.962-.746c0 .023 0 .047-.004.07-1.617.395-3.29.813-4.957.676zm-13.628-1.867c-.293-.121-.578-.254-.867-.387a32.644 32.644 0 0012.48 2.348c-1.633.21-3.3-.02-4.937-.184-2.309-.246-4.551-.898-6.676-1.777zm-17.356-47.074c-.261.32-.644.707-.855.558-.281-.195-.102-.746.168-1.262.273-.554.828-.972.898-1.617.38-.238.758-.488 1.149-.777.383-.29.734-.652 1.113-1.07.137-.067.27-.121.402-.203.063-.04.13-.086.196-.133a33.374 33.374 0 00-2.887 4.27c-.062.077-.125.156-.184.234zm56.29 33.933c-.165.36-.368.703-.665.992.227-.328.45-.66.664-.992zm-3.493 4.512c-.347.445-.773.848-1.21 1.238a32.95 32.95 0 001.21-1.238zm-57.195-43.117c.09.312.473.105.844-.196 1.058-.847 2.199-1.648 3.207-2.82 3.55-4.062 7.953-7.281 12.742-9.582 1.855-.871 3.547-1.379 5.129-1.16.73-.285 1.48-.547 2.226-.727.555-.097 1.11-.168 1.66-.234.56-.043 1.122-.086 1.692-.16-.594.273-1.207.43-1.824.586-.613.172-1.242.273-1.852.457-.55-.153-1.222.074-1.847.285-.309.254-1.309.379-.95.71.172.157.547.75 1.45-.097.367-.344.996-.383 1.472-.605.582-.078 1.18-.098 1.762-.149.582-.12 1.176-.195 1.766-.293.343-.074.695-.113 1.046-.168.864.004 1.774-.144 2.676-.222.899-.051 1.79-.028 2.543.41-.492.18-1.027.285-1.597.394-.567.098-1.168.16-1.782.243-.289.035-.636.035-.925.097-.293.07-.528.192-.59.446 2.586-.266 5.113-.008 7.734.03.652.016 1.25.184 1.809.442.562.235 1.09.524 1.632.766.27.117.563.164.88.183a10.4 10.4 0 001 .024c.702-.02 1.445.035 2.152.324 2.558 1.113 5.11 2.246 7.414 3.813 3.5 2.402 6.586 5.414 8.996 8.894 3.824 5.488 5.898 12.203 5.726 18.867a1.598 1.598 0 01-.199-.144c-.101-12.867-7.758-25.012-20.367-30.184-9.914-4.066-20.672-2.914-29.242 2.176a41.421 41.421 0 00-3.434 1.781c-.375.223-.86.524-1.137.543-1.195.086-2.523 1.031-3.734 1.75-.633.664-.816 1.098-.73 1.352.078.25.422.324.87.324-.316.418-.753.633-1.128.89-.36.266-.645.579-.645 1.137-.34.426-.715.664-1.101.926-.387.262-.762.563-.996 1.156l-.32.442c-.505.699-1.106 1.992-1.536 1.578-.469-.473.5-1.422 1.024-2.074.308-.399.539-.696.699-.926.172-.227.27-.383.3-.512.063-.258-.14-.39-.55-.652a10.252 10.252 0 01-1.176 1.62c-.437.462-.86.903-1.309 1.353-.644.644-.925 1.058-1.027 1.394-.086.34.043.625.344 1.082.156.23.344.328.148.91-.386 1.16.114 1.121.559 1.223.48.105 1.004-.024 1.543-.207-.113.258-.235.512-.34.77a33.195 33.195 0 00-1.898 6.363c.113-2.09.359-4.168.96-6.258.028-.102-.082-.207-.238-.586-1.164 2.644-2.449 4.941-3.11 7.703a31.41 31.41 0 00-.737 4.809c-.149 1.625-.168 3.261-.137 4.886.11 5.114 1.543 10.29 4.078 14.942 1.703 3.156 4.012 5.984 6.61 8.484 1.66 1.598 3.452 3.156 5.452 4.309 3.176 1.812 6.473 3.386 10.024 4.297a38.574 38.574 0 009.457 1.273 33.54 33.54 0 009.45-1.273c2.081-.598 4.136-1.254 6.128-2.098 1.988-.844 3.91-1.899 5.613-3.277.914-.743 1.965-1.317 2.985-2.004 1.011-.688 1.988-1.493 2.644-2.618.211-.382.883-.843 1.32-1.199a6.54 6.54 0 001.262-1.324 57.932 57.932 0 003.489-5.156c1.062-1.778 2.011-3.637 2.714-5.594a38.903 38.903 0 002.188-9.062 35.85 35.85 0 00-.082-9.329c-.676-4.863-2.05-9.714-4.652-13.925-.211-.352-.407-.735-.59-1.098-.805-1.723-1.942-3.285-3.184-4.742-1.242-1.465-2.629-2.801-4.02-4.125-3.398-3.25-7.683-5.555-12.023-7.285-2.617-1.059-5.39-1.77-8.207-2.157-2.816-.39-5.672-.488-8.531-.382-4.32.16-8.645 1.199-12.649 2.988-2 .887-3.93 1.95-5.761 3.16a41.708 41.708 0 00-5.172 4.086c-2.125 1.965-4.168 4.102-5.676 6.613-.281.492-.496 1.028-.414 1.313"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#e)">
+                <g clip-path="url(#f)">
+                    <g clip-path="url(#g)">
+                        <g clip-path="url(#h)">
+                            <path
+                                d="M329.297 334.984a21.221 21.221 0 01-2.05 1.66c-1.513 1.11-2.075.887-2.157.168 1.394-.425 1.945-1.785 3.18-2.41.648.707 1.64-.96 2.418-1.336-.278.688-.793 1.309-1.391 1.918zm-14.582-71.937c1.656.726 3.496 1.433 5.316 1.82.918.871 2.063 1.574 3.364 2.281 1.835 1 3.468 2.286 5.027 3.633 1.68 1.418 3.156 3.367 5.078 4.211-.016.492.195 1.14.7 1.719 1.491 1.785 2.359 3.965 3.948 5.703.543.57.922 1.457 1.192 2.281.383 1.23.902 2.383 1.418 3.606.965 2.3 1.687 4.765 1.777 7.246a7.96 7.96 0 00.266 1.73c.152.528.34 1.024.52 1.516.085.414.273 1.16.245 1.195-.691.86-.011 1.934-.078 2.895-.234 1.754-1 3.34-.515 5.254l-.13.675c-.331.622-.445 1.25-.335 1.926-.137.586-.145 1.055.07 1.313l.008.054c-.242 1-.703 1.344-1.113 1.899-.262.344-.637 1.043-.45 1.34.586.926-.777 2.21-.683 2.43.258.75-.125 1.699-.43 2.68-.27.831-.746.901-1.11 1.644.606-.383 1.102-.75 1.618-1.118l-.61 1.149c-.21.383-.433.754-.656 1.129-.433.75-.937 1.457-1.472 2.12-.985-.565-.957-.55-2.356 1.43-.457.587-.855 1.22-1.308 1.817l.164.734c.41-.207.82-.418 1.218-.652-.707 1.398-1.847 2.367-3.02 3.184-.35.25-.577.203-.355-.246-.062-.055-.093-.137-.09-.25-.503.472-1.07.878-1.386 1.464-.7.211-1.41.512-2.184 1.227-1.312.668-2.43 1.535-3.496 2.539-.683.426-.926.91-1.332 1.348.152.242.445.504-.27.976-1.292.871-2.785 1.82-4.14 2.2-1.871.488-3.578 1.203-5.414 1.617-.426.234-.867.437-1.309.644-1.074.024-2.488.344-3.254-.062.649-.137 1.38-.262 1.739-.594.258-.246-.133-.36-.5-.395-1.25-.109-2.575.164-3.75.47-1.328.331-.32.765-.293 1.155-.508.125-1.047.36-1.54.344-2.824-.012-5.648-.133-8.445-.527-2.793-.399-5.562-1.07-8.156-2.145-.539-.226-1.055-.445-1.187-.05.472.222.96.484 1.476.687 5.719 2.184 12.012 3.102 18.168 2.516.91-.067 1.813-.114 2.723-.164.898-.106 1.805-.223 2.656-.618 2.703-.492 5.336-1.375 7.852-2.504 2.515-1.128 4.914-2.503 7.23-4.015 1.918-1.246 3.805-2.508 5.496-4.133a42.38 42.38 0 004.551-5.098 43.177 43.177 0 003.637-5.785c1.675-3.277 2.98-6.722 3.82-10.32.82-3.594 1.238-7.297 1.11-10.98.038-2.102-.208-4.196-.614-6.243-.398-2.05-1.004-4.054-1.71-6.015.577 2.003.944 4.046 1.19 6.097.258 2.051.446 4.106.645 6.207-.137 5.164-1.27 10.192-2.937 15.028-.395-.426-.141-1.278.191-2.164.215-.637.473-1.25.535-1.93.313-1.09.543-2.184.496-3.27l.192-.761c-.012-.801.113-1.563.238-2.329.098-.765.258-1.527.258-2.312.14-.805.136-1.625.054-2.434l-.105-1.218a12.526 12.526 0 01-.086-1.211c-.602-6.723-2.894-13.242-6.539-18.887-1.16-1.785-2.574-3.398-3.746-5.156a41.463 41.463 0 00-13.574-10.23 47.46 47.46 0 00-5.903-2.321 26.771 26.771 0 00-6.257-1.191c-.458-.024-.903-.07-1.336-.149-.43-.074-.852-.152-1.258-.277a6.797 6.797 0 00-.918-.121c-.305-.012-.61-.004-.91.011a22.17 22.17 0 00-1.817.184c1.36.008 2.633.203 3.922.387 3.047.422 6.164.937 8.969 2.16"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#i)">
+                <g clip-path="url(#j)">
+                    <g clip-path="url(#k)">
+                        <g clip-path="url(#l)">
+                            <path
+                                d="M282.387 339.25c.492.355.965.648 1.453.89.492.243.992.45 1.578.532-.754-.422-1.106-.684-1.488-.852-.375-.18-.774-.28-1.543-.57"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#m)">
+                <g clip-path="url(#n)">
+                    <g clip-path="url(#o)">
+                        <g clip-path="url(#p)">
+                            <path
+                                d="M317.727 340.125c-1.016.254-1.348.504-1.465.762-.11.261.011.539-.094.8 1.02-.464 2.402-1.03 1.559-1.562"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#q)">
+                <g clip-path="url(#r)">
+                    <g clip-path="url(#s)">
+                        <g clip-path="url(#t)">
+                            <path
+                                d="M297.328 343.137c.508-.02 1.04-.07 1.031-.352-.004-.144-.367-.234-.68-.25-.597-.027-.91.07-.976.281.027.23.309.325.625.32"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#u)">
+                <g clip-path="url(#v)">
+                    <g clip-path="url(#w)">
+                        <g clip-path="url(#x)">
+                            <path
+                                d="M289.438 270.426c.273-.113.496-.246.519-.422.023-.168-.121-.297-.406-.2-.2.067-.43.301-.504.45-.102.191.09.246.39.172"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#y)">
+                <g clip-path="url(#z)">
+                    <g clip-path="url(#A)">
+                        <g clip-path="url(#B)">
+                            <path
+                                d="M301.836 343.281c.332.016.559-.078.676-.25-.035-.215-.453-.246-.86-.265-.304-.004-.652.03-.656.175-.008.223.41.325.84.34"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#C)">
+                <g clip-path="url(#D)">
+                    <g clip-path="url(#E)">
+                        <g clip-path="url(#F)">
+                            <path
+                                d="M286.105 272.172c.047-.035.055-.11.079-.164-.075-.082-.211-.063-.391.066-.05.04-.094.133-.074.16.062.09.21.067.386-.062"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#G)">
+                <g clip-path="url(#H)">
+                    <g clip-path="url(#I)">
+                        <g clip-path="url(#J)">
+                            <path
+                                d="M321.43 336.938c.125-.16.035-.2-.22-.07-.163.077-.308.21-.483.331.164-.035.304-.05.457-.101a.641.641 0 00.246-.16"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#K)">
+                <g clip-path="url(#L)">
+                    <g clip-path="url(#M)">
+                        <g clip-path="url(#N)">
+                            <path
+                                d="M321.473 338.29l-1.196.667c-.402.215-.812.414-1.222.621 1.027-.11 2.086-.273 2.418-1.289"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#O)">
+                <g clip-path="url(#P)">
+                    <g clip-path="url(#Q)">
+                        <g clip-path="url(#R)">
+                            <path
+                                d="M275.063 281.895c.187.082.496-.172.718-.512.465-.723.2-.785-.246-.672l-.058.047c-.262.406-.868.93-.414 1.137"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#S)">
+                <g clip-path="url(#T)">
+                    <g clip-path="url(#U)">
+                        <g clip-path="url(#V)">
+                            <path
+                                d="M76.09 334.738a20.966 20.966 0 01-5.098-1.199c-.414-.152-.656-.297-.8-.441a32.688 32.688 0 005.828 1.398c.015.082.039.16.07.242zm-10.414-3.52c-.086-.066-.184-.128-.278-.19.77.406 1.551.78 2.336 1.124-.644-.105-1.328-.386-2.058-.933zM51.43 316.942c.14.27.277.54.425.809a3.485 3.485 0 01-.347-.633c-.028-.058-.051-.117-.078-.176zm-3.414-10.668c.015-.003.035-.011.05-.015.18 1.328.442 2.644.782 3.941-.371-1.281-.668-2.594-.832-3.926zm-.196-6.3c-.093 1.68-.058 3.359.102 5.02-.024-.005-.043-.005-.067-.009-.183-1.66-.382-3.37-.035-5.011zm3.614-13.286c.16-.273.328-.542.496-.812a32.735 32.735 0 00-3.938 12.086c0-1.645.442-3.274.817-4.875.546-2.262 1.48-4.402 2.625-6.399zm48.93-11.187c-.282-.3-.618-.73-.442-.922.23-.25.75-.004 1.226.332.52.34.86.942 1.489 1.094.187.41.386.82.625 1.242.238.418.55.813.918 1.242.047.145.082.282.148.422.031.07.067.145.106.215a33.01 33.01 0 00-3.864-3.414 10.44 10.44 0 00-.207-.211zM59.44 327.016c-.336-.211-.648-.457-.898-.79.293.266.594.532.898.79zm-4.027-4.047c-.394-.403-.738-.875-1.07-1.36.347.461.703.914 1.07 1.36zm50.152-51.235c-.32.047-.168.454.082.864.707 1.156 1.352 2.39 2.383 3.543 3.574 4.046 6.196 8.828 7.86 13.875.625 1.953.906 3.699.484 5.238.191.762.355 1.539.434 2.305.03.562.027 1.12.02 1.68-.028.558-.06 1.12-.06 1.699-.195-.625-.269-1.258-.347-1.887-.09-.633-.106-1.274-.211-1.899.223-.527.086-1.222-.043-1.87-.215-.34-.207-1.348-.582-1.036-.18.156-.816.45-.094 1.457.297.406.25 1.035.414 1.535 0 .59-.054 1.184-.082 1.77.047.594.04 1.191.063 1.789.027.351.02.707.031 1.058-.113.856-.09 1.782-.125 2.684-.066.902-.207 1.781-.734 2.473-.114-.512-.153-1.055-.188-1.633-.023-.578-.004-1.184-.012-1.805.004-.289.051-.633.028-.93-.032-.296-.121-.546-.367-.64-.07 2.598-.653 5.074-1.032 7.672a4.557 4.557 0 01-.668 1.738c-.308.527-.66 1.016-.972 1.52-.153.253-.235.539-.293.851-.07.309-.114.64-.157.988-.07.7-.222 1.434-.597 2.094-1.434 2.399-2.887 4.785-4.739 6.871-2.835 3.168-6.222 5.844-9.984 7.79-5.937 3.093-12.863 4.288-19.453 3.261.05-.059.11-.117.172-.18 12.773 1.551 25.805-4.488 32.566-16.343 5.313-9.317 5.559-20.141 1.617-29.301a41.354 41.354 0 00-1.324-3.637c-.172-.398-.406-.918-.39-1.195.07-1.2-.7-2.637-1.254-3.93-.575-.715-.98-.95-1.242-.898-.262.047-.38.379-.438.82-.371-.367-.531-.828-.738-1.23-.215-.395-.492-.715-1.043-.79-.38-.39-.567-.793-.778-1.21-.207-.418-.457-.829-1.015-1.137l-.399-.375c-.625-.59-1.832-1.356-1.367-1.723.528-.406 1.348.676 1.926 1.277.355.36.621.63.828.817.203.2.348.316.469.363.246.094.406-.094.719-.465a9.86 9.86 0 01-1.454-1.375 84.092 84.092 0 01-1.175-1.468c-.555-.727-.93-1.059-1.25-1.2-.325-.132-.625-.039-1.118.204-.25.12-.367.296-.921.027-1.102-.531-1.125-.031-1.286.398-.168.465-.105 1 .008 1.559-.242-.149-.476-.297-.722-.438a33.369 33.369 0 00-6.063-2.699c2.055.38 4.086.89 6.082 1.754.098.043.215-.05.613-.16-2.472-1.496-4.59-3.067-7.238-4.074a31.744 31.744 0 00-4.676-1.348c-1.593-.355-3.21-.586-4.832-.762-5.082-.547-10.398.211-15.34 2.13-3.351 1.288-6.453 3.218-9.269 5.472-1.8 1.445-3.578 3.023-4.98 4.86-2.208 2.921-4.192 5.991-5.555 9.398a38.727 38.727 0 00-2.485 9.218 33.52 33.52 0 00.047 9.543c.32 2.145.703 4.27 1.285 6.356.583 2.082 1.38 4.121 2.528 5.988.617 1.004 1.05 2.121 1.601 3.219.551 1.094 1.223 2.164 2.254 2.96.356.263.723.985 1.016 1.466.324.535.7.996 1.156 1.422a58.311 58.311 0 004.66 4.125c1.625 1.28 3.348 2.46 5.196 3.41a39.035 39.035 0 008.707 3.332 35.807 35.807 0 009.261 1.113c4.91-.043 9.899-.789 14.414-2.828.375-.164.782-.313 1.165-.45 1.812-.574 3.507-1.503 5.113-2.55 1.613-1.043 3.117-2.246 4.613-3.457 3.66-2.957 6.496-6.914 8.773-11 1.391-2.461 2.454-5.121 3.2-7.867.754-2.746 1.215-5.567 1.48-8.418.403-4.309-.074-8.739-1.328-12.938a39.324 39.324 0 00-2.39-6.125 41.654 41.654 0 00-3.387-5.656c-1.672-2.363-3.528-4.66-5.82-6.48-.454-.344-.958-.625-1.25-.579"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#W)">
+                <g clip-path="url(#X)">
+                    <g clip-path="url(#Y)">
+                        <g clip-path="url(#Z)">
+                            <path
+                                d="M45.05 324a21.288 21.288 0 01-1.382-2.246c-.906-1.645-.613-2.172.11-2.164.242 1.437 1.523 2.164 1.98 3.465-.785.554.738 1.754 1.012 2.574-.645-.363-1.196-.957-1.72-1.629zm73.227-5.246c-.937 1.55-1.875 3.289-2.496 5.043-.98.797-1.828 1.848-2.691 3.047-1.23 1.691-2.719 3.148-4.254 4.523-1.625 1.485-3.746 2.7-4.832 4.496-.488-.074-1.156.051-1.797.477-1.965 1.254-4.234 1.832-6.164 3.191-.637.461-1.566.727-2.418.887-1.27.223-2.477.59-3.758.945-2.406.66-4.941 1.063-7.414.832a8.328 8.328 0 00-1.754.043c-.543.082-1.054.207-1.57.32-.418.036-1.184.126-1.215.094-.766-.797-1.918-.257-2.86-.449-1.71-.457-3.187-1.422-5.148-1.183l-.652-.215c-.57-.41-1.184-.606-1.863-.582-.567-.211-1.032-.282-1.313-.098h-.055c-.96-.371-1.242-.871-1.742-1.348-.304-.304-.953-.77-1.265-.62-1 .464-2.098-1.055-2.328-.989-.774.16-1.665-.344-2.598-.77-.79-.375-.797-.855-1.488-1.312.3.652.601 1.187.898 1.75l-1.059-.754c-.351-.258-.695-.527-1.035-.793a16.557 16.557 0 01-1.914-1.738c.688-.903.668-.88-1.113-2.52-.524-.527-1.102-1.008-1.633-1.531l-.75.066c.152.438.309.872.488 1.297-1.293-.879-2.105-2.14-2.765-3.406-.203-.383-.125-.602.289-.324.062-.055.148-.07.258-.055-.399-.558-.73-1.176-1.274-1.562-.117-.72-.32-1.47-.933-2.325-.493-1.39-1.207-2.609-2.067-3.796-.332-.735-.785-1.036-1.164-1.497-.262.122-.555.38-.933-.39-.696-1.395-1.446-3-1.649-4.39-.238-1.919-.73-3.708-.902-5.583-.176-.453-.32-.914-.473-1.379.117-1.07-.016-2.515.484-3.222.055.66.079 1.402.364 1.796.21.29.375-.085.457-.44.27-1.228.168-2.58.015-3.786-.156-1.36-.714-.418-1.105-.438-.059-.52-.223-1.082-.14-1.57.374-2.805.859-5.59 1.613-8.316.754-2.723 1.78-5.383 3.18-7.82.292-.505.577-.989.202-1.169-.285.438-.605.887-.87 1.375-2.907 5.399-4.63 11.524-4.84 17.707-.055.914-.126 1.817-.192 2.723-.012.906-.012 1.824.27 2.719.14 2.746.671 5.473 1.468 8.11.797 2.644 1.852 5.198 3.051 7.695.984 2.062 1.992 4.093 3.387 5.984a42.317 42.317 0 004.469 5.172 42.852 42.852 0 005.27 4.347c3.03 2.082 6.28 3.825 9.741 5.114 3.457 1.277 7.075 2.164 10.746 2.511 2.079.309 4.184.332 6.27.192 2.086-.13 4.148-.473 6.187-.926-2.062.316-4.136.418-6.203.399-2.066-.008-4.125-.083-6.238-.157-5.105-.797-9.945-2.566-14.527-4.84.476-.336 1.289.024 2.125.47.601.292 1.18.624 1.843.776 1.04.45 2.098.82 3.176.91l.73.286c.798.094 1.54.316 2.282.535.746.2 1.484.453 2.258.555.785.242 1.597.343 2.41.367l1.219.05c.406.008.812.028 1.215.07 6.746.267 13.507-1.17 19.578-4.07 1.918-.921 3.699-2.113 5.593-3.054a41.485 41.485 0 0011.899-12.16 46.5 46.5 0 003.062-5.559 26.738 26.738 0 001.993-6.058c.082-.454.187-.887.32-1.305.129-.422.262-.828.437-1.215.102-.297.18-.598.239-.898.05-.301.082-.602.105-.903.043-.605.059-1.21.055-1.828-.188 1.352-.543 2.59-.895 3.844-.808 2.973-1.722 6-3.297 8.625"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aa)">
+                <g clip-path="url(#ab)">
+                    <g clip-path="url(#ac)">
+                        <g clip-path="url(#ad)">
+                            <path
+                                d="M46.875 276.898c-.414.442-.766.875-1.074 1.329-.301.457-.57.925-.727 1.496.516-.696.82-1.012 1.035-1.368.227-.351.383-.73.766-1.457"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ae)">
+                <g clip-path="url(#af)">
+                    <g clip-path="url(#ag)">
+                        <g clip-path="url(#ah)">
+                            <path
+                                d="M41.445 311.86c-.125-1.04-.328-1.403-.566-1.551-.246-.145-.535-.059-.785-.196.328 1.07.71 2.516 1.351 1.746"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ai)">
+                <g clip-path="url(#aj)">
+                    <g clip-path="url(#ak)">
+                        <g clip-path="url(#al)">
+                            <path
+                                d="M41.094 291.227c-.051.507-.067 1.043.21 1.07.145.012.282-.336.337-.645.105-.59.047-.91-.153-1.004-.23-.003-.36.266-.394.579"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#am)">
+                <g clip-path="url(#an)">
+                    <g clip-path="url(#ao)">
+                        <g clip-path="url(#ap)">
+                            <path
+                                d="M114.219 292.723c.078.285.183.52.355.566.164.047.309-.078.246-.375-.039-.207-.242-.465-.379-.562-.171-.122-.254.062-.222.37"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aq)">
+                <g clip-path="url(#ar)">
+                    <g clip-path="url(#as)">
+                        <g clip-path="url(#at)">
+                            <path
+                                d="M40.363 295.684c-.058.328.008.562.164.703.215-.008.301-.418.371-.82.047-.301.055-.649-.09-.672-.218-.04-.37.367-.445.789"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#au)">
+                <g clip-path="url(#av)">
+                    <g clip-path="url(#aw)">
+                        <g clip-path="url(#ax)">
+                            <path
+                                d="M112.922 289.188c.027.054.098.07.152.101.09-.062.09-.203-.015-.398-.032-.055-.118-.11-.149-.094-.097.05-.094.203.012.39"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ay)">
+                <g clip-path="url(#az)">
+                    <g clip-path="url(#aA)">
+                        <g clip-path="url(#aB)">
+                            <path
+                                d="M44.129 315.941c.14.149.191.063.094-.207-.055-.171-.164-.332-.266-.523.012.168.012.312.043.465a.584.584 0 00.129.265"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aC)">
+                <g clip-path="url(#aD)">
+                    <g clip-path="url(#aE)">
+                        <g clip-path="url(#aF)">
+                            <path d="M42.781 315.813l-.508-1.27c-.164-.43-.304-.863-.457-1.297-.027 1.035 0 2.106.965 2.567"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aG)">
+                <g clip-path="url(#aH)">
+                    <g clip-path="url(#aI)">
+                        <g clip-path="url(#aJ)">
+                            <path
+                                d="M104.703 276.984c-.105.176.106.512.418.778.652.554.75.297.695-.16l-.039-.063c-.367-.312-.808-.976-1.074-.555"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aK)">
+                <g clip-path="url(#aL)">
+                    <g clip-path="url(#aM)">
+                        <g clip-path="url(#aN)">
+                            <path
+                                d="M302.086 111.324a21.036 21.036 0 01-5.11-1.14c-.413-.145-.66-.29-.808-.434 1.93.629 3.883 1.07 5.848 1.332.02.078.039.16.07.242zm-10.453-3.394c-.086-.067-.188-.125-.281-.188.773.399 1.558.762 2.351 1.094-.648-.098-1.336-.367-2.07-.906zm-14.43-14.094c.14.266.285.535.434.8a3.567 3.567 0 01-.356-.624c-.027-.059-.05-.117-.078-.176zm-3.555-10.617c.02-.008.036-.012.051-.02.2 1.328.477 2.64.836 3.934a25.331 25.331 0 01-.887-3.914zm-.273-6.293a33.044 33.044 0 00.164 5.015l-.066-.011c-.207-1.657-.426-3.364-.098-5.004zm3.438-13.32c.156-.278.32-.544.484-.817a32.636 32.636 0 00-3.777 12.125c-.024-1.644.398-3.277.753-4.883.512-2.265 1.418-4.418 2.54-6.426zm48.773-11.77c-.29-.293-.625-.723-.453-.914.226-.254.75-.016 1.23.316.52.332.871.934 1.5 1.078.196.407.399.813.64 1.23.243.415.563.806.935 1.235.05.137.09.278.156.418.031.07.07.14.105.211a33.02 33.02 0 00-3.902-3.363l-.211-.211zm-40.242 51.969c-.34-.207-.656-.45-.906-.778.296.262.597.524.906.778zm-4.078-3.996c-.403-.395-.75-.864-1.086-1.344.347.457.71.906 1.086 1.344zm49.472-51.797c-.32.05-.16.457.094.863.719 1.148 1.383 2.371 2.43 3.512 3.62 3.996 6.308 8.746 8.035 13.765.652 1.946.957 3.688.555 5.23.199.759.375 1.536.464 2.298.036.562.04 1.12.04 1.675-.02.563-.043 1.122-.036 1.7-.203-.621-.289-1.25-.37-1.88-.098-.628-.126-1.269-.24-1.894.216-.527.071-1.222-.065-1.87-.22-.337-.227-1.34-.598-1.024-.176.156-.809.457-.07 1.453.296.406.261 1.035.43 1.531.011.59-.04 1.184-.06 1.77.055.593.06 1.191.087 1.785.035.351.03.707.046 1.058-.105.86-.066 1.782-.09 2.684-.054.902-.183 1.785-.702 2.48-.122-.511-.165-1.054-.208-1.632-.03-.575-.023-1.18-.035-1.801 0-.29.04-.633.016-.93-.04-.297-.133-.543-.379-.637-.035 2.598-.582 5.079-.93 7.68-.09.649-.328 1.219-.644 1.746-.301.528-.649 1.02-.953 1.531-.149.254-.227.54-.282.852-.066.309-.105.64-.14.988-.067.703-.207 1.434-.574 2.102-1.403 2.41-2.825 4.816-4.649 6.922-2.793 3.199-6.144 5.914-9.879 7.902-5.894 3.16-12.804 4.442-19.406 3.496.047-.062.11-.12.168-.183 12.789 1.394 25.742-4.797 32.348-16.723 5.191-9.371 5.296-20.191 1.234-29.297a40.895 40.895 0 00-1.371-3.617c-.176-.395-.418-.914-.406-1.192.054-1.199-.735-2.625-1.305-3.91-.582-.707-.992-.937-1.254-.883-.262.051-.375.383-.426.825-.379-.36-.543-.82-.754-1.223-.222-.387-.5-.707-1.054-.773-.383-.387-.575-.786-.79-1.2-.218-.414-.472-.824-1.03-1.125l-.403-.367c-.637-.586-1.852-1.332-1.39-1.707.519-.414 1.355.656 1.937 1.254.363.356.633.617.844.805.203.195.347.312.472.355.246.094.403-.093.711-.472a9.954 9.954 0 01-1.472-1.356c-.407-.488-.797-.957-1.196-1.453-.562-.719-.941-1.047-1.261-1.184-.329-.125-.625-.03-1.118.215-.246.125-.363.301-.921.04-1.106-.516-1.122-.016-1.278.413-.16.47-.094 1 .027 1.555-.242-.14-.48-.289-.726-.426a33.414 33.414 0 00-6.098-2.62c2.063.35 4.098.839 6.102 1.679.098.039.219-.059.613-.172-2.492-1.46-4.625-3.004-7.289-3.98a31.432 31.432 0 00-4.691-1.293c-1.598-.336-3.22-.543-4.84-.704-5.09-.484-10.399.34-15.313 2.317-3.332 1.324-6.41 3.289-9.195 5.578-1.781 1.465-3.535 3.062-4.914 4.918-2.168 2.941-4.113 6.035-5.434 9.453a38.797 38.797 0 00-2.363 9.246 33.58 33.58 0 00.168 9.531c.352 2.141.766 4.258 1.371 6.336.61 2.07 1.434 4.102 2.606 5.95.628.996 1.078 2.109 1.644 3.199.563 1.086 1.25 2.148 2.293 2.933.356.254.734.977 1.035 1.45.328.53.711.988 1.172 1.406 1.5 1.441 3.067 2.8 4.711 4.066 1.645 1.262 3.379 2.418 5.242 3.344a38.99 38.99 0 008.746 3.227 35.845 35.845 0 009.278 1c4.906-.102 9.882-.907 14.37-3 .376-.168.778-.32 1.157-.461 1.805-.598 3.488-1.547 5.082-2.61 1.602-1.062 3.086-2.285 4.566-3.511 3.622-3 6.407-6.989 8.63-11.098a34.158 34.158 0 003.093-7.899c.719-2.753 1.145-5.578 1.371-8.43.348-4.312-.187-8.73-1.496-12.91a39.563 39.563 0 00-2.469-6.093 41.796 41.796 0 00-3.46-5.61c-1.704-2.34-3.587-4.617-5.907-6.402-.453-.34-.96-.613-1.254-.566"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aO)">
+                <g clip-path="url(#aP)">
+                    <g clip-path="url(#aQ)">
+                        <g clip-path="url(#aR)">
+                            <path
+                                d="M270.914 100.965a21.806 21.806 0 01-1.41-2.227c-.926-1.633-.64-2.164.082-2.164.262 1.434 1.55 2.145 2.027 3.438-.781.562.758 1.746 1.043 2.562-.652-.36-1.207-.941-1.742-1.61zm73.145-6.125c-.918 1.562-1.832 3.308-2.426 5.07-.973.809-1.805 1.867-2.656 3.078-1.207 1.703-2.676 3.18-4.196 4.57-1.601 1.5-3.707 2.743-4.77 4.551-.488-.07-1.156.063-1.788.496-1.95 1.278-4.211 1.883-6.125 3.262-.625.469-1.555.746-2.403.918-1.265.238-2.468.617-3.746.988-2.398.692-4.93 1.122-7.402.922-.637-.035-1.207-.023-1.75.063-.543.09-1.055.219-1.567.34-.421.043-1.183.14-1.214.109-.778-.789-1.918-.234-2.868-.414-1.714-.438-3.199-1.383-5.16-1.121l-.652-.207a2.923 2.923 0 00-1.875-.559c-.566-.203-1.031-.27-1.313-.086l-.054.004c-.965-.36-1.254-.855-1.758-1.328-.309-.3-.961-.754-1.277-.601-.989.476-2.106-1.028-2.336-.957-.77.164-1.672-.325-2.61-.743-.793-.363-.808-.843-1.508-1.289.313.645.622 1.176.926 1.735l-1.07-.739c-.356-.254-.7-.52-1.043-.785-.7-.515-1.34-1.101-1.938-1.71.676-.91.657-.887-1.144-2.505-.531-.52-1.113-.992-1.652-1.511l-.75.078c.156.433.32.867.503 1.289-1.304-.863-2.132-2.113-2.808-3.367-.207-.383-.133-.602.285-.329.063-.058.149-.074.258-.058-.41-.555-.75-1.168-1.293-1.547-.129-.719-.344-1.465-.965-2.312-.512-1.383-1.242-2.594-2.117-3.77-.34-.727-.797-1.023-1.18-1.477-.262.122-.555.383-.941-.382-.715-1.383-1.485-2.98-1.703-4.368-.266-1.914-.782-3.695-.977-5.566-.183-.45-.336-.91-.488-1.371.101-1.07-.051-2.516.441-3.227.063.66.098 1.399.387 1.793.21.285.375-.09.45-.449.253-1.23.132-2.578-.032-3.781-.176-1.356-.723-.406-1.113-.422-.063-.523-.235-1.082-.164-1.57.34-2.805.789-5.594 1.507-8.328.72-2.727 1.711-5.399 3.079-7.852.285-.508.566-.996.187-1.172-.277.442-.594.899-.855 1.383-2.832 5.43-4.473 11.574-4.606 17.754-.043.914-.101 1.816-.156 2.726 0 .903.012 1.82.305 2.711.175 2.743.746 5.457 1.574 8.086.832 2.63 1.918 5.172 3.148 7.649 1.012 2.05 2.047 4.07 3.465 5.941a42.697 42.697 0 004.535 5.113c1.66 1.567 3.442 3 5.324 4.282 3.059 2.043 6.332 3.742 9.809 4.992 3.473 1.234 7.102 2.078 10.777 2.379 2.082.285 4.188.281 6.27.117 2.086-.156 4.144-.527 6.172-1-2.059.34-4.13.465-6.196.473-2.066.02-4.125-.032-6.238-.082-5.113-.735-9.976-2.446-14.586-4.66.469-.344 1.285.007 2.13.44.605.286 1.187.614 1.85.755 1.048.437 2.11.797 3.192.87l.734.282c.797.082 1.54.293 2.286.504.75.187 1.488.434 2.265.527.785.23 1.598.325 2.414.336l1.219.035c.406.004.813.02 1.215.059 6.746.184 13.488-1.336 19.52-4.3 1.906-.946 3.671-2.16 5.554-3.126a41.353 41.353 0 0011.738-12.293 46.162 46.162 0 002.989-5.59 26.57 26.57 0 001.914-6.078c.074-.453.175-.886.3-1.308.125-.418.254-.828.422-1.215.098-.3.172-.602.23-.903.048-.3.075-.601.09-.906.04-.605.048-1.207.032-1.824-.168 1.352-.508 2.594-.84 3.852-.773 2.98-1.648 6.015-3.187 8.656"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aS)">
+                <g clip-path="url(#aT)">
+                    <g clip-path="url(#aU)">
+                        <g clip-path="url(#aV)">
+                            <path
+                                d="M272.125 53.879c-.406.45-.754.883-1.055 1.34-.297.46-.558.933-.707 1.504.508-.7.805-1.02 1.016-1.38.223-.35.371-.734.746-1.464"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#aW)">
+                <g clip-path="url(#aX)">
+                    <g clip-path="url(#aY)">
+                        <g clip-path="url(#aZ)">
+                            <path
+                                d="M267.152 88.879c-.136-1.04-.343-1.399-.586-1.543-.246-.14-.535-.055-.785-.188.344 1.067.742 2.508 1.371 1.73"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ba)">
+                <g clip-path="url(#bb)">
+                    <g clip-path="url(#bc)">
+                        <g clip-path="url(#bd)">
+                            <path
+                                d="M266.531 68.266c-.043.507-.05 1.043.227 1.066.148.012.277-.34.328-.644.098-.594.035-.91-.164-1.004-.23 0-.36.27-.39.582"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#be)">
+                <g clip-path="url(#bf)">
+                    <g clip-path="url(#bg)">
+                        <g clip-path="url(#bh)">
+                            <path
+                                d="M339.664 68.879c.082.285.191.52.363.562.16.047.305-.082.243-.379-.043-.207-.25-.46-.391-.554-.172-.121-.254.062-.215.37"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bi)">
+                <g clip-path="url(#bj)">
+                    <g clip-path="url(#bk)">
+                        <g clip-path="url(#bl)">
+                            <path
+                                d="M265.863 72.73c-.054.329.012.56.168.7.219-.012.301-.422.364-.825.043-.304.046-.652-.098-.671-.219-.036-.367.37-.434.796"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bm)">
+                <g clip-path="url(#bn)">
+                    <g clip-path="url(#bo)">
+                        <g clip-path="url(#bp)">
+                            <path
+                                d="M338.316 65.363c.032.055.102.067.157.098.09-.063.086-.203-.024-.395-.027-.054-.117-.109-.148-.093-.098.05-.09.203.015.39"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bq)">
+                <g clip-path="url(#br)">
+                    <g clip-path="url(#bs)">
+                        <g clip-path="url(#bt)">
+                            <path
+                                d="M269.89 92.926c.145.144.192.058.09-.207-.054-.172-.171-.332-.273-.524.016.168.02.313.05.47.013.081.079.21.134.26"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bu)">
+                <g clip-path="url(#bv)">
+                    <g clip-path="url(#bw)">
+                        <g clip-path="url(#bx)">
+                            <path
+                                d="M268.54 92.813l-.524-1.266c-.168-.426-.317-.856-.473-1.285-.012 1.031.027 2.101.996 2.55"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#by)">
+                <g clip-path="url(#bz)">
+                    <g clip-path="url(#bA)">
+                        <g clip-path="url(#bB)">
+                            <path
+                                d="M329.945 53.266c-.105.18.11.511.426.773.66.547.754.29.695-.164l-.043-.066c-.37-.305-.82-.965-1.078-.543"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bC)">
+                <g clip-path="url(#bD)">
+                    <g clip-path="url(#bE)">
+                        <g clip-path="url(#bF)">
+                            <path
+                                d="M52.191 64.691a20.84 20.84 0 013.192-4.148c.304-.316.539-.477.73-.55a32.888 32.888 0 00-3.672 4.737 2.392 2.392 0 00-.25-.039zm7.489-8.043a3.17 3.17 0 00.289-.175 34.175 34.175 0 00-1.985 1.668c.364-.543.899-1.055 1.696-1.493zm18.87-7.128c-.3.015-.605.03-.91.054.227-.039.465-.062.72-.054h.19zm11.126 1.261c-.004.02-.004.04-.004.055a32.894 32.894 0 00-3.918-.902c1.324.183 2.64.453 3.922.847zm5.82 2.41a32.597 32.597 0 00-4.617-1.968.509.509 0 00.039-.059c1.59.516 3.23 1.035 4.578 2.027zm10.621 8.739c.184.258.36.523.535.785a32.579 32.579 0 00-9.394-8.543c1.5.672 2.8 1.746 4.11 2.742 1.835 1.422 3.402 3.156 4.75 5.016zm-9.926 49.183c.387-.136.918-.265 1.02-.027.137.312-.305.687-.805.984-.523.332-1.215.395-1.61.907-.452.003-.905.015-1.386.058-.48.047-.969.172-1.515.328-.149-.015-.29-.039-.446-.039-.074 0-.156.004-.234.008a32.955 32.955 0 004.7-2.117c.089-.035.183-.067.276-.102zM66.078 52.691c.328-.222.68-.406 1.086-.496-.363.157-.727.325-1.086.496zm5.344-2.011c.527-.196 1.098-.317 1.676-.418a34.99 34.99 0 00-1.676.418zm26.062 66.718c.086-.312-.347-.34-.82-.28-1.348.171-2.738.253-4.21.718-5.157 1.598-10.595 2.027-15.876 1.473-2.039-.23-3.742-.688-4.976-1.707-.77-.137-1.547-.305-2.278-.547a29.897 29.897 0 01-1.535-.672c-.5-.254-.996-.516-1.523-.75.648.078 1.254.265 1.859.457.613.176 1.203.422 1.816.586.391.418 1.082.578 1.723.726.398-.054 1.313.364 1.184-.105-.067-.227-.075-.93-1.29-.684-.492.102-1.046-.195-1.57-.254-.539-.238-1.054-.535-1.578-.796-.558-.204-1.101-.454-1.652-.676-.336-.121-.653-.274-.98-.41-.735-.454-1.587-.809-2.395-1.211-.793-.434-1.54-.918-1.953-1.688.515.11 1.027.297 1.57.504.531.215 1.074.477 1.645.727.265.125.558.304.835.406.286.094.551.113.739-.07-2.34-1.13-4.36-2.676-6.567-4.086-.55-.356-.968-.813-1.312-1.325-.352-.496-.653-1.015-.985-1.507-.167-.243-.394-.438-.656-.618-.25-.191-.535-.363-.836-.546-.61-.352-1.215-.79-1.664-1.407-1.59-2.289-3.168-4.594-4.308-7.133-1.723-3.882-2.766-8.066-2.993-12.293-.375-6.68 1.38-13.484 5.024-19.066.039.066.066.148.098.227-6.665 11.007-6.524 25.363 1.5 36.382 6.304 8.665 16.066 13.329 26.035 13.493a40.79 40.79 0 003.855.285c.434.008 1.004.004 1.25.133 1.067.558 2.692.445 4.098.472.89-.234 1.27-.508 1.332-.77.062-.253-.188-.5-.57-.73.488-.191.972-.144 1.425-.168.45-.035.852-.156 1.149-.629.511-.183.957-.191 1.422-.21.464-.02.945-.079 1.453-.462l.504-.207c.8-.332 1.992-1.117 2.136-.539.153.645-1.171.95-1.957 1.227-.472.18-.828.312-1.086.426-.261.097-.43.183-.523.277-.188.184-.082.402.129.844a9.775 9.775 0 011.851-.762 88.947 88.947 0 011.825-.469c.886-.21 1.343-.414 1.601-.644.254-.246.293-.555.278-1.106-.008-.277-.122-.457.355-.851.938-.785.488-1.012.16-1.332-.351-.344-.863-.508-1.418-.633.23-.16.465-.313.692-.48a32.8 32.8 0 004.953-4.418c-1.192 1.718-2.492 3.359-4.098 4.824-.078.07-.039.219-.105.625 2.379-1.64 4.68-2.926 6.687-4.926a31.524 31.524 0 003.152-3.707c.977-1.309 1.856-2.688 2.68-4.09 2.59-4.41 4.086-9.566 4.367-14.86.207-3.581-.277-7.198-1.175-10.69-.57-2.231-1.282-4.5-2.38-6.532-1.753-3.207-3.734-6.273-6.277-8.918a38.668 38.668 0 00-7.379-6.043 33.554 33.554 0 00-8.714-3.875c-2.086-.586-4.18-1.105-6.32-1.43-2.137-.324-4.325-.433-6.497-.156-1.168.153-2.367.09-3.594.14-1.218.056-2.472.227-3.625.84-.379.22-1.195.255-1.754.329a6.449 6.449 0 00-1.765.469 57.86 57.86 0 00-5.676 2.554c-1.84.957-3.621 2.043-5.246 3.336a39.003 39.003 0 00-6.617 6.57 35.908 35.908 0 00-4.824 7.985c-1.98 4.492-3.352 9.344-3.348 14.293-.004.414-.04.844-.07 1.246-.223 1.887-.075 3.812.218 5.707.29 1.898.766 3.766 1.254 5.621 1.192 4.55 3.633 8.758 6.418 12.508 1.668 2.277 3.657 4.336 5.852 6.144 2.191 1.813 4.574 3.391 7.062 4.801 3.762 2.133 7.992 3.516 12.332 4.094 2.172.297 4.371.402 6.567.332 2.199-.074 4.39-.34 6.547-.766 2.84-.554 5.699-1.3 8.3-2.648.5-.27.961-.613 1.043-.899"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bG)">
+                <g clip-path="url(#bH)">
+                    <g clip-path="url(#bI)">
+                        <g clip-path="url(#bJ)">
+                            <path
+                                d="M74.742 40.809a21.467 21.467 0 012.617-.336c1.868-.153 2.23.332 1.926.984-1.414-.367-2.597.5-3.972.387-.184-.946-1.903-.047-2.762-.137.597-.437 1.363-.695 2.191-.898zm-25.336 68.89c-1.027-1.492-2.222-3.058-3.566-4.34-.324-1.222-.934-2.425-1.672-3.707-1.031-1.816-1.75-3.77-2.371-5.73-.684-2.09-.918-4.524-2.11-6.25.266-.41.43-1.07.305-1.828-.336-2.305.07-4.614-.37-6.93-.161-.77-.02-1.727.183-2.566.32-1.246.48-2.5.687-3.817.383-2.46 1.063-4.937 2.29-7.097.3-.559.53-1.086.679-1.614.148-.527.25-1.047.355-1.562.141-.399.371-1.13.414-1.149 1.043-.367 1.024-1.636 1.586-2.422 1.121-1.37 2.602-2.32 3.196-4.203l.465-.504c.609-.355 1.035-.832 1.296-1.464.422-.43.68-.82.63-1.153l.019-.05c.734-.723 1.305-.778 1.945-1.036.406-.152 1.09-.554 1.086-.902-.012-1.098 1.824-1.477 1.856-1.71.175-.774 1-1.38 1.773-2.056.668-.566 1.105-.379 1.809-.82-.72.012-1.332.066-1.965.106l1.12-.66c.38-.215.767-.415 1.153-.614.762-.414 1.563-.75 2.367-1.035.54.996.528.969 2.754.02.7-.262 1.371-.59 2.067-.86l.246-.71a20.248 20.248 0 00-1.38-.087c1.333-.82 2.817-1.043 4.24-1.125.433-.027.6.133.175.399.027.078.008.164-.055.254.676-.133 1.375-.184 1.95-.516.707.187 1.468.305 2.503.102 1.47.12 2.875-.032 4.309-.329.805 0 1.266-.289 1.84-.445-.004-.289-.113-.664.742-.691 1.555-.063 3.328-.086 4.68.3 1.847.567 3.675.852 5.457 1.465.484.024.965.082 1.449.133.926.547 2.3 1.02 2.738 1.766-.625-.223-1.308-.504-1.789-.407-.347.07-.074.375.215.598 1.008.75 2.281 1.211 3.441 1.567 1.305.414.676-.485.856-.829.5.16 1.078.243 1.488.512 2.403 1.492 4.742 3.078 6.914 4.883 2.172 1.805 4.172 3.832 5.82 6.105.34.477.665.934.985.664-.285-.437-.566-.914-.898-1.355-3.723-4.863-8.598-8.945-14.145-11.676-.809-.422-1.602-.855-2.406-1.289-.82-.383-1.653-.762-2.582-.87-2.563-1-5.266-1.63-7.996-1.985-2.739-.36-5.5-.45-8.266-.38-2.285.055-4.555.141-6.848.634a42.634 42.634 0 00-6.55 1.953 42.893 42.893 0 00-6.13 3.02c-3.144 1.906-6.066 4.156-8.667 6.78-2.582 2.626-4.88 5.56-6.707 8.762-1.137 1.77-2.024 3.68-2.754 5.637-.739 1.957-1.274 3.977-1.7 6.016.563-2.008 1.32-3.938 2.188-5.813.855-1.883 1.773-3.727 2.707-5.621 2.828-4.324 6.43-8.012 10.387-11.254.11.57-.551 1.16-1.297 1.742-.516.43-1.059.817-1.469 1.364-.84.761-1.61 1.574-2.137 2.52l-.562.55c-.414.687-.918 1.273-1.426 1.855-.484.602-1.023 1.168-1.433 1.832-.543.618-.97 1.313-1.325 2.047l-.547 1.09c-.175.367-.359.73-.566 1.078-3.012 6.04-4.484 12.79-4.344 19.512.055 2.125.41 4.238.489 6.351a41.4 41.4 0 006.183 15.832 46.807 46.807 0 003.809 5.07 26.428 26.428 0 004.703 4.298c.375.261.73.539 1.055.828.332.289.648.578.925.894.23.22.473.41.72.59.253.172.515.32.784.465.532.29 1.074.55 1.64.8-1.155-.726-2.136-1.554-3.136-2.39-2.375-1.957-4.758-4.031-6.504-6.543"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bK)">
+                <g clip-path="url(#bL)">
+                    <g clip-path="url(#bM)">
+                        <g clip-path="url(#bN)">
+                            <path
+                                d="M116.914 61.79a10.62 10.62 0 00-.77-1.52c-.292-.465-.609-.903-1.066-1.278.422.754.586 1.16.824 1.504.223.348.508.649 1.012 1.293"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bO)">
+                <g clip-path="url(#bP)">
+                    <g clip-path="url(#bQ)">
+                        <g clip-path="url(#bR)">
+                            <path
+                                d="M87.29 42.504c.995.312 1.413.277 1.644.117.234-.164.273-.46.504-.629-1.114-.14-2.59-.387-2.149.512"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bS)">
+                <g clip-path="url(#bT)">
+                    <g clip-path="url(#bU)">
+                        <g clip-path="url(#bV)">
+                            <path
+                                d="M106.234 50.645c-.441-.254-.921-.485-1.062-.247-.07.13.191.395.445.57.496.34.813.419.98.274.098-.207-.093-.437-.363-.597"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#bW)">
+                <g clip-path="url(#bX)">
+                    <g clip-path="url(#bY)">
+                        <g clip-path="url(#bZ)">
+                            <path
+                                d="M74.797 116.676c-.293-.043-.55-.047-.664.094-.11.128-.051.312.242.378.207.047.527-.03.668-.117.184-.11.05-.258-.246-.355"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ca)">
+                <g clip-path="url(#cb)">
+                    <g clip-path="url(#cc)">
+                        <g clip-path="url(#cd)">
+                            <path
+                                d="M102.473 48.152c-.274-.187-.516-.222-.707-.14-.082.203.254.449.593.675.258.168.57.317.653.196.12-.184-.184-.492-.54-.73"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ce)">
+                <g clip-path="url(#cf)">
+                    <g clip-path="url(#cg)">
+                        <g clip-path="url(#ch)">
+                            <path
+                                d="M78.555 116.941c-.063.004-.106.063-.157.098.02.11.149.168.368.148.062-.003.148-.062.148-.093-.008-.11-.148-.168-.36-.153"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#ci)">
+                <g clip-path="url(#cj)">
+                    <g clip-path="url(#ck)">
+                        <g clip-path="url(#cl)">
+                            <path
+                                d="M82.465 43.273c-.195.07-.137.153.148.172.18.024.371-.015.59-.027-.16-.055-.293-.117-.445-.152a.614.614 0 00-.293.007"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#cm)">
+                <g clip-path="url(#cn)">
+                    <g clip-path="url(#co)">
+                        <g clip-path="url(#cp)">
+                            <path d="M83.137 42.102l1.367.054c.457.032.91.078 1.367.117-.93-.449-1.918-.863-2.734-.171"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g clip-path="url(#cq)">
+                <g clip-path="url(#cr)">
+                    <g clip-path="url(#cs)">
+                        <g clip-path="url(#ct)">
+                            <path
+                                d="M93.055 114.46c-.118-.17-.512-.116-.883.06-.774.37-.582.562-.14.699l.073-.008c.434-.211 1.223-.34.95-.75"
+                                fill="currentColor" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </svg> -->
+    </div>
+    <!-- <div class="noti-container" id="noti_container"></div> -->
+
+
+</body>
+
+</html>
