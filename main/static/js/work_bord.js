@@ -4,12 +4,12 @@ document.onreadystatechange = function() {
     }
 };
 
-function getpanding(id) {
-    console.log("getpanding" , id);
+function getpending(id) {
+    console.log("getpending" , id);
     document.getElementById('loading_box').style.display = "block";
     fetch('/api/task/getmoredetails/', {
         method: 'POST',
-        body: JSON.stringify({'panding_id' : id})
+        body: JSON.stringify({'pending_id' : id})
         })
         .then((response) => response.json())
         .then((result) => {
@@ -18,7 +18,7 @@ function getpanding(id) {
         if(result.code == 200)
         {
 
-            document.getElementById("more_task_id").innerText = result.data.panding_id;
+            document.getElementById("more_task_id").innerText = result.data.pending_id;
             document.getElementById("more_name").innerText = result.data.name;
             document.getElementById("more_image").href = `/media/${result.data.image}`;
             document.getElementById("more_address").innerText = result.data.address;
@@ -63,7 +63,7 @@ var more_ids = [];
 function addeventmore(list)
 {
     list.forEach((ids) => {
-        document.getElementById(`more_${ids}`).addEventListener('click', () =>{getpanding(ids);});
+        document.getElementById(`more_${ids}`).addEventListener('click', () =>{getpending(ids);});
         delete list[ids];
     });
 }
@@ -100,18 +100,18 @@ function component(x, v) {
 }
 var interval_var = {};
 
-function accept_task(panding_id)
+function accept_task(pending_id)
 {
     document.getElementById('compleate_otp_box').style.display = "block";
     document.getElementById('accept_task_btn').style.display = "block";
-    document.getElementById('panding_id').innerText = panding_id;
+    document.getElementById('pending_id').innerText = pending_id;
 }
-function send_accept_task(panding_id , agent_location)
+function send_accept_task(pending_id , agent_location)
 {
     document.getElementById('loading_box').style.display = "block";
     fetch('/api/task/accept/', {
         method: 'POST',
-        body: JSON.stringify({'panding_id' : panding_id , 'agent_location' : agent_location})
+        body: JSON.stringify({'pending_id' : pending_id , 'agent_location' : agent_location})
     })
     .then((response) => response.json())
         .then((result) => {
@@ -145,8 +145,8 @@ window.onload = () => {
         
     document.getElementById('accept_task_btn').onclick = () => {
         agent_location = document.getElementById('complete_otp').value;
-        panding_id = Number(document.getElementById('panding_id').innerText);
-        send_accept_task(panding_id , agent_location);
+        pending_id = Number(document.getElementById('pending_id').innerText);
+        send_accept_task(pending_id , agent_location);
     }
     
     
@@ -226,46 +226,46 @@ var pinging = setInterval(() => {
         else if(data.typex == 'notification')
         {
             document.getElementById("noti_container").innerHTML += `
-            <div class="notification_container" id="noti_${data.panding_id}">
+            <div class="notification_container" id="noti_${data.pending_id}">
             <div class="notification_image_container">
             <a href="/media/${data.image}"><img class="notification_image" src="/media/${data.image}" alt="no image"></a>
             </div>
             <div class="notification_detail_container">
             <div style="display: flex; justify-content:space-between">
             <div class="notfication_name">${data.name}</div>
-            <div class="notfication_deadline" id="noti_deadline_${data.panding_id}">deadline</div>
-            <div id="noti_deadline_number${data.panding_id}" style="display: none;">${data.deadline}</div>
+            <div class="notfication_deadline" id="noti_deadline_${data.pending_id}">deadline</div>
+            <div id="noti_deadline_number${data.pending_id}" style="display: none;">${data.deadline}</div>
             </div>
             <div class="notification_address">${data.address} - ${data.pincode}</div>
             <div class="notification_btn_container">
-            <button class="notification_btn" onclick="accept_task(${data.panding_id})">Accept</button>
-            <a target="_blank" href="" id="noti_gmap_${data.panding_id}"><div class="notification_btn">G-link</div>
+            <button class="notification_btn" onclick="accept_task(${data.pending_id})">Accept</button>
+            <a target="_blank" href="" id="noti_gmap_${data.pending_id}"><div class="notification_btn">G-link</div>
             </div>
                     </div>
                     </div>
                     `;
-                    noti_ids.push(data.panding_id);
+                    noti_ids.push(data.pending_id);
                     addeventdeadline(noti_ids);
-                    document.getElementById(`noti_gmap_${data.panding_id}`).href = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${JSON.parse(data.gmaplink).lat},${JSON.parse(data.gmaplink).lng}&output=embed`;
+                    document.getElementById(`noti_gmap_${data.pending_id}`).href = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${JSON.parse(data.gmaplink).lat},${JSON.parse(data.gmaplink).lng}&output=embed`;
     }
     else if(data.typex == "expire")
     {
-        document.getElementById(`noti_${data.panding_id}`).remove();
+        document.getElementById(`noti_${data.pending_id}`).remove();
     }
     else if(data.typex == "remove_accepted_task")
     {
-        console.log("panding_removed");
-        clearInterval(interval_var[`panding_timer_${data.panding_id}`]);
-        document.getElementById(`panding_task_${data.panding_id}`).remove();
+        console.log("pending_removed");
+        clearInterval(interval_var[`pending_timer_${data.pending_id}`]);
+        document.getElementById(`pending_task_${data.pending_id}`).remove();
     }
     else if(data.typex == "accepted")
     {
-        document.getElementById(`noti_${data.panding_id}`).remove();
+        document.getElementById(`noti_${data.pending_id}`).remove();
     }
     else if(data.typex == "expire_accepted")
     {
-        clearInterval(interval_var[`panding_timer_${data.panding_id}`]);
-        document.getElementById(`panding_task_${data.panding_id}`).remove();
+        clearInterval(interval_var[`pending_timer_${data.pending_id}`]);
+        document.getElementById(`pending_task_${data.pending_id}`).remove();
         document.getElementById("message_text").innerHTML = `<div style="text-align : center ; margin:10px 0px;">Accepted Task Expired</div><p style="margin:auto;">you loose your entire work for this is task.</p>`;
         document.getElementById("messsage_box").style.display = "block";
         setTimeout(() => {
@@ -274,46 +274,46 @@ var pinging = setInterval(() => {
     }
     else if(data.typex == "newtask")
     {
-        document.getElementById("accepted_panding_task_container").innerHTML += `
-        <div class="task_denoter_container" id="panding_task_${data.panding_id}">
+        document.getElementById("accepted_pending_task_container").innerHTML += `
+        <div class="task_denoter_container" id="pending_task_${data.pending_id}">
         <a href="/media/${data.image}"><img src="/media/${data.image}" alt="" class="task_denoter_image"></a>
         <div class="task_denoter_detail_container">
             <div class="task_denoter_name">${data.name}</div>
             <div class="task_denoter_pay_status">${data.mobile}</div>
-            <div class="task_denoter_time_remain" id="panding_deadline_${data.panding_id}">initilizing...</div>
-            <div id="more_${data.panding_id}" class="more_btn_container" name="${data.panding_id}"><img  style="width: 30px; height: 30px;" src=${more_image} alt="" ></div>
+            <div class="task_denoter_time_remain" id="pending_deadline_${data.pending_id}">initilizing...</div>
+            <div id="more_${data.pending_id}" class="more_btn_container" name="${data.pending_id}"><img  style="width: 30px; height: 30px;" src=${more_image} alt="" ></div>
             </div>
     </div>
     `;
     
-    more_ids.push(data.panding_id);
+    more_ids.push(data.pending_id);
     addeventmore(more_ids);
     
-    console.log("javascript_call " , data.panding_id);
+    console.log("javascript_call " , data.pending_id);
     setTimeout(() => {
-        eval(`var deadline_${data.panding_id}=${new Date(Number(data.deadline)) - Date.now()};`)
-        eval(`deadline_${data.panding_id} /= 1000;`)
-        eval(`var panding_timer_${data.panding_id} =  setInterval(function () { // execute code each second
-            deadline_${data.panding_id} --;
-            let hours = component(deadline_${data.panding_id}, 60 * 60); // hours
-            let minutes = component(deadline_${data.panding_id}, 60) % 60; // minutes
-            let seconds = component(deadline_${data.panding_id}, 1) % 60; // seconds
+        eval(`var deadline_${data.pending_id}=${new Date(Number(data.deadline)) - Date.now()};`)
+        eval(`deadline_${data.pending_id} /= 1000;`)
+        eval(`var pending_timer_${data.pending_id} =  setInterval(function () { // execute code each second
+            deadline_${data.pending_id} --;
+            let hours = component(deadline_${data.pending_id}, 60 * 60); // hours
+            let minutes = component(deadline_${data.pending_id}, 60) % 60; // minutes
+            let seconds = component(deadline_${data.pending_id}, 1) % 60; // seconds
             if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-                document.getElementById("panding_deadline_" + ${data.panding_id}).innerText = "expired..";
-                clearInterval(panding_timer_${data.panding_id});
+                document.getElementById("pending_deadline_" + ${data.pending_id}).innerText = "expired..";
+                clearInterval(pending_timer_${data.pending_id});
             }
             else
             {
                 try
                 {
-                    document.getElementById("panding_deadline_${data.panding_id}").innerText = hours + ":" + minutes + ":" + seconds ;
+                    document.getElementById("pending_deadline_${data.pending_id}").innerText = hours + ":" + minutes + ":" + seconds ;
                 }
                 catch
                 {
-                    clearInterval(panding_timer_${data.panding_id});
+                    clearInterval(pending_timer_${data.pending_id});
                 }
             }
-        } , 1000 ); interval_var['panding_timer_${data.panding_id}'] = panding_timer_${data.panding_id}`)
+        } , 1000 ); interval_var['pending_timer_${data.pending_id}'] = pending_timer_${data.pending_id}`)
     } , 1000)
     
     }
@@ -358,7 +358,7 @@ window.onbeforeunload = function(event)
         var complete_otp = document.getElementById("complete_otp").value;
         fetch('/api/task/complete/', {
             method: 'POST',
-            body: JSON.stringify({'panding_id' : Number(document.getElementById("more_task_id").innerText) , 'otp' : complete_otp})
+            body: JSON.stringify({'pending_id' : Number(document.getElementById("more_task_id").innerText) , 'otp' : complete_otp})
             })
             .then((response) => response.json())
             .then((result) => {
@@ -368,12 +368,12 @@ window.onbeforeunload = function(event)
             {
                 document.getElementById("message_text").innerText = result.detail;
                 document.getElementById("messsage_box").style.display = "block";
-                clearInterval(interval_var[`panding_timer_${result.data.panding_id}`]);
+                clearInterval(interval_var[`pending_timer_${result.data.pending_id}`]);
                 setTimeout(() => {
                     document.getElementById("complete_otp_exit").click();
                     document.getElementById("more_exit").click();
-                    clearInterval(interval_var[`panding_timer_${data.panding_id}`]);
-                    document.getElementById(`panding_task_${result.data.panding_id}`).remove();
+                    clearInterval(interval_var[`pending_timer_${data.pending_id}`]);
+                    document.getElementById(`pending_task_${result.data.pending_id}`).remove();
                     document.getElementById("messsage_box").style.display = "none";
                 }, 1000);
             }

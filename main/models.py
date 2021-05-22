@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class exntend_user_details(models.Model):
+# class exntend_user_details(models.Model):
+class extended_user_details(models.Model):
     xender_choice = (
         ("Male" , "Male"),
         ("Female" , "Female")
@@ -117,7 +118,7 @@ class payment_info(models.Model):
     status_choice = (
         ("success","success"),
         ("fail","fail"),
-        ("panding","panding"),
+        ("pending","pending"),
     )
     task_detail_link = models.OneToOneField(task_detail , on_delete=models.CASCADE , unique=True)
     user = models.ForeignKey(User , on_delete=models.CASCADE)
@@ -154,7 +155,7 @@ class payment_info(models.Model):
             kwargs['update_fields'] = changed_fields
         super().save(*args, **kwargs)
 
-class panding_task(models.Model):
+class pending_task(models.Model):
 
     status_choice = (
         ("initilize","initilize"),
@@ -162,8 +163,8 @@ class panding_task(models.Model):
     )
     payment = models.ForeignKey(payment_info , on_delete=models.DO_NOTHING)
     task_detail_link = models.OneToOneField(task_detail , on_delete=models.CASCADE , unique=True)
-    panding_task_agent = models.ForeignKey(User ,on_delete=models.DO_NOTHING , related_name="panding_task_agent" , blank=True , null=True)
-    panding_task_user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="panding_task_user")
+    pending_task_agent = models.ForeignKey(User ,on_delete=models.DO_NOTHING , related_name="pending_task_agent" , blank=True , null=True)
+    pending_task_user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="pending_task_user")
     status = models.CharField(max_length=10 , choices=status_choice , default="initilize")
     accept_time = models.DateTimeField(blank=True , null=True)
     agent_location = models.CharField(max_length=500, blank=True , null=True)
@@ -197,12 +198,12 @@ class refund_detail(models.Model):
     refund_status_choice = (
         ("success","success"),
         ("fail","fail"),
-        ("panding","panding"),
+        ("pending","pending"),
     )
     
     refund_amount = models.IntegerField()
     refund_id = models.CharField(max_length = 200)
-    refund_status = models.CharField(max_length=20 , choices=refund_status_choice , default="panding")
+    refund_status = models.CharField(max_length=20 , choices=refund_status_choice , default="pending")
     date = models.DateTimeField(auto_now_add = True)
 
 
@@ -239,7 +240,7 @@ class completed_task(models.Model):
     )
     refund_status_choice = (
         ("-","-"),
-        ("panding","panding"),
+        ("pending","pending"),
     )
 
     payment = models.ForeignKey(payment_info , on_delete=models.DO_NOTHING)

@@ -5,7 +5,7 @@ document.onreadystatechange = function () {
     }
 };
 
-var panding_task_detail = {
+var pending_task_detail = {
     id: [],
     selected_id: "",
     selected_deadline_intervals: [],
@@ -35,16 +35,16 @@ var update_proof_listner, update_document_listner;
 
 var favi = document.querySelector("link[rel~='icon']");
 
-function panding_task_select_listener() {
-    panding_task_detail['id'].forEach((id) => {
-        document.getElementById(`panding_task_select_${id}`).addEventListener('click', () => {
-            panding_task_detail['id'].forEach((idx) => {
-                document.getElementById(`panding_task_select_${idx}`).style.backgroundColor = "#1E75D9";
-                document.getElementById(`panding_task_select_${idx}`).innerText = "Select";
+function pending_task_select_listener() {
+    pending_task_detail['id'].forEach((id) => {
+        document.getElementById(`pending_task_select_${id}`).addEventListener('click', () => {
+            pending_task_detail['id'].forEach((idx) => {
+                document.getElementById(`pending_task_select_${idx}`).style.backgroundColor = "#1E75D9";
+                document.getElementById(`pending_task_select_${idx}`).innerText = "Select";
             });
-            document.getElementById(`panding_task_select_${id}`).style.backgroundColor = "#212121c0";
-            panding_task_detail['selected_id'] = id;
-            document.getElementById(`panding_task_select_${id}`).innerText = "Selected";
+            document.getElementById(`pending_task_select_${id}`).style.backgroundColor = "#212121c0";
+            pending_task_detail['selected_id'] = id;
+            document.getElementById(`pending_task_select_${id}`).innerText = "Selected";
 
         });
     });
@@ -232,7 +232,7 @@ function load_fixed_map(myLatlng, divid) {
 
 
 function generate_reverse_timer(task_id, datestr) {
-    panding_task_detail['selected_deadline_timestemp'] = Number(datestr);
+    pending_task_detail['selected_deadline_timestemp'] = Number(datestr);
     let deadlinetimestemp = (new Date(Number(datestr)) - Date.now()) / 1000;
     let interval_id = setInterval(function () { // execute code each second
         deadlinetimestemp--;
@@ -240,13 +240,13 @@ function generate_reverse_timer(task_id, datestr) {
         let minutes = Math.floor(deadlinetimestemp / 60) % 60; // minutes
         let seconds = Math.floor(deadlinetimestemp / 1) % 60; // seconds
         if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-            document.getElementById("panding_details_task_deadline_timer").innerText = `Task crossing the deadline..`;
+            document.getElementById("pending_details_task_deadline_timer").innerText = `Task crossing the deadline..`;
             clearInterval(interval_id);
         } else {
-            document.getElementById("panding_details_task_deadline_timer").innerText = `${hours}:${minutes}:${seconds} *(H:M:S) `;
+            document.getElementById("pending_details_task_deadline_timer").innerText = `${hours}:${minutes}:${seconds} *(H:M:S) `;
         }
     }, 1000);
-    panding_task_detail['selected_deadline_intervals'].push({
+    pending_task_detail['selected_deadline_intervals'].push({
         id: task_id,
         interval: interval_id
     });
@@ -256,8 +256,8 @@ function generate_reverse_timer(task_id, datestr) {
 
 
 
-var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_panding', 'sidemenu_completed']
-var deshboard_pages = ['deshboard_page_profile', 'deshboard_page_add', 'deshboard_page_panding', 'deshboard_page_completed']
+var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_pending', 'sidemenu_completed']
+var deshboard_pages = ['deshboard_page_profile', 'deshboard_page_add', 'deshboard_page_pending', 'deshboard_page_completed']
 
 function clearmenu() {
     sidemenuids.forEach((allmenu) => {
@@ -274,15 +274,15 @@ function clearmenu() {
 function get_task_details() {
     favi.href = "/static/icon/favicon_offline.svg";
 
-    panding_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
+    pending_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
         clearInterval(intervalobj.interval);
     });
 
-    if (panding_task_detail['selected_id'] != "") {
+    if (pending_task_detail['selected_id'] != "") {
         fetch('/api/task/getmoredetails/', {
             method: 'POST',
             body: JSON.stringify({
-                'panding_id': Number(panding_task_detail['selected_id'])
+                'pending_id': Number(pending_task_detail['selected_id'])
             })
         })
             .then((response) => response.json())
@@ -291,70 +291,70 @@ function get_task_details() {
                 if (result.code == 200) {
 
                     // setup task image
-                    document.getElementById("panding_details_profile_image").src = `/media/${result.data.image}`;
-                    document.getElementById("panding_details_profile_image").classList.remove("hidd");
-                    document.getElementById("panding_details_default_profile_image").classList.add("hidd");
-                    document.getElementById("panding_details_profile_image_link").href = `/media/${result.data.image}`;
+                    document.getElementById("pending_details_profile_image").src = `/media/${result.data.image}`;
+                    document.getElementById("pending_details_profile_image").classList.remove("hidd");
+                    document.getElementById("pending_details_default_profile_image").classList.add("hidd");
+                    document.getElementById("pending_details_profile_image_link").href = `/media/${result.data.image}`;
 
-                    document.getElementById("panding_details_name").innerText = result.data.name;
-                    document.getElementById("panding_details_task_address").innerText = result.data.address;
-                    document.getElementById("panding_details_task_pincode").innerText = result.data.pincode;
-                    document.getElementById("panding_details_task_mobile").innerText = result.data.mobile_number;
-                    document.getElementById("panding_details_task_note").innerText = result.data.note;
-                    document.getElementById("panding_details_task_proof_btn").href = `/media/${result.data.proof}`;
-                    document.getElementById("panding_details_task_document_btn").href = `/media/${result.data.document}`;
+                    document.getElementById("pending_details_name").innerText = result.data.name;
+                    document.getElementById("pending_details_task_address").innerText = result.data.address;
+                    document.getElementById("pending_details_task_pincode").innerText = result.data.pincode;
+                    document.getElementById("pending_details_task_mobile").innerText = result.data.mobile_number;
+                    document.getElementById("pending_details_task_note").innerText = result.data.note;
+                    document.getElementById("pending_details_task_proof_btn").href = `/media/${result.data.proof}`;
+                    document.getElementById("pending_details_task_document_btn").href = `/media/${result.data.document}`;
 
                     // setup payment info
-                    document.getElementById("panding_details_payment_status").innerText = result.data.payment_status;
-                    document.getElementById("panding_details_payment_bank").innerText = result.data.user_bankname;
-                    document.getElementById("panding_details_payment_mode").innerText = result.data.user_paymentmode;
-                    document.getElementById("panding_details_payment_id").innerText = result.data.user_txnid;
-                    document.getElementById("panding_details_payment_date").innerText = result.data.user_txndate;
+                    document.getElementById("pending_details_payment_status").innerText = result.data.payment_status;
+                    document.getElementById("pending_details_payment_bank").innerText = result.data.user_bankname;
+                    document.getElementById("pending_details_payment_mode").innerText = result.data.user_paymentmode;
+                    document.getElementById("pending_details_payment_id").innerText = result.data.user_txnid;
+                    document.getElementById("pending_details_payment_date").innerText = result.data.user_txndate;
 
                     // steup map
-                    panding_task_detail['selected_map_letlong'] = result.data.gmaplink;
-                    load_fixed_map(JSON.parse(result.data.gmaplink), "panding_details_map_container")
+                    pending_task_detail['selected_map_letlong'] = result.data.gmaplink;
+                    load_fixed_map(JSON.parse(result.data.gmaplink), "pending_details_map_container")
                     if (result.data.accepted == 1) {
 
                         // setup task accepted basic operation
-                        document.getElementById("panding_details_task_waiting").classList.add("hidd");
-                        document.getElementById("panding_details_task_accepted").classList.remove("hidd");
-                        document.getElementById("panding_details_agent_block").classList.remove("hidd");
+                        document.getElementById("pending_details_task_waiting").classList.add("hidd");
+                        document.getElementById("pending_details_task_accepted").classList.remove("hidd");
+                        document.getElementById("pending_details_agent_block").classList.remove("hidd");
 
                         // steup agent image
-                        document.getElementById("panding_details_agent_profile_image").classList.remove("hidd");
-                        document.getElementById("panding_details_agent_default_profile_image").classList.add("hidd");
-                        document.getElementById("panding_details_agent_profile_image").src = `/media/${result.data.agent_image}`;
-                        document.getElementById("panding_details_agent_profile_image_link").href = `/media/${result.data.agent_image}`;
+                        document.getElementById("pending_details_agent_profile_image").classList.remove("hidd");
+                        document.getElementById("pending_details_agent_default_profile_image").classList.add("hidd");
+                        document.getElementById("pending_details_agent_profile_image").src = `/media/${result.data.agent_image}`;
+                        document.getElementById("pending_details_agent_profile_image_link").href = `/media/${result.data.agent_image}`;
 
-                        document.getElementById("panding_details_agent_track_agent_btn").href = result.data.agent_location;
-                        document.getElementById("panding_details_agent_name").innerText = result.data.agent_name;
-                        document.getElementById("panding_details_agent_mobile").innerText = result.data.agent_mobile;
-                        document.getElementById("panding_details_agent_accepted_time").innerText = String(parseISOString(`${result.data.accepted_time}`));
+                        document.getElementById("pending_details_agent_track_agent_btn").href = result.data.agent_location;
+                        document.getElementById("pending_details_agent_name").innerText = result.data.agent_name;
+                        document.getElementById("pending_details_agent_mobile").innerText = result.data.agent_mobile;
+                        document.getElementById("pending_details_agent_accepted_time").innerText = String(parseISOString(`${result.data.accepted_time}`));
 
                         // setup icon for gender
                         if (result.data.agent_xender == "Male") {
-                            document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/boy.svg";
+                            document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/boy.svg";
 
                         } else {
-                            document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/girl.svg";
+                            document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/girl.svg";
                         }
-                        document.getElementById("panding_details_agent_gender").innerText = result.data.agent_xender;
+                        document.getElementById("pending_details_agent_gender").innerText = result.data.agent_xender;
 
                     } else {
 
                         // setup waiting state task's basic operation
-                        document.getElementById("panding_details_task_waiting").classList.remove("hidd");
-                        document.getElementById("panding_details_task_accepted").classList.add("hidd");
-                        document.getElementById("panding_details_agent_block").classList.add("hidd");
+                        document.getElementById("pending_details_task_waiting").classList.remove("hidd");
+                        document.getElementById("pending_details_task_accepted").classList.add("hidd");
+                        document.getElementById("pending_details_agent_block").classList.add("hidd");
 
                     }
                     // setup deadline
-                    generate_reverse_timer(Number(panding_task_detail['selected_id']), result.data.deadline);
+                    generate_reverse_timer(Number(pending_task_detail['selected_id']), result.data.deadline);
 
-                    document.getElementById("panding_task_status_container").classList.remove("hidd");
-                    document.getElementById("panding_task_empty_detail_container").classList.add("hidd");
-                    document.getElementById("panding_task_detail_container").classList.remove("hidd");
+                    document.getElementById("pending_task_status_container").classList.remove("hidd");
+                    document.getElementById("pending_task_empty_detail_container").classList.add("hidd");
+                    document.getElementById("pending_task_detail_container").classList.remove("hidd");
                 } else if (result.code == 405) {
 
                     short_notification(result.detail, 5000);
@@ -364,8 +364,8 @@ function get_task_details() {
             .catch((error) => {
                 short_notification(error, 5000);
             });
-        document.getElementById("panding_task_controller_container").classList.remove("hidd");
-        console.log("SELECTED IF", panding_task_detail['selected_id']);
+        document.getElementById("pending_task_controller_container").classList.remove("hidd");
+        console.log("SELECTED IF", pending_task_detail['selected_id']);
     } else {
         short_notification("please select any task to get details", 5000);
     }
@@ -393,7 +393,7 @@ function get_completed_task_details() {
 
                     load_fixed_map(JSON.parse(result.data.gmaplink), "completed_task_more_detail_task_map")
 
-                    document.getElementById("completed_task_more_detail_ref_id").innerText = result.data.panding_id;
+                    document.getElementById("completed_task_more_detail_ref_id").innerText = result.data.pending_id;
                     document.getElementById("completed_task_more_detail_task_name").innerText = result.data.name;
                     document.getElementById("completed_task_more_detail_task_gender").innerText = result.data.gender;
                     document.getElementById("completed_task_more_detail_task_address").innerText = result.data.address;
@@ -495,10 +495,10 @@ function get_completed_task_details() {
 
 window.onload = () => {
 
-    if (panding_task_detail['id'].length > 0) {
-        document.getElementById("panding_task_status_container").classList.remove("hidd");
-        document.getElementById("panding_task_controller_container").classList.add("hidd");
-        document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected";
+    if (pending_task_detail['id'].length > 0) {
+        document.getElementById("pending_task_status_container").classList.remove("hidd");
+        document.getElementById("pending_task_controller_container").classList.add("hidd");
+        document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected";
     }
 
     window.onscroll = () => {
@@ -527,20 +527,20 @@ window.onload = () => {
         side_addattr.classList.add("deshboard-sidemenu-tab-selected");
         document.getElementById('deshboard_page_add').style.display = "block";
     });
-    side_pandingattr = document.getElementById("sidemenu_panding");
-    side_pandingattr.addEventListener('click', () => {
+    side_pendingattr = document.getElementById("sidemenu_pending");
+    side_pendingattr.addEventListener('click', () => {
         clearmenu();
-        document.getElementById("sidemenu_panding_icon").style.color = "#175aa7";
-        side_pandingattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_panding').style.display = "block";
-        if (document.getElementById("panding_details_map_container").innerHTML == "") {
+        document.getElementById("sidemenu_pending_icon").style.color = "#175aa7";
+        side_pendingattr.classList.add("deshboard-sidemenu-tab-selected");
+        document.getElementById('deshboard_page_pending').style.display = "block";
+        if (document.getElementById("pending_details_map_container").innerHTML == "") {
             var myLatlng = {
                 lat: 22.2587,
                 lng: 71.1924
             };
-            load_fixed_map(myLatlng, "panding_details_map_container");
+            load_fixed_map(myLatlng, "pending_details_map_container");
         }
-        console.log("panding map loded");
+        console.log("pending map loded");
     });
     side_completedattr = document.getElementById("sidemenu_completed");
     side_completedattr.addEventListener('click', () => {
@@ -699,7 +699,7 @@ window.onload = () => {
 
 
 
-    // panding task script
+    // pending task script
 
 
 
@@ -712,28 +712,28 @@ window.onload = () => {
         document.getElementById("update_map_popup").classList.remove("hidd");
     }
 
-    document.getElementById("panding_task_list_btn").onclick = () => {
-        document.getElementById("panding_list_popup").classList.remove("hidd");
+    document.getElementById("pending_task_list_btn").onclick = () => {
+        document.getElementById("pending_list_popup").classList.remove("hidd");
     }
 
-    document.getElementById("panding_list_popup_exit").onclick = () => {
+    document.getElementById("pending_list_popup_exit").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         short_notification("Arranging details..", 5000);
         get_task_details();
-        document.getElementById("panding_list_popup").classList.add("hidd");
+        document.getElementById("pending_list_popup").classList.add("hidd");
         document.getElementById("loading_rounder").classList.add("hidd");
     }
 
-    document.getElementById("panding_update_popup_exit").onclick = () => {
-        document.getElementById("panding_update_popup").classList.add("hidd");
+    document.getElementById("pending_update_popup_exit").onclick = () => {
+        document.getElementById("pending_update_popup").classList.add("hidd");
     }
 
-    document.getElementById("panding_details_task_generate_otp_btn").onclick = () => {
+    document.getElementById("pending_details_task_generate_otp_btn").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/gotp/', {
             method: 'POST',
             body: JSON.stringify({
-                'panding_id': Number(panding_task_detail['selected_id'])
+                'pending_id': Number(pending_task_detail['selected_id'])
             })
         })
             .then((response) => response.json())
@@ -741,7 +741,7 @@ window.onload = () => {
                 document.getElementById("loading_rounder").classList.add("hidd");
                 console.log('Success:', result);
                 if (result.code == 200) {
-                    if (panding_task_detail['selected_id'] == String(result.data.panding_id)) {
+                    if (pending_task_detail['selected_id'] == String(result.data.pending_id)) {
                         short_notification(`<div><p>OTP :<b>${result.data.otp}</b>,otp for agent to cancel task :<b>${result.data.otp_cancel_agent}</b></p><i>"valid for only next 10 minutes"</i></div>`, 30000);
                     }
                 } else if (result.code == 405) {
@@ -756,12 +756,12 @@ window.onload = () => {
 
     }
 
-    document.getElementById("panding_details_agent_remove_agent_btn").onclick = () => {
+    document.getElementById("pending_details_agent_remove_agent_btn").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/remove_agent/', {
             method: 'POST',
             body: JSON.stringify({
-                'panding_id': Number(panding_task_detail['selected_id'])
+                'pending_id': Number(pending_task_detail['selected_id'])
             })
         })
             .then((response) => response.json())
@@ -769,10 +769,10 @@ window.onload = () => {
                 console.log('Success:', result);
                 document.getElementById("loading_rounder").classList.add("hidd");
                 if (result.code == 200) {
-                    if (panding_task_detail['selected_id'] == String(result.data.panding_id)) {
-                        document.getElementById("panding_details_task_waiting").classList.remove("hidd");
-                        document.getElementById("panding_details_task_accepted").classList.add("hidd");
-                        document.getElementById("panding_details_agent_block").classList.add("hidd");
+                    if (pending_task_detail['selected_id'] == String(result.data.pending_id)) {
+                        document.getElementById("pending_details_task_waiting").classList.remove("hidd");
+                        document.getElementById("pending_details_task_accepted").classList.add("hidd");
+                        document.getElementById("pending_details_agent_block").classList.add("hidd");
                     }
                     short_notification(result.detail, 5000);
                 } else if (result.code == 405) {
@@ -790,32 +790,32 @@ window.onload = () => {
 
 
     //    runs when update button click
-    document.getElementById("panding_task_update_btn_selector").onclick = () => {
+    document.getElementById("pending_task_update_btn_selector").onclick = () => {
 
         document.getElementById("loading_rounder").classList.remove("hidd");
         // arranging details
 
         let update_img_ele = document.createElement('a');
-        update_img_ele.href = String(document.getElementById("panding_details_profile_image").src);
+        update_img_ele.href = String(document.getElementById("pending_details_profile_image").src);
         document.getElementById('update_form_profile_image_prv').src = String(update_img_ele.pathname);
         document.getElementById('update_form_profile_image_prv').classList.add("add-page-img");
 
-        let flnames = document.getElementById("panding_details_name").innerText.split(" ");
-        if (panding_task_detail['selected_deadline_timestemp'] != 0) {
-            document.getElementById("update_form_deadline").value = String(new Date((new Date(Number(panding_task_detail['selected_deadline_timestemp']))).getTime() - ((new Date(Number(panding_task_detail['selected_deadline_timestemp']))).getTimezoneOffset() * 60000)).toISOString().substring(0, 16));
+        let flnames = document.getElementById("pending_details_name").innerText.split(" ");
+        if (pending_task_detail['selected_deadline_timestemp'] != 0) {
+            document.getElementById("update_form_deadline").value = String(new Date((new Date(Number(pending_task_detail['selected_deadline_timestemp']))).getTime() - ((new Date(Number(pending_task_detail['selected_deadline_timestemp']))).getTimezoneOffset() * 60000)).toISOString().substring(0, 16));
         }
 
-        document.getElementById("update_form_gmap").value = panding_task_detail['selected_map_letlong'];
+        document.getElementById("update_form_gmap").value = pending_task_detail['selected_map_letlong'];
         initMap("googlemap_container", "add_form_gmap", "add_form_first_name");
         document.getElementById("update_form_first_name").value = flnames[0];
         document.getElementById("update_form_last_name").value = flnames[1];
-        document.getElementById("update_form_mobile_number").value = Number(document.getElementById("panding_details_task_mobile").innerText);
-        document.getElementById("update_form_address").value = document.getElementById("panding_details_task_address").innerText;
-        document.getElementById("update_form_pincode").value = document.getElementById("panding_details_task_pincode").innerText;
-        document.getElementById("update_form_note").value = document.getElementById("panding_details_task_note").innerText;
+        document.getElementById("update_form_mobile_number").value = Number(document.getElementById("pending_details_task_mobile").innerText);
+        document.getElementById("update_form_address").value = document.getElementById("pending_details_task_address").innerText;
+        document.getElementById("update_form_pincode").value = document.getElementById("pending_details_task_pincode").innerText;
+        document.getElementById("update_form_note").value = document.getElementById("pending_details_task_note").innerText;
 
         let update_proof_ele = document.createElement('a');
-        update_proof_ele.href = String(document.getElementById("panding_details_task_proof_btn").href);
+        update_proof_ele.href = String(document.getElementById("pending_details_task_proof_btn").href);
         update_proof_flag = update_proof_ele.pathname != "/media/profile/defaultprofile.png"
         if (update_proof_flag) {
             document.getElementById("update_form_add_proof_selector").classList.add("disabled-btn");
@@ -825,7 +825,7 @@ window.onload = () => {
         }
 
         let update_document_ele = document.createElement('a');
-        update_document_ele.href = String(document.getElementById("panding_details_task_proof_btn").href);
+        update_document_ele.href = String(document.getElementById("pending_details_task_proof_btn").href);
         update_document_flag = update_document_ele.pathname != "/media/profile/defaultprofile.png"
         if (update_document_flag) {
             document.getElementById("update_form_add_document_selector").classList.add("disabled-btn")
@@ -834,7 +834,7 @@ window.onload = () => {
         }
 
 
-        document.getElementById("panding_update_popup").classList.remove("hidd");
+        document.getElementById("pending_update_popup").classList.remove("hidd");
         document.getElementById("loading_rounder").classList.add("hidd")
     }
 
@@ -867,9 +867,9 @@ window.onload = () => {
         document.getElementById("update_form_add_document").click();
     }
 
-    // submit updated details for panding task
+    // submit updated details for pending task
     document.getElementById("update_form_submit").onclick = () => {
-        document.getElementById("panding_update_popup_exit").onclick();
+        document.getElementById("pending_update_popup_exit").onclick();
         favi.href = "/static/icon/favicon_offline.svg";
         document.getElementById("loading_rounder").classList.remove("hidd")
         if (document.getElementById("update_form_tandcbx").checked) {
@@ -903,7 +903,7 @@ window.onload = () => {
             } else {
                 update_task_mobile.style.borderColor = "#686868c0";
             }
-            //            if (Number(update_task_deadline.value) < panding_task_detail['selected_deadline_timestemp']) {
+            //            if (Number(update_task_deadline.value) < pending_task_detail['selected_deadline_timestemp']) {
             //                flag = 0;
             //                update_task_deadline.style.borderColor = "red";
             //                errdenoter += "&nbspenter extended deadline for tasks,&nbsp";
@@ -939,7 +939,7 @@ window.onload = () => {
 
 
                 let update_formdata = new FormData()
-                update_formdata.append("id", panding_task_detail['selected_id'])
+                update_formdata.append("id", pending_task_detail['selected_id'])
                 update_formdata.append("update_profile_img", update_profile_img.files[0])
                 update_formdata.append("update_task_mobile", update_task_mobile.value)
                 update_formdata.append("update_task_deadline", update_task_deadline.value)
@@ -979,32 +979,32 @@ window.onload = () => {
 
     }
 
-    document.getElementById("panding_task_cancel_btn_selector").onclick = () => {
+    document.getElementById("pending_task_cancel_btn_selector").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd")
-        if (panding_task_detail["selected_id"] != "") {
-            panding_id = Number(panding_task_detail["selected_id"]);
+        if (pending_task_detail["selected_id"] != "") {
+            pending_id = Number(pending_task_detail["selected_id"]);
             let header = new Headers()
             fetch("/api/task/cancel/", {
                 method: "POST",
                 headers: header,
                 body: JSON.stringify({
-                    'panding_id': panding_id
+                    'pending_id': pending_id
                 })
             }).then(res => res.json()).then((data) => {
                 if (data.code == 200) {
 
-                    let id = panding_task_detail["id"].splice(panding_task_detail["id"].indexOf(String(data.panding_id)), 1)
-                    if (panding_task_detail['selected_id'] == id) {
-                        if (panding_task_detail['id'].length > 0) {
-                            document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected"
+                    let id = pending_task_detail["id"].splice(pending_task_detail["id"].indexOf(String(data.pending_id)), 1)
+                    if (pending_task_detail['selected_id'] == id) {
+                        if (pending_task_detail['id'].length > 0) {
+                            document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected"
                         } else {
-                            document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are assigned"
-                            document.getElementById("panding_task_status_container").classList.add("hidd");
+                            document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are assigned"
+                            document.getElementById("pending_task_status_container").classList.add("hidd");
                         }
-                        document.getElementById("panding_task_empty_detail_container").classList.remove("hidd");
-                        document.getElementById("panding_task_detail_container").classList.add("hidd");
+                        document.getElementById("pending_task_empty_detail_container").classList.remove("hidd");
+                        document.getElementById("pending_task_detail_container").classList.add("hidd");
                     }
-                    document.getElementById(`panding_task_selector_${id}`).remove();
+                    document.getElementById(`pending_task_selector_${id}`).remove();
                     document.getElementById("loading_rounder").classList.add("hidd")
                 }
                 else if(data.code == 401)
@@ -1089,106 +1089,106 @@ window.onload = () => {
         }
         //it means new notification is arrive
         else if (data.typex == 'notification') {
-            // document.getElementById("panding_task_detail_container").classList.add("hidd");
-            if (Array.from(document.getElementById("panding_task_detail_container").classList).includes("hidd")) {
+            // document.getElementById("pending_task_detail_container").classList.add("hidd");
+            if (Array.from(document.getElementById("pending_task_detail_container").classList).includes("hidd")) {
                 document.getElementById("loading_rounder").classList.remove("hidd");
-                document.getElementById("panding_task_empty_detail_container").classList.add("hidd");
-                document.getElementById("panding_task_status_container").classList.remove("hidd");
+                document.getElementById("pending_task_empty_detail_container").classList.add("hidd");
+                document.getElementById("pending_task_status_container").classList.remove("hidd");
 
-                document.getElementById("panding_task_detail_container").classList.remove("hidd");
-                if (panding_task_detail['selected_id'] != String(data.panding_id)) {
-                    panding_task_detail['selected_id'] = String(data.panding_id)
+                document.getElementById("pending_task_detail_container").classList.remove("hidd");
+                if (pending_task_detail['selected_id'] != String(data.pending_id)) {
+                    pending_task_detail['selected_id'] = String(data.pending_id)
                 }
                 get_task_details()
-                document.getElementById("panding_list_popup").classList.add("hidd");
+                document.getElementById("pending_list_popup").classList.add("hidd");
                 document.getElementById("loading_rounder").classList.add("hidd");
             }
 
             short_notification(`${data.task_name}'s notification spreded among agents`, 5000);
         }
-        // it means panding task is accepted
+        // it means pending task is accepted
         else if (data.typex == "accepted") {
 
-            if (document.getElementById("deshboard_page_panding").style.display == "none") {
-                document.getElementById("sidemenu_panding").click();
+            if (document.getElementById("deshboard_page_pending").style.display == "none") {
+                document.getElementById("sidemenu_pending").click();
             }
-            if (panding_task_detail['selected_id'] != String(data.panding_id)) {
-                panding_task_detail['selected_id'] = String(data.panding_id)
+            if (pending_task_detail['selected_id'] != String(data.pending_id)) {
+                pending_task_detail['selected_id'] = String(data.pending_id)
                 document.getElementById("loading_rounder").classList.remove("hidd");
                 get_task_details()
                 document.getElementById("loading_rounder").classList.add("hidd");
             } else {
 
                 // setup task accepted basic operation
-                document.getElementById("panding_details_task_waiting").classList.add("hidd");
-                document.getElementById("panding_details_task_accepted").classList.remove("hidd");
-                document.getElementById("panding_details_agent_block").classList.remove("hidd");
+                document.getElementById("pending_details_task_waiting").classList.add("hidd");
+                document.getElementById("pending_details_task_accepted").classList.remove("hidd");
+                document.getElementById("pending_details_agent_block").classList.remove("hidd");
 
                 // steup agent image
-                document.getElementById("panding_details_agent_profile_image").classList.remove("hidd");
-                document.getElementById("panding_details_agent_default_profile_image").classList.add("hidd");
-                document.getElementById("panding_details_agent_profile_image").src = `/media/${data.agent_image}`;
-                document.getElementById("panding_details_agent_profile_image_link").href = `/media/${data.agent_image}`;
+                document.getElementById("pending_details_agent_profile_image").classList.remove("hidd");
+                document.getElementById("pending_details_agent_default_profile_image").classList.add("hidd");
+                document.getElementById("pending_details_agent_profile_image").src = `/media/${data.agent_image}`;
+                document.getElementById("pending_details_agent_profile_image_link").href = `/media/${data.agent_image}`;
 
-                document.getElementById("panding_details_agent_track_agent_btn").href = data.agent_location;
-                document.getElementById("panding_details_agent_name").innerText = data.agent_name;
-                document.getElementById("panding_details_agent_mobile").innerText = data.agent_mobile;
-                document.getElementById("panding_details_agent_accepted_time").innerText = data.accepted_time;
+                document.getElementById("pending_details_agent_track_agent_btn").href = data.agent_location;
+                document.getElementById("pending_details_agent_name").innerText = data.agent_name;
+                document.getElementById("pending_details_agent_mobile").innerText = data.agent_mobile;
+                document.getElementById("pending_details_agent_accepted_time").innerText = data.accepted_time;
 
                 // setup icon for gender
                 if (data.agent_xender == "Male") {
-                    document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/boy.svg";
+                    document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/boy.svg";
 
                 } else {
-                    document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/girl.svg";
+                    document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/girl.svg";
                 }
-                document.getElementById("panding_details_agent_gender").innerText = data.agent_xender;
+                document.getElementById("pending_details_agent_gender").innerText = data.agent_xender;
 
             }
-            document.getElementById("panding_list_popup").classList.add("hidd");
+            document.getElementById("pending_list_popup").classList.add("hidd");
 
             short_notification(`${data.task_name}'s task is accepted by ${data.agent_name}`, 5000,);
         } else if (data.typex == "updated") {
-            if (panding_task_detail['selected_id'] == String(data.panding_id)) {
+            if (pending_task_detail['selected_id'] == String(data.pending_id)) {
                 received_data = JSON.parse(data.data);
                 document.getElementById("loading_rounder").classList.remove("hidd");
                 updated_str = "updated fields = "
                 if (received_data.image) {
-                    document.getElementById("panding_details_profile_image").src = `/media/${received_data.image}`;
-                    document.getElementById("panding_details_profile_image").classList.remove("hidd");
-                    document.getElementById("panding_details_default_profile_image").classList.add("hidd");
-                    document.getElementById("panding_details_profile_image_link").href = `/media/${received_data.image}`;
+                    document.getElementById("pending_details_profile_image").src = `/media/${received_data.image}`;
+                    document.getElementById("pending_details_profile_image").classList.remove("hidd");
+                    document.getElementById("pending_details_default_profile_image").classList.add("hidd");
+                    document.getElementById("pending_details_profile_image_link").href = `/media/${received_data.image}`;
                     updated_str += "image,"
                 }
                 if (received_data.address) {
-                    document.getElementById("panding_details_task_address").innerText = received_data.address;
+                    document.getElementById("pending_details_task_address").innerText = received_data.address;
                     updated_str += "address"
                 }
                 if (received_data.mobile_number) {
-                    document.getElementById("panding_details_task_mobile").innerText = received_data.mobile_number;
+                    document.getElementById("pending_details_task_mobile").innerText = received_data.mobile_number;
                     updated_str += "mobile number,"
                 }
                 if (received_data.note) {
-                    document.getElementById("panding_details_task_note").innerText = received_data.note;
+                    document.getElementById("pending_details_task_note").innerText = received_data.note;
                     updated_str += "note,"
                 }
                 if (received_data.proof) {
-                    document.getElementById("panding_details_task_proof_btn").href = `/media/${received_data.proof}`;
+                    document.getElementById("pending_details_task_proof_btn").href = `/media/${received_data.proof}`;
                     updated_str += "proof,"
                 }
                 if (received_data.document) {
-                    document.getElementById("panding_details_task_document_btn").href = `/media/${received_data.document}`;
+                    document.getElementById("pending_details_task_document_btn").href = `/media/${received_data.document}`;
                     updated_str += "document,"
                 }
                 if (received_data.deadline) {
-                    panding_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
+                    pending_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
                         clearInterval(intervalobj.interval);
                     });
-                    generate_reverse_timer(Number(data.panding_id), received_data.deadline);
+                    generate_reverse_timer(Number(data.pending_id), received_data.deadline);
                     updated_str += "deadline,"
                 }
                 if (received_data.gmaplink) {
-                    load_fixed_map(JSON.parse(received_data.gmaplink), "panding_details_map_container")
+                    load_fixed_map(JSON.parse(received_data.gmaplink), "pending_details_map_container")
                     updated_str += "google map,"
                 }
                 document.getElementById("loading_rounder").classList.add("hidd");
@@ -1197,21 +1197,21 @@ window.onload = () => {
                 console.log(received_data);
             }
         }
-        // it means panding task is expire(not accepted tasks)
+        // it means pending task is expire(not accepted tasks)
         else if (data.typex == "expire") {
-            let id = panding_task_detail["id"].splice(panding_task_detail["id"].indexOf(String(data.panding_id)), 1)
-            if (panding_task_detail['selected_id'] == id) {
-                if (panding_task_detail['id'].length > 1) {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected"
+            let id = pending_task_detail["id"].splice(pending_task_detail["id"].indexOf(String(data.pending_id)), 1)
+            if (pending_task_detail['selected_id'] == id) {
+                if (pending_task_detail['id'].length > 1) {
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected"
                 } else {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are assigned"
-                    document.getElementById("panding_task_status_container").classList.add("hidd");
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are assigned"
+                    document.getElementById("pending_task_status_container").classList.add("hidd");
                 }
-                document.getElementById("panding_task_empty_detail_container").classList.remove("hidd");
-                document.getElementById("panding_task_detail_container").classList.add("hidd");
-                document.getElementById("panding_task_controller_container").classList.add("hidd");
+                document.getElementById("pending_task_empty_detail_container").classList.remove("hidd");
+                document.getElementById("pending_task_detail_container").classList.add("hidd");
+                document.getElementById("pending_task_controller_container").classList.add("hidd");
             }
-            document.getElementById(`panding_task_selector_${id}`).remove();
+            document.getElementById(`pending_task_selector_${id}`).remove();
             let gender_expired, accepted_expired;
             if (data.gender == "Male") {
                 gender_expired = "male_symbol.svg";
@@ -1258,8 +1258,8 @@ window.onload = () => {
             } else {
                 gender = "female_symbol.svg";
             }
-            if (data.refund_status == "panding") {
-                refund_status = "panding_round.svg";
+            if (data.refund_status == "pending") {
+                refund_status = "pending_round.svg";
             } else {
                 refund_status = "true_round.svg";
             }
@@ -1303,27 +1303,27 @@ window.onload = () => {
         }
         else if (data.typex == "remove_accepted_task")
         {
-            if (panding_task_detail['selected_id'] == String(data.panding_id)) {
-                document.getElementById("panding_details_task_waiting").classList.remove("hidd");
-                document.getElementById("panding_details_task_accepted").classList.add("hidd");
-                document.getElementById("panding_details_agent_block").classList.add("hidd");
+            if (pending_task_detail['selected_id'] == String(data.pending_id)) {
+                document.getElementById("pending_details_task_waiting").classList.remove("hidd");
+                document.getElementById("pending_details_task_accepted").classList.add("hidd");
+                document.getElementById("pending_details_agent_block").classList.add("hidd");
             }
             short_notification("task is droped by agent", 5000);
         }
         // it means task is completed successfully
         else if (data.typex == "completed") {
-            let id = panding_task_detail["id"].splice(panding_task_detail["id"].indexOf(String(data.panding_id)), 1)
-            if (panding_task_detail['selected_id'] == id) {
-                if (panding_task_detail['id'].length > 1) {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected"
+            let id = pending_task_detail["id"].splice(pending_task_detail["id"].indexOf(String(data.pending_id)), 1)
+            if (pending_task_detail['selected_id'] == id) {
+                if (pending_task_detail['id'].length > 1) {
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected"
                 } else {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are assigned"
-                    document.getElementById("panding_task_status_container").classList.add("hidd");
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are assigned"
+                    document.getElementById("pending_task_status_container").classList.add("hidd");
                 }
-                document.getElementById("panding_task_empty_detail_container").classList.remove("hidd");
-                document.getElementById("panding_task_detail_container").classList.add("hidd");
+                document.getElementById("pending_task_empty_detail_container").classList.remove("hidd");
+                document.getElementById("pending_task_detail_container").classList.add("hidd");
             }
-            document.getElementById(`panding_task_selector_${id}`).remove();
+            document.getElementById(`pending_task_selector_${id}`).remove();
 
             let gender;
             if (data.gender == "Male") {
@@ -1463,7 +1463,7 @@ window.onload = () => {
 
 
 
-    document.getElementById("panding_details_task_accepted").onclick = () => {
+    document.getElementById("pending_details_task_accepted").onclick = () => {
         window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth'

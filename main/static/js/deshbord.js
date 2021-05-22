@@ -60,14 +60,14 @@ function get_popup_message(message, ttl , after = "" , before = "") {
 }
 
 
-// this is for get more details of panding tasks 
-function getpanding(id) {
+// this is for get more details of pending tasks 
+function getpending(id) {
 
     document.getElementById('loading_box').style.display = "block";
 
     fetch('/api/task/getmoredetails/', {
         method: 'POST',
-        body: JSON.stringify({ 'panding_id': id })
+        body: JSON.stringify({ 'pending_id': id })
     })
         .then((response) => response.json())
         .then((result) => {
@@ -124,14 +124,14 @@ function getpanding(id) {
 }
 
 
-// this is for get more details of panding tasks 
+// this is for get more details of pending tasks 
 function getcompleted(id) {
 
     document.getElementById('loading_box').style.display = "block";
 
     fetch('/api/task/complete/getmoredetails/', {
         method: 'POST',
-        body: JSON.stringify({ 'panding_id': id })
+        body: JSON.stringify({ 'pending_id': id })
     })
         .then((response) => response.json())
         .then((result) => {
@@ -282,17 +282,17 @@ window.onload = () => {
         else if (data.typex == 'notification') {
             get_popup_message(`<p style="margin:auto;">notification spreded among agents</p>` , 2000 )     
         }
-        // it means panding task is accepted
+        // it means pending task is accepted
         else if (data.typex == "accepted") {
-            get_popup_message(`<div style="text-align : center ; margin:10px 0px;">Task accepted</div>` , 2000 , `document.getElementById('panding_task_status_${data.panding_id}').innerText = "accepted"`)
+            get_popup_message(`<div style="text-align : center ; margin:10px 0px;">Task accepted</div>` , 2000 , `document.getElementById('pending_task_status_${data.pending_id}').innerText = "accepted"`)
         }
-        // it means panding task is expire(not accepted tasks)
+        // it means pending task is expire(not accepted tasks)
         else if (data.typex == "expire") {
-            get_popup_message(`<div style="text-align : center ; margin:10px 0px;">Task Expired</div><p style="margin:auto;">${data.message}</p>` , 2000 , "" , `document.getElementById(panding_task_${data.panding_id}).remove()`)
+            get_popup_message(`<div style="text-align : center ; margin:10px 0px;">Task Expired</div><p style="margin:auto;">${data.message}</p>` , 2000 , "" , `document.getElementById(pending_task_${data.pending_id}).remove()`)
         }
         // it means task is completed successfully
         else if (data.typex == "completed") {
-            get_popup_message(`<div style="text-align : center ; margin:10px 0px;">Task completed</div><p style="margin:auto;">${data.message}</p>` , 2000 , "" , `clearInterval(timer_${data.panding_id}); document.getElementById(panding_task_${data.panding_id}).remove();`)
+            get_popup_message(`<div style="text-align : center ; margin:10px 0px;">Task completed</div><p style="margin:auto;">${data.message}</p>` , 2000 , "" , `clearInterval(timer_${data.pending_id}); document.getElementById(pending_task_${data.pending_id}).remove();`)
         }
     }
     window.onbeforeunload = function (event) {
@@ -316,7 +316,7 @@ window.onload = () => {
         document.getElementById("addtesk_box").style.display = "none";
     }
 
-    // exit more box of panding tasks
+    // exit more box of pending tasks
     document.getElementById("more_exit").onclick = () => {
 
         document.getElementById("more_box").style.display = "none";
@@ -342,14 +342,14 @@ window.onload = () => {
             console.log("remove_agent");
             fetch('/api/task/remove_agent/', {
                 method: 'POST',
-                body: JSON.stringify({ 'panding_id': id })
+                body: JSON.stringify({ 'pending_id': id })
             })
                 .then((response) => response.json())
                 .then((result) => {
                     document.getElementById('loading_box').style.display = "none";
                     console.log('Success:', result);
                     if (result.code == 200) {
-                        get_popup_message(`<p style="margin:auto;">${result.detail}</p>` , 2000 , `document.getElementById("more_exit").click(); document.getElementById("panding_task_status_${id}").innerText = "initilize";`)
+                        get_popup_message(`<p style="margin:auto;">${result.detail}</p>` , 2000 , `document.getElementById("more_exit").click(); document.getElementById("pending_task_status_${id}").innerText = "initilize";`)
                     }
                     else if (result.code == 405) {
                         get_popup_message(`<p style="margin:auto;">${result.detail}</p>` , 2000)

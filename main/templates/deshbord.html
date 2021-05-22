@@ -42,7 +42,7 @@
             </div>
             <div class=nav_container>
                 <div class="nav_btn_container">
-                    {% if request.user.exntend_user_details.role == "agent" %}
+                    {% if request.user.extended_user_details.role == "agent" %}
                     <a href="{% url 'workbord' %}">
                         <div class="nav_btn">workbord</div>
                     </a>
@@ -59,10 +59,10 @@
             </div>
         </div>
 
-        <div class="panding_task_container">
+        <div class="pending_task_container">
 
             <div class="add_btn_container">
-                <h3>Panding Task</h3>
+                <h3>pending Task</h3>
             </div>
 
             <div class="task_heading">
@@ -78,14 +78,14 @@
                 </div>
             </div>
 
-            <div style="overflow-y: auto; height:454px;" id="panding_task_container">
-                {% for task in panding_tasks %}
-                <div class="task_denoter_container" id="panding_task_{{task.id}}">
+            <div style="overflow-y: auto; height:454px;" id="pending_task_container">
+                {% for task in pending_tasks %}
+                <div class="task_denoter_container" id="pending_task_{{task.id}}">
                     <img src="/media/{{task.task_detail_link.image}}" alt="" class="task_denoter_image">
                     <div class="task_denoter_detail_container">
                         <div class="task_denoter_name">{{task.task_detail_link.name}}</div>
                         <div class="task_denoter_pay_status">{{task.payment.user_payment_status}}</div>
-                        <div class="task_denoter_task_status" id="panding_task_status_{{task.id}}">{{task.status}}</div>
+                        <div class="task_denoter_task_status" id="pending_task_status_{{task.id}}">{{task.status}}</div>
                         <div class="task_denoter_time_remain" id="deadline_{{task.id}}">initilizing...</div>
                         <div class="more_btn_container" id="more_{{task.id}}"><img style="width: 30px; height: 30px;"
                                 src="{% static 'icon/more.png' %}" alt=""></div>
@@ -93,7 +93,7 @@
                 </div>
                 <script>
                     document.getElementById('more_{{task.id}}').onclick = () => {
-                        getpanding({{ task.id }});
+                        getpending({{ task.id }});
                     }
                     function component(x, v) 
                     {

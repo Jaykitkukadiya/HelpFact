@@ -95,10 +95,10 @@
                 <div class="deshboard-sidemenu-tab-text">Add task</div>
             </div>
 
-            <div class="deshboard-sidemenu-tab" id="sidemenu_panding">
+            <div class="deshboard-sidemenu-tab" id="sidemenu_pending">
                 <div class="deshboard-sidemenu-tab-icon-container">
-                    <!-- <img class="deshboard-sidemenu-tab-icon" src="{% static 'icon/panding.svg' %}" alt="no icon"> -->
-                    <svg id="sidemenu_panding_icon" class="deshboard-sidemenu-tab-icon"
+                    <!-- <img class="deshboard-sidemenu-tab-icon" src="{% static 'icon/pending.svg' %}" alt="no icon"> -->
+                    <svg id="sidemenu_pending_icon" class="deshboard-sidemenu-tab-icon"
                         xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 384 384" version="1.2">
                         <defs>
                             <clipPath id="a">
@@ -120,7 +120,7 @@
                         </g>
                     </svg>
                 </div>
-                <div class="deshboard-sidemenu-tab-text">Panding tasks</div>
+                <div class="deshboard-sidemenu-tab-text">pending tasks</div>
             </div>
 
             <div class="deshboard-sidemenu-tab" id="sidemenu_completed">
@@ -349,40 +349,40 @@
             </div>
 
 
-            <!-- panding task page -->
-            <div class="deshboard-page-panding" id="deshboard_page_panding">
-                <div class="panding-page-container">
+            <!-- pending task page -->
+            <div class="deshboard-page-pending" id="deshboard_page_pending">
+                <div class="pending-page-container">
 
-                    <div class="panding-page-status-bar hidd" id="panding_task_status_container">
-                        <div class="panding-task-list-btn-container">
-                            <div class="panding-task-list-btn" id="panding_task_list_btn">List</div>
+                    <div class="pending-page-status-bar hidd" id="pending_task_status_container">
+                        <div class="pending-task-list-btn-container">
+                            <div class="pending-task-list-btn" id="pending_task_list_btn">List</div>
                         </div>
-                        <div class="panding-task-control-container" id="panding_task_controller_container">
-                            <svg class="panding-task-qr" aria-hidden="true" data-prefix="fas" data-icon="qrcode"
+                        <div class="pending-task-control-container" id="pending_task_controller_container">
+                            <svg class="pending-task-qr" aria-hidden="true" data-prefix="fas" data-icon="qrcode"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
                                 class="svg-inline--fa fa-qrcode fa-w-14 fa-7x">
                                 <path fill="currentColor"
                                     d="M0 224h192V32H0v192zM64 96h64v64H64V96zm192-64v192h192V32H256zm128 128h-64V96h64v64zM0 480h192V288H0v192zm64-128h64v64H64v-64zm352-64h32v128h-96v-32h-32v96h-64V288h96v32h64v-32zm0 160h32v32h-32v-32zm-64 0h32v32h-32v-32z" />
                             </svg>
-                            <div class="panding-task-update-task" id="panding_task_cancel_btn_selector">Cancel Task
+                            <div class="pending-task-update-task" id="pending_task_cancel_btn_selector">Cancel Task
                             </div>
-                            <div class="panding-task-update-task" id="panding_task_update_btn_selector">Update Task
+                            <div class="pending-task-update-task" id="pending_task_update_btn_selector">Update Task
                             </div>
                         </div>
                     </div>
 
-                    <div class="panding-task-detail-container hidd" id="panding_task_detail_container">
-                        <div class="panding-task-detail-inner-container">
-                            <div class="panding-task-detail-title">
+                    <div class="pending-task-detail-container hidd" id="pending_task_detail_container">
+                        <div class="pending-task-detail-inner-container">
+                            <div class="pending-task-detail-title">
                                 Task Detail
                             </div>
-                            <!-- panding detail first row container -->
-                            <div class="panding-detail-name-container">
+                            <!-- pending detail first row container -->
+                            <div class="pending-detail-name-container">
 
-                                <a href="" target="_blank" class="panding-detail-image-container"
-                                    id="panding_details_profile_image_link">
+                                <a href="" target="_blank" class="pending-detail-image-container"
+                                    id="pending_details_profile_image_link">
                                     <!-- this is for temp -->
-                                    <svg id="panding_details_default_profile_image" class="panding-detail-image"
+                                    <svg id="pending_details_default_profile_image" class="pending-detail-image"
                                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         width="30pt" height="30.000001pt" viewBox="0 0 30 30.000001" version="1.2">
                                         <defs>
@@ -409,87 +409,87 @@
                                     </svg>
 
                                     <!-- image  -->
-                                    <img id="panding_details_profile_image" src="" alt=""
-                                        class="panding-detail-image hidd">
+                                    <img id="pending_details_profile_image" src="" alt=""
+                                        class="pending-detail-image hidd">
                                 </a>
 
-                                <div class="panding-detail-basic-naming-container">
-                                    <div class="panding-details-name" id="panding_details_name">Jaykit kukadiya</div>
-                                    <div class="panding-details-task-waiting-status" id="panding_details_task_waiting">
+                                <div class="pending-detail-basic-naming-container">
+                                    <div class="pending-details-name" id="pending_details_name">Jaykit kukadiya</div>
+                                    <div class="pending-details-task-waiting-status" id="pending_details_task_waiting">
                                         Task is in waiting state</div>
-                                    <div class="panding-details-agent-details-btn hidd"
-                                        id="panding_details_task_accepted">Agent details</div>
-                                    <div class="panding-details-deadline" id="panding_details_task_deadline_timer">
+                                    <div class="pending-details-agent-details-btn hidd"
+                                        id="pending_details_task_accepted">Agent details</div>
+                                    <div class="pending-details-deadline" id="pending_details_task_deadline_timer">
                                         24:15:59</div>
                                 </div>
 
                             </div>
 
 
-                            <div class="panding-detail-address" id="panding_details_task_address">C-803 Blossom homes,
+                            <div class="pending-detail-address" id="pending_details_task_address">C-803 Blossom homes,
                                 near abc circle, Mota Varachha,
                                 Surat, Gujarat 394101, India</div>
-                            <div class="panding-detail-pincode" id="panding_details_task_pincode">394101</div>
-                            <div class="panding-detail-mobile" id="panding_details_task_mobile">7878555204</div>
-                            <div class="panding-detail-message" id="panding_details_task_note">hi i am jaykit kukadiya
+                            <div class="pending-detail-pincode" id="pending_details_task_pincode">394101</div>
+                            <div class="pending-detail-mobile" id="pending_details_task_mobile">7878555204</div>
+                            <div class="pending-detail-message" id="pending_details_task_note">hi i am jaykit kukadiya
                                 and i want to talk with you but
                                 i got certain problems related to connection so i hire the agent and i wish you trust on
                                 this agent. and provide those information which we got from seminar to this agent.</div>
 
-                            <div class="panding-detail-gmap-container">
-                                <div class="panding-detail-google-map" id="panding_details_map_container"></div>
-                                <div class="panding-detail-document-btn-container">
-                                    <a href="" target="_blank" id="panding_details_task_document_btn">
-                                        <div class="panding-detail-proof-document-btn">Document</div>
+                            <div class="pending-detail-gmap-container">
+                                <div class="pending-detail-google-map" id="pending_details_map_container"></div>
+                                <div class="pending-detail-document-btn-container">
+                                    <a href="" target="_blank" id="pending_details_task_document_btn">
+                                        <div class="pending-detail-proof-document-btn">Document</div>
                                     </a>
-                                    <a href="" target="_blank" id="panding_details_task_proof_btn">
-                                        <div class="panding-detail-proof-document-btn">Proof</div>
+                                    <a href="" target="_blank" id="pending_details_task_proof_btn">
+                                        <div class="pending-detail-proof-document-btn">Proof</div>
                                     </a>
-                                    <div class="panding-detail-proof-document-btn"
-                                        id="panding_details_task_generate_otp_btn">Generete otp</div>
+                                    <div class="pending-detail-proof-document-btn"
+                                        id="pending_details_task_generate_otp_btn">Generete otp</div>
                                 </div>
                             </div>
 
 
-                            <div class="panding-task-detail-title">
+                            <div class="pending-task-detail-title">
                                 Payment Detail
                             </div>
 
-                            <div class="panding-task-payment-field">
-                                <div class="panding-task-payment-name">Payment status : </div>
-                                <div class="panding-task-payment-data" id="panding_details_payment_status">Success</div>
+                            <div class="pending-task-payment-field">
+                                <div class="pending-task-payment-name">Payment status : </div>
+                                <div class="pending-task-payment-data" id="pending_details_payment_status">Success</div>
                             </div>
-                            <div class="panding-task-payment-field">
-                                <div class="panding-task-payment-name">Payment Id : </div>
-                                <div class="panding-task-payment-data" id="panding_details_payment_id">
+                            <div class="pending-task-payment-field">
+                                <div class="pending-task-payment-name">Payment Id : </div>
+                                <div class="pending-task-payment-data" id="pending_details_payment_id">
                                     20210506111212800110168295102623134</div>
                             </div>
-                            <div class="panding-task-payment-field">
-                                <div class="panding-task-payment-name">Payment mode : </div>
-                                <div class="panding-task-payment-data" id="panding_details_payment_mode">Success</div>
+                            <div class="pending-task-payment-field">
+                                <div class="pending-task-payment-name">Payment mode : </div>
+                                <div class="pending-task-payment-data" id="pending_details_payment_mode">Success</div>
                             </div>
-                            <div class="panding-task-payment-field">
-                                <div class="panding-task-payment-name">Payment from : </div>
-                                <div class="panding-task-payment-data" id="panding_details_payment_bank">name </div>
+                            <div class="pending-task-payment-field">
+                                <div class="pending-task-payment-name">Payment from : </div>
+                                <div class="pending-task-payment-data" id="pending_details_payment_bank">name </div>
                             </div>
-                            <div class="panding-task-payment-field">
-                                <div class="panding-task-payment-name">Payment Date : </div>
-                                <div class="panding-task-payment-data" id="panding_details_payment_date">Success</div>
+                            <div class="pending-task-payment-field">
+                                <div class="pending-task-payment-name">Payment Date : </div>
+                                <div class="pending-task-payment-data" id="pending_details_payment_date">Success</div>
                             </div>
 
 
-                            <div id="panding_details_agent_block" class="panding-task-agent-detail-container hidd">
-                                <div class="panding-task-detail-title">
+                            <div id="pending_details_agent_block" class="pending-task-agent-detail-container hidd">
+                                <div class="pending-task-detail-title">
                                     Agent Details
                                 </div>
 
-                                <div class="panding-detail-name-container">
+                                <div class="pending-detail-name-container">
 
-                                    <a href="" target="_blank" class="panding-detail-image-container"
-                                        id="panding_details_agent_profile_image_link">
+                                    <a href="" target="_blank" class="pending-detail-image-container"
+                                        id="pending_details_agent_profile_image_link">
                                         <!-- this is for temp -->
-                                        <svg id="panding_details_agent_default_profile_image"
-                                            class="panding-detail-image" xmlns="http://www.w3.org/2000/svg"
+                                        <svg id="pending_details_agent_default_profile_image"
+                                            class="pending-detail-image" xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt" height="30.000001pt"
                                             viewBox="0 0 30 30.000001" version="1.2">
                                             <defs>
@@ -517,36 +517,36 @@
                                         </svg>
 
                                         <!-- image  -->
-                                        <img id="panding_details_agent_profile_image" src="" alt=""
-                                            class="panding-detail-image hidd">
+                                        <img id="pending_details_agent_profile_image" src="" alt=""
+                                            class="pending-detail-image hidd">
                                     </a>
 
-                                    <div class="panding-detail-basic-naming-container">
-                                        <div class="panding-detail-agent-half-field" id="panding_details_agent_name">
+                                    <div class="pending-detail-basic-naming-container">
+                                        <div class="pending-detail-agent-half-field" id="pending_details_agent_name">
                                             Mayur kukadiya</div>
-                                        <div class="panding-detail-agent-half-field" id="panding_details_agent_mobile">
+                                        <div class="pending-detail-agent-half-field" id="pending_details_agent_mobile">
                                             7878999636</div>
-                                        <div class="panding-detail-agent-gender-container">
-                                            <div class="panding-task-agent-gender-img-container">
-                                                <img class="panding-task-agent-gender-img"
-                                                    id="panding_details_agent_gender_denoter"
+                                        <div class="pending-detail-agent-gender-container">
+                                            <div class="pending-task-agent-gender-img-container">
+                                                <img class="pending-task-agent-gender-img"
+                                                    id="pending_details_agent_gender_denoter"
                                                     src="{% static 'icon/girl.svg' %}" alt="">
                                             </div>
-                                            <div class="panding-task-agent-gender-text"
-                                                id="panding_details_agent_gender">Female</div>
+                                            <div class="pending-task-agent-gender-text"
+                                                id="pending_details_agent_gender">Female</div>
                                         </div>
                                     </div>
 
                                 </div>
 
-                                <div class="panding-detail-agent-half-field">accepted at : <span
-                                        id="panding_details_agent_accepted_time"></span></div>
-                                <div class="panding-datail-agent-button-container">
-                                    <a href="" id="panding_details_agent_track_agent_btn"
-                                        class="panding-task-agent-button" target="_blank">Track agent</a>
-                                    <div class="panding-task-agent-button" id="panding_details_agent_remove_agent_btn">
+                                <div class="pending-detail-agent-half-field">accepted at : <span
+                                        id="pending_details_agent_accepted_time"></span></div>
+                                <div class="pending-datail-agent-button-container">
+                                    <a href="" id="pending_details_agent_track_agent_btn"
+                                        class="pending-task-agent-button" target="_blank">Track agent</a>
+                                    <div class="pending-task-agent-button" id="pending_details_agent_remove_agent_btn">
                                         Remove agent</div>
-                                    <div class="panding-task-agent-button" id="panding_details_agent_message_agent_btn">
+                                    <div class="pending-task-agent-button" id="pending_details_agent_message_agent_btn">
                                         Message agent</div>
                                 </div>
 
@@ -555,41 +555,41 @@
                         </div>
                     </div>
 
-                    <div id="panding_task_empty_detail_container" class="panding-task-empty-detail-container">
+                    <div id="pending_task_empty_detail_container" class="pending-task-empty-detail-container">
                         No tasks are assigned
                     </div>
 
 
-                    <div class="popup-outer-container hidd" id="panding_list_popup">
-                        <div class="panding-task-list-inner-container">
+                    <div class="popup-outer-container hidd" id="pending_list_popup">
+                        <div class="pending-task-list-inner-container">
 
-                            <div class="panding-task-list-title">
+                            <div class="pending-task-list-title">
                                 Your Tasks
                             </div>
-                            <div class="panding-task-list-inner-inner-container" id="panding_task_list_container">
-                                {% for task in panding_tasks %}
-                                <div class="panding-task-list-task" id="panding_task_selector_{{task.id}}">
+                            <div class="pending-task-list-inner-inner-container" id="pending_task_list_container">
+                                {% for task in pending_tasks %}
+                                <div class="pending-task-list-task" id="pending_task_selector_{{task.id}}">
                                     <img src="/media/{{task.task_detail_link.image}}" alt=""
-                                        class="panding-task-list-task-img">
-                                    <div class="panding-task-list-task-name">{{task.task_detail_link.name}}</div>
-                                    <div class="panding-task-list-task-select-btn" id="panding_task_select_{{task.id}}">
+                                        class="pending-task-list-task-img">
+                                    <div class="pending-task-list-task-name">{{task.task_detail_link.name}}</div>
+                                    <div class="pending-task-list-task-select-btn" id="pending_task_select_{{task.id}}">
                                         Select</div>
                                 </div>
 
                                 <!-- store id in array -->
                                 <script>
-                                    panding_task_detail['id'].push("{{task.id}}");
+                                    pending_task_detail['id'].push("{{task.id}}");
                                 </script>
                                 {% endfor%}
                                 <script>
-                                    panding_task_select_listener();
+                                    pending_task_select_listener();
                                 </script>
                             </div>
 
 
 
 
-                            <svg id="panding_list_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                            <svg id="pending_list_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
                                 width="512" height="512" viewBox="0 0 384 384" version="1.2">
                                 <defs>
                                     <clipPath id="a">
@@ -626,13 +626,13 @@
                     </div>
 
                     <!-- update tasks -->
-                    <div class="popup-outer-container hidd" id="panding_update_popup">
-                        <div class="panding-task-update-inner-container">
+                    <div class="popup-outer-container hidd" id="pending_update_popup">
+                        <div class="pending-task-update-inner-container">
 
-                            <div class="panding-task-update-title">
+                            <div class="pending-task-update-title">
                                 Update Task
                             </div>
-                            <div class="panding-task-update-inner-inner-container" id="panding_task_update_container">
+                            <div class="pending-task-update-inner-inner-container" id="pending_task_update_container">
                                 <div class="add-page-form-img-outer-container">
 
                                     <div class="add-page-form-img-inner-container"
@@ -752,7 +752,7 @@
 
 
 
-                            <svg id="panding_update_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                            <svg id="pending_update_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
                                 width="512" height="512" viewBox="0 0 384 384" version="1.2">
                                 <defs>
                                     <clipPath id="a">
@@ -918,9 +918,9 @@
                                         src="{% static 'icon/female_symbol.svg' %}" alt="">
                                     {% endif %}
                                     
-                                    {% if completed_task_completed_obj.refund_status == "panding" %}
+                                    {% if completed_task_completed_obj.refund_status == "pending" %}
                                     <img class="completed-page-cancelled-task-detail-refund"
-                                        src="{% static 'icon/panding_round.svg' %}" alt="">
+                                        src="{% static 'icon/pending_round.svg' %}" alt="">
                                     {% else %}
                                     <img class="completed-page-cancelled-task-detail-refund"
                                         src="{% static 'icon/true_round.svg' %}" alt="">
@@ -958,9 +958,9 @@
 
                 <!-- moredetail container -->
                 <div class="popup-outer-container hidd" id="completed_detail_popup">
-                    <div class="panding-task-update-inner-container">
+                    <div class="pending-task-update-inner-container">
 
-                        <div class="panding-task-update-title">
+                        <div class="pending-task-update-title">
                             Task details
                         </div>
                         <div class="completed-page-detail-part-list-container">
@@ -993,34 +993,34 @@
                             </g>
                         </svg>
 
-                        <div class="panding-task-update-inner-inner-container" style="height: calc( 100% - 124px);"
+                        <div class="pending-task-update-inner-inner-container" style="height: calc( 100% - 124px);"
                             id="completed_detail_popup_detail_container_basic_info">
 
-                            <div class="panding-detail-name-container">
-                                <div class="panding-detail-basic-naming-container">
-                                    <div class="panding-details-name flx">
+                            <div class="pending-detail-name-container">
+                                <div class="pending-detail-basic-naming-container">
+                                    <div class="pending-details-name flx">
                                         <div class="completed-task-more-detail-lable">Task Reference Id</div>
                                         <div class="completed-task-more-detail-field"
                                             id="completed_task_more_detail_ref_id">:7845</div>
                                     </div>
-                                    <div class="panding-details-task-waiting-status flx">
+                                    <div class="pending-details-task-waiting-status flx">
                                         <div class="completed-task-more-detail-lable">Task Name </div>
                                         <div class="completed-task-more-detail-field"
                                             id="completed_task_more_detail_task_name">:Jaykit kukadiya</div>
                                     </div>
 
-                                    <div class="panding-details-deadline flx">
+                                    <div class="pending-details-deadline flx">
                                         <div class="completed-task-more-detail-lable">Task Gender </div>
                                         <div class="completed-task-more-detail-field"
                                             id="completed_task_more_detail_task_gender">:Male</div>
                                     </div>
                                 </div>
 
-                                <a href="" target="_blank" class="panding-detail-image-container"
+                                <a href="" target="_blank" class="pending-detail-image-container"
                                     id="completed_task_more_details_default_profile_image_link">
                                     <!-- this is for temp -->
                                     <svg id="completed_task_more_details_default_profile_image"
-                                        class="panding-detail-image" xmlns="http://www.w3.org/2000/svg"
+                                        class="pending-detail-image" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt" height="30.000001pt"
                                         viewBox="0 0 30 30.000001" version="1.2">
                                         <defs>
@@ -1048,7 +1048,7 @@
 
                                     <!-- image  -->
                                     <img id="completed_task_more_details_profile_image" src="" alt=""
-                                        class="panding-detail-image hidd">
+                                        class="pending-detail-image hidd">
                                 </a>
 
 
@@ -1056,40 +1056,40 @@
                             </div>
 
 
-                            <div class="panding-detail-address flx">
+                            <div class="pending-detail-address flx">
                                 <div class="completed-task-more-detail-lable">Task Address </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_detail_task_address">: C-803 Blossom homes,
                                     near abc circle, Mota Varachha,
                                     Surat, Gujarat 394101, India</div>
                             </div>
-                            <div class="panding-detail-pincode flx">
+                            <div class="pending-detail-pincode flx">
                                 <div class="completed-task-more-detail-lable">Task Pincode </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_detail_task_pincode">:394001</div>
                             </div>
-                            <div class="panding-detail-mobile flx">
+                            <div class="pending-detail-mobile flx">
                                 <div class="completed-task-more-detail-lable">Task Mobile </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_detail_task_mobile">:7845124578</div>
                             </div>
-                            <div class="panding-detail-mobile flx">
+                            <div class="pending-detail-mobile flx">
                                 <div class="completed-task-more-detail-lable">Task accepted </div>
                                 <img src="" alt="" class="completed-task-more-detail-task-accepted-img"
                                     id="completed_task_more_detail_task_accepted"></img>
                             </div>
-                            <div class="panding-detail-mobile flx hidd"
+                            <div class="pending-detail-mobile flx hidd"
                                 id="completed_task_more_detail_task_accepted_time_container">
                                 <div class="completed-task-more-detail-lable">Task Accepted At </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_detail_task_accepted_time">:today</div>
                             </div>
-                            <div class="panding-detail-mobile flx">
+                            <div class="pending-detail-mobile flx">
                                 <div class="completed-task-more-detail-lable">Task Completed At </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_detail_task_completed_time">:today</div>
                             </div>
-                            <div class="panding-detail-message flx">
+                            <div class="pending-detail-message flx">
 
                                 <div class="completed-task-more-detail-lable">Task Note </div>
                                 <div class="completed-task-more-detail-field" id="completed_task_more_detail_task_note">
@@ -1104,10 +1104,10 @@
 
                             <div class="completed-detail-document-btn-container">
                                 <a href="" target="_blank" id="completed_task_more_detail_task_document">
-                                    <div class="panding-detail-proof-document-btn">Document</div>
+                                    <div class="pending-detail-proof-document-btn">Document</div>
                                 </a>
                                 <a href="" target="_blank" id="completed_task_more_detail_task_proof">
-                                    <div class="panding-detail-proof-document-btn">Proof</div>
+                                    <div class="pending-detail-proof-document-btn">Proof</div>
                                 </a>
                             </div>
                             <div class="completed-detail-google-map flx" id="completed_details_map_container">
@@ -1118,83 +1118,83 @@
 
                         </div>
 
-                        <div class="panding-task-update-inner-inner-container hidd"
+                        <div class="pending-task-update-inner-inner-container hidd"
                             id="completed_detail_popup_detail_container_payment_info">
 
-                            <div class="panding-task-payment-field">
+                            <div class="pending-task-payment-field">
                                 <div class="completed-task-more-detail-lable">Payment status : </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_details_payment_status">Success</div>
                             </div>
-                            <div class="panding-task-payment-field">
+                            <div class="pending-task-payment-field">
                                 <div class="completed-task-more-detail-lable">Payment Id : </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_details_payment_id">
                                     20210506111212800110168295102623134</div>
                             </div>
-                            <div class="panding-task-payment-field">
+                            <div class="pending-task-payment-field">
                                 <div class="completed-task-more-detail-lable">Payment mode : </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_details_payment_mode">Success</div>
                             </div>
-                            <div class="panding-task-payment-field">
+                            <div class="pending-task-payment-field">
                                 <div class="completed-task-more-detail-lable">Payment from : </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_details_payment_bank">name </div>
                             </div>
-                            <div class="panding-task-payment-field">
+                            <div class="pending-task-payment-field">
                                 <div class="completed-task-more-detail-lable">Payment Date : </div>
                                 <div class="completed-task-more-detail-field"
                                     id="completed_task_more_details_payment_date">Success</div>
                             </div>
 
                         </div>
-                        <div class="panding-task-update-inner-inner-container hidd"
+                        <div class="pending-task-update-inner-inner-container hidd"
                             id="completed_detail_popup_detail_container_agent_info">
 
-                            <div class="panding-detail-name-container">
+                            <div class="pending-detail-name-container">
 
 
-                                <!-- <div class="panding-detail-basic-naming-container">
-                                    <div class="panding-detail-agent-half-field" id="panding_details_agent_name">
+                                <!-- <div class="pending-detail-basic-naming-container">
+                                    <div class="pending-detail-agent-half-field" id="pending_details_agent_name">
                                         Mayur kukadiya</div>
-                                    <div class="panding-detail-agent-half-field" id="panding_details_agent_mobile">
+                                    <div class="pending-detail-agent-half-field" id="pending_details_agent_mobile">
                                         7878999636</div>
-                                    <div class="panding-detail-agent-gender-container">
-                                        <div class="panding-task-agent-gender-img-container">
-                                            <img class="panding-task-agent-gender-img"
-                                                id="panding_details_agent_gender_denoter"
+                                    <div class="pending-detail-agent-gender-container">
+                                        <div class="pending-task-agent-gender-img-container">
+                                            <img class="pending-task-agent-gender-img"
+                                                id="pending_details_agent_gender_denoter"
                                                 src="{% static 'icon/male_symbol.svg' %}" alt="">
                                         </div>
-                                        <div class="panding-task-agent-gender-text"
-                                            id="panding_details_agent_gender">Female</div>
+                                        <div class="pending-task-agent-gender-text"
+                                            id="pending_details_agent_gender">Female</div>
                                     </div>
                                 </div> -->
 
-                                <div class="panding-detail-basic-naming-container">
-                                    <div class="panding-details-task-waiting-status flx">
+                                <div class="pending-detail-basic-naming-container">
+                                    <div class="pending-details-task-waiting-status flx">
                                         <div class="completed-task-more-detail-lable">Agent Name </div>
                                         <div class="completed-task-more-detail-field"
                                             id="completed_task_more_detail_agent_name">:Jaykit kukadiya</div>
                                     </div>
 
-                                    <div class="panding-details-name flx">
+                                    <div class="pending-details-name flx">
                                         <div class="completed-task-more-detail-lable">Agent Mobile</div>
                                         <div class="completed-task-more-detail-field"
                                             id="completed_task_more_detail_agent_mobile">:7845</div>
                                     </div>
-                                    <div class="panding-details-deadline flx">
+                                    <div class="pending-details-deadline flx">
                                         <div class="completed-task-more-detail-lable">Agent Gender </div>
                                         <div class="completed-task-more-detail-field"
                                             id="completed_task_more_detail_agent_gender">:Male</div>
                                     </div>
                                 </div>
 
-                                <a href="" target="_blank" class="panding-detail-image-container"
+                                <a href="" target="_blank" class="pending-detail-image-container"
                                     id="completed_task_more_details_agent_profile_image_link">
                                     <!-- this is for temp -->
                                     <svg id="completed_task_more_details_agent_default_profile_image"
-                                        class="panding-detail-image" xmlns="http://www.w3.org/2000/svg"
+                                        class="pending-detail-image" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="30pt" height="30.000001pt"
                                         viewBox="0 0 30 30.000001" version="1.2">
                                         <defs>
@@ -1222,21 +1222,21 @@
 
                                     <!-- image  -->
                                     <img id="completed_task_more_details_agent_profile_image" src="" alt=""
-                                        class="panding-detail-image hidd">
+                                        class="pending-detail-image hidd">
                                 </a>
 
 
                             </div>
 
-                            <!-- <div class="panding-detail-agent-half-field">accepted at : <span
-                                    id="panding_details_agent_accepted_time"></span></div> -->
-                            <div class="panding-datail-agent-button-container">
-                                <div class="panding-task-agent-button" id="">
+                            <!-- <div class="pending-detail-agent-half-field">accepted at : <span
+                                    id="pending_details_agent_accepted_time"></span></div> -->
+                            <div class="pending-datail-agent-button-container">
+                                <div class="pending-task-agent-button" id="">
                                     Message agent</div>
                             </div>
 
                         </div>
-                        <div class="panding-task-update-inner-inner-container hidd"
+                        <div class="pending-task-update-inner-inner-container hidd"
                             id="completed_detail_popup_detail_container_refund_info">dfg
                         </div>
                     </div>

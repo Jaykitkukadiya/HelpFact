@@ -586,20 +586,20 @@ a {
 
 
 
-/* panding css */
+/* pending css */
 
-.deshboard-page-panding {
+.deshboard-page-pending {
     display: none;
 }
 
-.panding-page-container {
+.pending-page-container {
     margin: 20px;
     min-height: 500px;
     border-radius: 5px;
 }
 
 
-.panding-page-status-bar {
+.pending-page-status-bar {
     background-color: white;
     height: 50px;
     margin-bottom: 10px;
@@ -610,12 +610,12 @@ a {
 
 }
 
-.panding-task-list-btn-container {
+.pending-task-list-btn-container {
     width: 140px;
 }
 
 
-.panding-task-list-btn {
+.pending-task-list-btn {
     font-family: -webkit-pictograph;
     font-weight: 500;
     padding: 0px 20px;
@@ -631,19 +631,19 @@ a {
     transition: all 0.2s ease-in;
 }
 
-.panding-task-list-btn:hover {
+.pending-task-list-btn:hover {
     background-color: #1667c4;
 }
 
-.panding-task-list-btn:active {
+.pending-task-list-btn:active {
     background-color: var(--site-color-dark);
 }
 
-.panding-task-control-container {
+.pending-task-control-container {
     display: flex;
 }
 
-.panding-task-qr {
+.pending-task-qr {
     width: 20px;
     height: 20px;
     padding: 5px;
@@ -651,12 +651,12 @@ a {
     border-radius: 5px;
 }
 
-.panding-task-qr:hover {
+.pending-task-qr:hover {
     /* background-color:var(--site-color-dark); */
     color: #fc363b;
 }
 
-.panding-task-update-task {
+.pending-task-update-task {
     font-family: -webkit-pictograph;
     font-weight: 500;
     padding: 0px 20px;
@@ -672,16 +672,16 @@ a {
     transition: all 0.2s ease-in;
 }
 
-.panding-task-update-task:hover {
+.pending-task-update-task:hover {
     background-color: #1667c4;
 }
 
-.panding-task-update-task:active {
+.pending-task-update-task:active {
     background-color: var(--site-color-dark);
 }
 
 
-.panding-task-empty-detail-container {
+.pending-task-empty-detail-container {
     background-color: white;
     min-height: 450px;
     border-radius: 5px;
@@ -696,7 +696,7 @@ a {
 
 }
 
-.panding-task-detail-container {
+.pending-task-detail-container {
     background-color: white;
     min-height: 450px;
     border-radius: 5px;
@@ -705,12 +705,12 @@ a {
 
 }
 
-.panding-task-detail-inner-container {
+.pending-task-detail-inner-container {
     min-height: 450px;
     width: 700px;
 }
 
-.panding-task-detail-title {
+.pending-task-detail-title {
     padding: 20px 10px;
     font-family: var(--title-font-family);
     font-size: x-large;
@@ -719,12 +719,12 @@ a {
 }
 
 
-.panding-detail-name-container {
+.pending-detail-name-container {
     display: flex;
     width: 100%;
 }
 
-.panding-detail-image-container {
+.pending-detail-image-container {
     width: 164px;
     height: 144px;
     border-radius: 5px;
@@ -734,21 +734,21 @@ a {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.panding-detail-image {
+.pending-detail-image {
     margin: 10px;
     width: calc(100% - 20px);
     height: calc(100% - 20px);
     color: var(--site-color);
 }
 
-.panding-detail-basic-naming-container {
+.pending-detail-basic-naming-container {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: calc(100% - 184px);
 }
 
-.panding-details-name {
+.pending-details-name {
     font-family: -webkit-pictograph;
     font-weight: 500;
     line-height: 30px;
@@ -757,7 +757,7 @@ a {
     margin: 10px
 }
 
-.panding-details-task-waiting-status {
+.pending-details-task-waiting-status {
     padding-left: 10px;
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
@@ -766,7 +766,7 @@ a {
     margin: 10px;
 }
 
-.panding-details-agent-details-btn {
+.pending-details-agent-details-btn {
     font-family: -webkit-pictograph;
     background-color: var(--site-color);
     font-weight: 500;
@@ -783,16 +783,16 @@ a {
     transition: all 0.2s ease-in;
 }
 
-.panding-details-agent-details-btn:hover {
+.pending-details-agent-details-btn:hover {
     background-color: #1667c4;
     /* box-shadow: 0px 0px 6px -2px var(--site-color); */
 }
 
-.panding-details-agent-details-btn:active {
+.pending-details-agent-details-btn:active {
     background-color: var(--site-color-dark);
 }
 
-.panding-details-deadline {
+.pending-details-deadline {
     padding-left: 10px;
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
@@ -802,7 +802,7 @@ a {
 }
 
 
-.panding-detail-address {
+.pending-detail-address {
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
     font-weight: 500;
@@ -815,7 +815,7 @@ a {
     overflow-y: auto;
 }
 
-.panding-detail-pincode {
+.pending-detail-pincode {
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
     font-weight: 500;
@@ -826,7 +826,7 @@ a {
 
 }
 
-.panding-detail-mobile {
+.pending-detail-mobile {
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
     font-weight: 500;
@@ -836,7 +836,7 @@ a {
     line-height: 30px;
 }
 
-.panding-detail-message {
+.pending-detail-message {
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
     font-weight: 500;
@@ -850,14 +850,14 @@ a {
 }
 
 
-.panding-detail-gmap-container {
+.pending-detail-gmap-container {
     margin: 10px;
     width: calc(100% - 20px);
     display: flex;
 
 }
 
-.panding-detail-google-map {
+.pending-detail-google-map {
     width: calc(60% - 20px);
     height: 180px;
     padding: 10px;
@@ -866,7 +866,7 @@ a {
     background-color: var(--detail-background);
 }
 
-.panding-detail-document-btn-container {
+.pending-detail-document-btn-container {
     width: calc(40% - 20px);
     padding: 20px;
     display: flex;
@@ -875,7 +875,7 @@ a {
 }
 
 
-.panding-detail-proof-document-btn {
+.pending-detail-proof-document-btn {
     font-family: -webkit-pictograph;
     background-color: var(--site-color);
     font-weight: 500;
@@ -891,15 +891,15 @@ a {
     transition: all 0.2s ease-in;
 }
 
-.panding-detail-proof-document-btn:hover {
+.pending-detail-proof-document-btn:hover {
     background-color: #1667c4;
 }
 
-.panding-detail-proof-document-btn:active {
+.pending-detail-proof-document-btn:active {
     background-color: var(--site-color-dark);
 }
 
-.panding-task-payment-field {
+.pending-task-payment-field {
     background-color: var(--detail-background);
     font-family: -webkit-pictograph;
     font-weight: 500;
@@ -910,22 +910,22 @@ a {
     display: flex;
 }
 
-.panding-task-payment-name {
+.pending-task-payment-name {
     width: 200px;
 }
 
-.panding-task-payment-data {
+.pending-task-payment-data {
     width: calc(100% - 200px);
 }
 
 
 
-.panding-task-agent-detail-container {
+.pending-task-agent-detail-container {
     min-height: 450px;
     width: 700px;
 }
 
-.panding-detail-agent-half-field {
+.pending-detail-agent-half-field {
     font-family: -webkit-pictograph;
     font-weight: 500;
     line-height: 30px;
@@ -935,22 +935,22 @@ a {
 
 }
 
-.panding-detail-agent-gender-container {
+.pending-detail-agent-gender-container {
     margin: 10px 0px;
     display: flex;
 }
 
-.panding-task-agent-gender-img-container {
+.pending-task-agent-gender-img-container {
     padding: 0px 10px;
     width: 30px;
 }
 
-.panding-task-agent-gender-img {
+.pending-task-agent-gender-img {
     width: 30px;
     height: 30px;
 }
 
-.panding-task-agent-gender-text {
+.pending-task-agent-gender-text {
     line-height: 30px;
     font-family: -webkit-pictograph;
     padding-left: 10px;
@@ -958,7 +958,7 @@ a {
     background-color: var(--detail-background);
 }
 
-.panding-datail-agent-button-container {
+.pending-datail-agent-button-container {
     display: flex;
     margin: 10px;
     height: 50px;
@@ -967,7 +967,7 @@ a {
 
 
 
-.panding-task-agent-button {
+.pending-task-agent-button {
     font-family: -webkit-pictograph;
     font-weight: 500;
     padding: 0px 20px;
@@ -983,17 +983,17 @@ a {
     transition: all 0.2s ease-in;
 }
 
-.panding-task-agent-button:hover {
+.pending-task-agent-button:hover {
     background-color: #1667c4;
 }
 
-.panding-task-agent-button:active {
+.pending-task-agent-button:active {
     background-color: var(--site-color-dark);
 }
 
 
 
-.panding-task-list-inner-container {
+.pending-task-list-inner-container {
 
     position: relative;
     box-shadow: 0px 0px 8px -5px var(--site-color);
@@ -1006,14 +1006,14 @@ a {
 
 }
 
-.panding-task-list-inner-inner-container {
+.pending-task-list-inner-inner-container {
     width: 100%;
     height: calc(100% - 80px);
     overflow-y: auto;
     border-radius: 10px;
 }
 
-.panding-task-list-title {
+.pending-task-list-title {
     font-family: var(--title-font-family);
     color: var(--font-color);
     font-size: x-large;
@@ -1021,7 +1021,7 @@ a {
     text-align: center;
 }
 
-.panding-task-list-task {
+.pending-task-list-task {
     margin: 5px 0px;
     width: calc(100%-20px);
     border-radius: 10px;
@@ -1032,14 +1032,14 @@ a {
     display: flex;
 }
 
-.panding-task-list-task-img {
+.pending-task-list-task-img {
     height: 60px;
     width: 60px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
-.panding-task-list-task-name {
+.pending-task-list-task-name {
     line-height: 60px;
     width: calc(70% - 120px);
     font-family: -webkit-pictograph;
@@ -1049,7 +1049,7 @@ a {
 }
 
 
-.panding-task-list-task-select-btn {
+.pending-task-list-task-select-btn {
     font-family: -webkit-pictograph;
     font-weight: 500;
     padding: 0px 20px;
@@ -1071,7 +1071,7 @@ a {
 
 
 /* update task css */
-.panding-task-update-inner-container {
+.pending-task-update-inner-container {
     position: relative;
     box-shadow: 0px 0px 8px -5px var(--site-color);
     width: 80%;
@@ -1084,14 +1084,14 @@ a {
 
 }
 
-.panding-task-update-inner-inner-container {
+.pending-task-update-inner-inner-container {
     width: 100%;
     height: calc(100% - 80px);
     overflow-y: auto;
     border-radius: 10px;
 }
 
-.panding-task-update-title {
+.pending-task-update-title {
     font-family: var(--title-font-family);
     color: var(--font-color);
     font-size: x-large;

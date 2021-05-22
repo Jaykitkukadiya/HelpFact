@@ -17,7 +17,7 @@ ch_ly = get_channel_layer()
 @receiver(post_save, sender=User)
 def user_trigger(sender, instance, created, **kwargs):
     if created:
-        ext_obj = exntend_user_details.objects.create(user = instance)
+        ext_obj = extended_user_details.objects.create(user = instance)
         ext_obj.save()
 
 
@@ -34,13 +34,13 @@ def task_detail_triggers(sender, instance, created, **kwargs):
                 data[field_name] = str(getattr(instance , field_name))
             if "image" in updated_fields or "proof" in updated_fields or "document" in updated_fields or "mobile_number" in updated_fields or "deadline" in updated_fields or "address" in updated_fields or "gmaplink" in updated_fields or "note" in updated_fields:
                 if "deadline" in updated_fields:
-                    taskobj = Task.objects.filter(id = int(instance.panding_task.task_expire_id))
+                    taskobj = Task.objects.filter(id = int(instance.pending_task.task_expire_id))
                     taskobj.delete()
                     dt_object = int(instance.deadline)/1000 - int(datetime.timestamp(datetime.now()))
-                    task_expire_obj = expire_task(int(instance.user.id) ,int(instance.panding_task.id) , schedule=int(dt_object))
-                    instance.panding_task.task_expire_id = task_expire_obj.id
-                    instance.panding_task.save()
-                if instance.panding_task.status == "initilize":
+                    task_expire_obj = expire_task(int(instance.user.id) ,int(instance.pending_task.id) , schedule=int(dt_object))
+                    instance.pending_task.task_expire_id = task_expire_obj.id
+                    instance.pending_task.save()
+                if instance.pending_task.status == "initilize":
                     allagents = {}
                     if "deadline" in updated_fields:
                         allagents["deadline"] = instance.deadline
@@ -56,33 +56,33 @@ def task_detail_triggers(sender, instance, created, **kwargs):
                             'type': 'sendevent',
                             'typex': 'updated',
                             'accepted' : 0,
-                            'panding_id': instance.panding_task.id,
+                            'pending_id': instance.pending_task.id,
                             'data' : json.dumps(allagents)
                         }
                     )
-                elif instance.panding_task.status == "accepted" and len(online.objects.filter(user= instance.panding_task.panding_task_agent)) > 0:
+                elif instance.pending_task.status == "accepted" and len(online.objects.filter(user= instance.pending_task.pending_task_agent)) > 0:
                     allagents = {}
                     if "deadline" in updated_fields:
                         allagents["deadline"] = instance.deadline
                     if "image" in updated_fields:
                         allagents['image'] = str(instance.image)
                     async_to_sync(ch_ly.send)(
-                        online.objects.filter(user= instance.panding_task.panding_task_agent).first().channel_name,
+                        online.objects.filter(user= instance.pending_task.pending_task_agent).first().channel_name,
                         {
                             'type': 'sendevent',
                             'typex': 'updated',
                             'accepted' : 1,
-                            'panding_id': instance.panding_task.id,
+                            'pending_id': instance.pending_task.id,
                             'data': json.dumps(allagents)
                         }
                     )
-                if len(online.objects.filter(user= instance.panding_task.panding_task_user)) > 0:
+                if len(online.objects.filter(user= instance.pending_task.pending_task_user)) > 0:
                     async_to_sync(ch_ly.send)(
-                        online.objects.filter(user= instance.panding_task.panding_task_user).first().channel_name,
+                        online.objects.filter(user= instance.pending_task.pending_task_user).first().channel_name,
                         {
                             'type': 'sendevent',
                             'typex': 'updated',
-                            'panding_id': instance.panding_task.id,
+                            'pending_id': instance.pending_task.id,
                             'data': json.dumps(data)
                         }
                     )
@@ -103,17 +103,17 @@ def success_payment_triggers(sender , instance , created , **kwargs):
 
                 code = ''.join(random.SystemRandom().choice(
                                     string.ascii_letters + string.digits) for _ in range(7))
-                panding = panding_task.objects.create(task_detail_link=instance.task_detail_link ,panding_task_user = instance.user , payment=instance , otp = code)
+                pending = pending_task.objects.create(task_detail_link=instance.task_detail_link ,pending_task_user = instance.user , payment=instance , otp = code)
 
                 dt_object = int(instance.task_detail_link.deadline)/1000 - int(datetime.timestamp(datetime.now()))
-                task_expire_obj = expire_task(int(instance.user.id) ,int(panding.id) , schedule=int(dt_object))
-                panding.task_expire_id = task_expire_obj.id
-                panding.save()
+                task_expire_obj = expire_task(int(instance.user.id) ,int(pending.id) , schedule=int(dt_object))
+                pending.task_expire_id = task_expire_obj.id
+                pending.save()
             else:
-                pand_obj = instance.panding_task_set.first()
-                panding_id = pand_obj.id
+                pand_obj = instance.pending_task_set.first()
+                pending_id = pand_obj.id
                 if pand_obj.status == "accepted": 
-                    completed_task_obj = completed_task.objects.create(payment = pand_obj.payment , task_detail_link=pand_obj.task_detail_link , completed_task_agent=pand_obj.panding_task_agent , completed_task_user=pand_obj.panding_task_user , status="success" ,refund_status= "-" ,  accepted=pand_obj.status , accept_time=pand_obj.accept_time)
+                    completed_task_obj = completed_task.objects.create(payment = pand_obj.payment , task_detail_link=pand_obj.task_detail_link , completed_task_agent=pand_obj.pending_task_agent , completed_task_user=pand_obj.pending_task_user , status="success" ,refund_status= "-" ,  accepted=pand_obj.status , accept_time=pand_obj.accept_time)
                     owner = online.objects.filter(user = instance.user , state="user")  # check if that user is online or not 
                     if len(owner) > 0 :  #this true if user found in online table
                         owner = owner.first() 
@@ -122,7 +122,7 @@ def success_payment_triggers(sender , instance , created , **kwargs):
                             {
                                 'type': 'sendevent',
                                 'typex' : 'completed',
-                                'panding_id': panding_id,
+                                'pending_id': pending_id,
                                 "image"  : str(completed_task_obj.task_detail_link.image),
                                 "task_name" : completed_task_obj.task_detail_link.name,
                                 "gender" : completed_task_obj.task_detail_link.gender,
@@ -132,7 +132,7 @@ def success_payment_triggers(sender , instance , created , **kwargs):
                         )
 
                         # change here for now
-                    agent = online.objects.filter(user = pand_obj.panding_task_agent , state="agent")  # check if that user is online or not 
+                    agent = online.objects.filter(user = pand_obj.pending_task_agent , state="agent")  # check if that user is online or not 
                     if len(agent) > 0 : #this true if user found in online table
                         agent = agent.first() 
                         async_to_sync(ch_ly.send)(
@@ -140,12 +140,12 @@ def success_payment_triggers(sender , instance , created , **kwargs):
                             {
                                 'type': 'sendevent',
                                 'typex' : 'completed',
-                                'panding_id': pand_obj.id,
+                                'pending_id': pand_obj.id,
                                 "task_id":completed_task_obj.task_detail_link.id,
                                 "image" : str(completed_task_obj.task_detail_link.image),
                                 "name" : completed_task_obj.task_detail_link.name,
                                 "gender" : completed_task_obj.task_detail_link.gender,
-                                "user_mobile" : completed_task_obj.completed_task_user.exntend_user_details.mobile_number,
+                                "user_mobile" : completed_task_obj.completed_task_user.extended_user_details.mobile_number,
                                 "payment_status" : completed_task_obj.payment.agent_payment_status
                             }
                             )
@@ -159,7 +159,7 @@ def success_payment_triggers(sender , instance , created , **kwargs):
             task_obj.delete()
 
 
-@receiver(post_save, sender=panding_task)
+@receiver(post_save, sender=pending_task)
 def task_notification_triggers(sender, instance, created, **kwargs):
     if not created:
         updated_fields = list(kwargs.get("update_fields"))
@@ -174,10 +174,10 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                         {
                             'type': 'sendevent',
                             'typex' : 'accepted',
-                            'panding_id': instance.id,
+                            'pending_id': instance.id,
                         }
                     )
-                agent = online.objects.filter(user = instance.panding_task_agent , state="agent")  # check if that user is online or not 
+                agent = online.objects.filter(user = instance.pending_task_agent , state="agent")  # check if that user is online or not 
                 if len(agent) > 0 : #this true if user found in online table
                     agent = agent.first() 
                     if len(agent.channel_name) > 0:
@@ -186,7 +186,7 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                             {
                                 'type': 'sendevent',
                                 'typex' : 'newtask',
-                                'panding_id': instance.id,
+                                'pending_id': instance.id,
                                 'image': str(instance.task_detail_link.image),
                                 'name': instance.task_detail_link.name,
                                 'mobile': instance.task_detail_link.mobile_number,
@@ -194,7 +194,7 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                                 'deadline': instance.task_detail_link.deadline,
                             }
                         )
-                owner = online.objects.filter(user = instance.panding_task_user , state="user")  # check if that user is online or not 
+                owner = online.objects.filter(user = instance.pending_task_user , state="user")  # check if that user is online or not 
                 if len(owner) > 0 :  #this true if user found in online table
                     owner = owner.first() 
                     if len(owner.channel_name) > 0:
@@ -203,14 +203,14 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                             {
                                 'type': 'sendevent',
                                 'typex' : 'accepted',
-                                'panding_id': instance.id,
+                                'pending_id': instance.id,
                                 'task_name': instance.task_detail_link.name,
-                                'agent_name': instance.panding_task_agent.username,
-                                'agent_mobile': instance.panding_task_agent.exntend_user_details.mobile_number,
-                                'agent_image': str(instance.panding_task_agent.exntend_user_details.image),
+                                'agent_name': instance.pending_task_agent.username,
+                                'agent_mobile': instance.pending_task_agent.extended_user_details.mobile_number,
+                                'agent_image': str(instance.pending_task_agent.extended_user_details.image),
                                 'agent_location': instance.agent_location,
                                 'accepted_time': str(instance.accept_time),
-                                'agent_xender': instance.panding_task_agent.exntend_user_details.xender,
+                                'agent_xender': instance.pending_task_agent.extended_user_details.xender,
                             }
                         )
 
@@ -218,7 +218,7 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                 notify(instance.id , schedule=7)
     else:
         notify(instance.id , schedule=7)
-        print("new panding task is creatd")
+        print("new pending task is creatd")
 
 
 @receiver(post_save, sender=completed_task)
@@ -328,7 +328,7 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 # @receiver(post_save, sender=User)
 # def user_trigger(sender, instance, created, **kwargs):
 #     if created:
-#         ext_obj = exntend_user_details.objects.create(user = instance)
+#         ext_obj = extended_user_details.objects.create(user = instance)
 #         ext_obj.save()
 
 
@@ -347,24 +347,24 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 
 #             code = ''.join(random.SystemRandom().choice(
 #                                 string.ascii_letters + string.digits) for _ in range(7))
-#             panding , pand_created = panding_task.objects.get_or_create(task_detail_link=instance.task_detail_link ,panding_task_user = instance.user , payment=instance)
+#             pending , pand_created = pending_task.objects.get_or_create(task_detail_link=instance.task_detail_link ,pending_task_user = instance.user , payment=instance)
 #             if pand_created:
-#                 panding.otp = code
-#                 panding.save()
+#                 pending.otp = code
+#                 pending.save()
 #             else:
-#                 panding.save()
+#                 pending.save()
 
 #             dt_object = int(instance.task_detail_link.deadline)/1000 - int(datetime.timestamp(datetime.now()))
-#             expire_task(int(instance.user.id) ,int(panding.id) , schedule=int(dt_object))
+#             expire_task(int(instance.user.id) ,int(pending.id) , schedule=int(dt_object))
         
             
 
                 
 #         else:
-#             pand_obj = instance.panding_task_set.first()
-#             panding_id = pand_obj.id
+#             pand_obj = instance.pending_task_set.first()
+#             pending_id = pand_obj.id
 #             if pand_obj.status == "accepted": 
-#                 completed_task.objects.create(payment = pand_obj.payment , task_detail_link=pand_obj.task_detail_link , completed_task_agent=pand_obj.panding_task_agent , completed_task_user=pand_obj.panding_task_user , status="success")
+#                 completed_task.objects.create(payment = pand_obj.payment , task_detail_link=pand_obj.task_detail_link , completed_task_agent=pand_obj.pending_task_agent , completed_task_user=pand_obj.pending_task_user , status="success")
 #                 pand_obj.delete()
 #                 owner = online.objects.filter(user = instance.user , state="user")  # check if that user is online or not 
 #                 if len(owner) > 0 :  #this true if user found in online table
@@ -374,7 +374,7 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 #                         {
 #                             'type': 'sendevent',
 #                             'typex' : 'completed',
-#                             'panding_id': panding_id,
+#                             'pending_id': pending_id,
 #                             'message' : "task completed successfully. for any query contact us with task id."
 #                         }
 #                     )
@@ -389,7 +389,7 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 #         task_obj.delete()
 
 
-# @receiver(post_save, sender=panding_task)
+# @receiver(post_save, sender=pending_task)
 # def task_notification_triggers(sender, instance, created, **kwargs):
 #     if not created and instance.status == "accepted":
 #         async_to_sync(ch_ly.group_send)(
@@ -397,10 +397,10 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 #                 {
 #                     'type': 'sendevent',
 #                     'typex' : 'accepted',
-#                     'panding_id': instance.id,
+#                     'pending_id': instance.id,
 #                 }
 #             )
-#         agent = online.objects.filter(user = instance.panding_task_agent , state="agent")  # check if that user is online or not 
+#         agent = online.objects.filter(user = instance.pending_task_agent , state="agent")  # check if that user is online or not 
 #         if len(agent) > 0 : #this true if user found in online table
 #             agent = agent.first() 
 #             if len(agent.channel_name) > 0:
@@ -409,7 +409,7 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 #                     {
 #                         'type': 'sendevent',
 #                         'typex' : 'newtask',
-#                         'panding_id': instance.id,
+#                         'pending_id': instance.id,
 #                         'image': str(instance.task_detail_link.image),
 #                         'name': instance.task_detail_link.name,
 #                         'mobile': instance.task_detail_link.mobile_number,
@@ -417,7 +417,7 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 #                         'deadline': instance.task_detail_link.deadline,
 #                     }
 #                 )
-#         owner = online.objects.filter(user = instance.panding_task_user , state="user")  # check if that user is online or not 
+#         owner = online.objects.filter(user = instance.pending_task_user , state="user")  # check if that user is online or not 
 #         if len(owner) > 0 :  #this true if user found in online table
 #             owner = owner.first() 
 #             if len(owner.channel_name) > 0:
@@ -426,14 +426,14 @@ def task_noti_trigger(sender, instance, created, **kwargs):
 #                     {
 #                         'type': 'sendevent',
 #                         'typex' : 'accepted',
-#                         'panding_id': instance.id,
+#                         'pending_id': instance.id,
 #                         'task_name': instance.task_detail_link.name,
-#                         'agent_name': instance.panding_task_agent.username,
-#                         'agent_mobile': instance.panding_task_agent.exntend_user_details.mobile_number,
-#                         'agent_image': str(instance.panding_task_agent.exntend_user_details.image),
+#                         'agent_name': instance.pending_task_agent.username,
+#                         'agent_mobile': instance.pending_task_agent.extended_user_details.mobile_number,
+#                         'agent_image': str(instance.pending_task_agent.extended_user_details.image),
 #                         'agent_location': instance.agent_location,
 #                         'accepted_time': str(instance.accept_time),
-#                         'agent_xender': instance.panding_task_agent.exntend_user_details.xender,
+#                         'agent_xender': instance.pending_task_agent.extended_user_details.xender,
 #                     }
 #                 )
 

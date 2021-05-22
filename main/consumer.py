@@ -17,7 +17,7 @@ class expire(WebsocketConsumer):
     def connect(self):
         self.accept()
         user = self.scope["user"]
-        self.group_name = 'grp_%s' % user.exntend_user_details.pincode
+        self.group_name = 'grp_%s' % user.extended_user_details.pincode
     
 
 
