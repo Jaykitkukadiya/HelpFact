@@ -216,6 +216,15 @@ a {
     display: none;
 }
 
+.workboard-profile-title-container
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 20px 0px 20px;
+    height: 30px;
+}
+
 .workboard-page-profile-inner-container{
     margin: 20px;
     min-height: 500px;
@@ -233,7 +242,7 @@ a {
     height: 100%;
     display: flex;
     flex-direction:column;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     align-items: center;
 }
 .workboard-profile-image-photo-container{
@@ -241,6 +250,8 @@ a {
     overflow: hidden;
     height: 200px;
     width: 200px;
+    margin-top: 100px;
+    margin-bottom: 60px;
     position: relative;
 }
 .profile-tint
@@ -261,8 +272,22 @@ a {
     width: 200px;
     height: 200px;
 }
-.workboard-profile-image-photo-btn-container{
-    
+
+.workboard-profile-image-photo-btn{
+    line-height: 30px;
+    width: 200px;
+    text-align: center;
+    color: var(--site-color);
+    border-radius: 20px;
+    font-family: -webkit-pictograph;
+    background-color: var(--site-color);
+    color: white;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.workboard-profile-image-photo-btn:hover
+{
+    background-color:var(--site-color-dark);
 }
 .workboard-page-profile-info-container{
     width:60%;
@@ -271,6 +296,88 @@ a {
     max-height: 100%;
 }
 
+.workboard-profile-detail-detail
+{
+    min-height: calc(90% - 94px);
+    padding: 10px 0px;
+    display: flex;
+    justify-content:space-around;
+    flex-direction: column;
+
+}
+.workboard-field-container
+{
+    /* background-color: var(--detail-background); */
+    font-family: -webkit-pictograph;
+    font-weight: 500;
+    margin: 10px;
+    padding: 0px 10px;
+    width: calc(100% - 40px);
+    line-height: 30px;
+}
+.workboard-profile-lable
+{
+    width: 150px;
+    display: inline-block;
+    font-family: -webkit-pictograph;
+    font-weight: 500;
+    max-height: 100px;
+    text-overflow: wrap;
+    color: var(--title-color);
+}
+.workboard-profile-detail
+{
+    width: calc(100% - 150px);
+    border-radius: 5px;
+    color: var(--title-color);
+}
+
+.workboard-profile-detail-update
+{
+    min-height: calc(90% - 94px);
+    padding: 10px 0px;
+    display: flex;
+    justify-content:space-around;
+    flex-direction: column;
+}
+.workboard-profile-detail-update-input
+{
+    width: calc(100% - 160px);
+    color: var(--title-color);
+    outline: none;
+    padding: 0px 5px;
+    border: none;
+    border-bottom: 1px solid gray;
+    color: black;
+}
+.workboard-profile-detail-update-input-textarea
+{
+    width: calc(100% - 160px);
+    color: var(--title-color);
+    outline: none;
+    padding: 0px 5px;
+    border: none;
+    min-height: 20px;
+    resize: vertical;
+    color: black;
+    border-bottom: 1px solid gray;
+}
+.workboard-profile-update-submit-btn
+{
+    line-height: 30px;
+    width: 150px;
+    text-align: center;
+    color: var(--site-color);
+    border-radius: 20px;
+    font-family: -webkit-pictograph;
+    background-color: var(--site-color);
+    color: white;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.workboard-profile-update-submit-btn:hover{
+    background-color: var(--site-color-dark);
+}
 
 
 /* add page css */
@@ -1296,6 +1403,32 @@ a {
     padding: 10px;
     border-radius: 100%;
     animation: loding_rotater 1.2s linear infinite;
+}
+
+.lower-screen-resolution-notify
+{
+    display: none;
+}
+
+@media only screen and (max-width: 1300px) {
+    .lower-screen-resolution-notify
+    {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width:100%;
+        height: 100vh;
+        backdrop-filter: blur(50px);
+        text-overflow: wrap;
+        color: black;
+        font-family: -webkit-pictograph;
+        text-align:center;
+        background-color:rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
 }
 
 

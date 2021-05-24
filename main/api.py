@@ -1,4 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt , csrf_protect
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework.parsers import JSONParser , FormParser , MultiPartParser
@@ -78,6 +79,7 @@ def signup(request):
         return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
 @csrf_exempt
+@login_required
 def log_out(request):
     if request.method == "POST":
         if str(request.user) != "AnonymousUser":
@@ -377,6 +379,44 @@ def contact_us(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
+
+@csrf_exempt
+@login_required
+@parser_classes([JSONParser, FormParser, MultiPartParser])
+def update_user_profile_img(request):
+    if(request.method == "POST"):
+        ext_obj = request.user.extended_user_details
+        ext_obj.image = request.FILES['updated_profile_img']
+        ext_obj.save()
+        return JsonResponse({"cause": "", "data": {'img_url' : str(ext_obj.image)}, "code": 200, "detail": "profile image updated successfully"}, safe=False)
+    else:
+        return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
+
+@csrf_exempt
+@login_required
+def update_user_profile(request):
+    if(request.method == "POST"):
+        data = JSONParser().parse(request)
+        user_obj = request.user
+        ext_obj = request.user.extended_user_details
+        if 'fname' in data:
+            user_obj.first_name = data['fname']
+        if 'lname' in data:
+            user_obj.last_name = data['lname']
+        if 'email' in data:
+            user_obj.email = data['email']
+        if 'mobile' in data:
+            ext_obj.mobile_number = data['mobile']
+        if 'address' in data:
+            ext_obj.address = data['address']
+        if 'pincode' in data:
+            ext_obj.pincode = data['pincode']
+        
+        user_obj.save()
+        ext_obj.save()
+        return JsonResponse({"cause": "", "data": "", "code": 200, "detail": "profile updated successfully"}, safe=False)
+    else:
+        return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
 @csrf_exempt
 @parser_classes([JSONParser, FormParser, MultiPartParser])

@@ -51,43 +51,40 @@ function get_completed_task_details() {
                 document.getElementById("completed_task_more_info_gender").innerText = result.data.gender;
                 document.getElementById("completed_task_more_info_pincode").innerText = result.data.pincode;
                 document.getElementById("completed_task_more_info_address").innerText = result.data.address;
-                if(result.data.agent_payment_status == "success")
-                {
+                if (result.data.agent_payment_status == "success") {
                     document.getElementById("completed_task_more_info_agent_payment_status").src = `/static/icon/true_round.svg`;
                     document.getElementById("completed_payment_info").classList.remove("hidd");
                 }
-                else if(result.data.agent_payment_status == "pending")
-                {
+                else if (result.data.agent_payment_status == "pending") {
                     document.getElementById("completed_task_more_info_agent_payment_status").src = `/static/icon/pending_round.svg`;
                     document.getElementById("completed_payment_info").classList.remove("hidd");
                 }
-                else if(result.data.agent_payment_status == "fail")
-                {
+                else if (result.data.agent_payment_status == "fail") {
                     document.getElementById("completed_task_more_info_agent_payment_status").src = `/static/icon/false_round.svg`;
                     document.getElementById("completed_payment_info").classList.add("hidd");
                 }
                 document.getElementById("completed_task_more_info_accepted_time").innerText = result.data.accepted_time;
                 document.getElementById("completed_task_more_info_completed_time").innerText = result.data.completed_time;
-                
+
                 document.getElementById("completed_task_more_info_user_name").innerText = result.data.user_name;
                 document.getElementById("completed_task_more_info_user_mobile").innerText = result.data.user_mobile;
                 document.getElementById("completed_task_more_info_user_gender").innerText = result.data.user_gender;
 
                 document.getElementById("completed_task_more_info_user_profile_image").src = `/media/${result.data.user_image}`;
                 document.getElementById("completed_task_more_info_user_profile_image_link").href = `/media/${result.data.user_image}`;
-                
-        
+
+
                 document.getElementById("completed_task_more_info_image").src = `/media/${result.data.image}`;
                 document.getElementById("completed_task_more_info_image_link").href = `/media/${result.data.image}`;
                 short_notification("details fetched", 2000)
-                
+
             } else if (result.code == 405) {
                 short_notification(result.detail, 2000)
             }
         })
-        // .catch((error) => {
-        //     short_notification(error, 2000)
-        // });
+    // .catch((error) => {
+    //     short_notification(error, 2000)
+    // });
     favi.href = "/static/icon/fav.svg";
 
 }
@@ -322,10 +319,11 @@ function load_fixed_map(myLatlng, divid) {
     marker.setMap(map);
 }
 
+var profile_pages = ['profile_detail', 'update_detail']
 
 var pending_pages = ['pending_task_info', 'pending_user_info', 'pending_location_info', 'pending_manage_task']
 var completed_pages = ['completed', 'expired']
-var completed_more_pages = ['completed_task_info', 'completed_location_info', 'completed_user_info',"completed_payment_info"]
+var completed_more_pages = ['completed_task_info', 'completed_location_info', 'completed_user_info', "completed_payment_info"]
 
 
 
@@ -454,9 +452,126 @@ window.onload = () => {
         document.getElementById('workboard_page_completed').style.display = "block";
     });
 
-    //this is default click
-    document.getElementById("sidemenu_profile").click();
     // }); // end of not working loop
+
+
+    document.getElementById("logout_request_btn").onclick = () => {
+        document.getElementById("loading_rounder").classList.remove("hidd");
+        fetch('/api/logout/', {
+            method: 'POST',
+        }).then((response) => response.json())
+            .then((result) => {
+                if (result.code == 200) {
+                    document.getElementById("loading_rounder").classList.add("hidd");
+                    location.href = "/login/";
+                }
+                else {
+                    document.getElementById("loading_rounder").classList.add("hidd");
+                    short_notification(result.detail, 5000);
+                }
+            });
+    }
+
+    Array.from(profile_pages).forEach((pages) => {
+        document.getElementById(`workboard_profile_page_${pages}`).onclick = () => {
+            Array.from(profile_pages).forEach((pagesx) => {
+                document.getElementById(`workboard_profile_page_${pagesx}`).classList.remove("workboard-page-part-selector-selected");
+                document.getElementById(`workboard_profile_page_${pagesx}_page`).classList.add('hidd');
+            });
+            document.getElementById(`workboard_profile_page_${pages}`).classList.add("workboard-page-part-selector-selected");
+            document.getElementById(`workboard_profile_page_${pages}_page`).classList.remove('hidd');
+
+        }
+    });
+
+    document.getElementById("workboard_profile_image_update_btn").onclick = () => {
+        document.getElementById('workboard_profile_image_updated').click();
+    }
+
+    document.getElementById("workboard_profile_image_updated").onchange = () => {
+        if (document.getElementById("workboard_profile_image_updated").files[0] != undefined) {
+
+            var fread = new FileReader();
+            fread.readAsDataURL(document.getElementById("workboard_profile_image_updated").files[0]);
+
+            fread.onload = function (imag) {
+                let profile_update_formdata_image = new FormData()
+                profile_update_formdata_image.append("updated_profile_img", document.getElementById("workboard_profile_image_updated").files[0])
+
+                favi.href = "/static/icon/favicon_offline.svg";
+                document.getElementById("loading_rounder").classList.remove("hidd");
+                fetch("/api/profile/update/image/", {
+                    method: "POST",
+                    body: profile_update_formdata_image
+                }).then((response) => response.json())
+                    .then((result) => {
+                        console.log(result);
+                        document.getElementById("loading_rounder").classList.add("hidd")
+                        if (result.code == 200) {
+                            short_notification(result.detail, 5000);
+                            document.getElementById("workboard_profile_image_show").src = imag.target.result;
+                            document.getElementById("workboard_profile_image_link").href = `/media/${result.data.img_url}`;
+                        }
+                        else {
+                            short_notification(result.detail, 5000);
+                        }
+                    });
+
+                favi.href = "/static/icon/fav.svg";
+
+            };
+        }
+    }
+
+    document.getElementById("workboard_profile_detail_update_btn").onclick = () => {
+        favi.href = "/static/icon/favicon_offline.svg";
+        document.getElementById("loading_rounder").classList.remove("hidd");
+        updated_info = {}
+        if (document.getElementById("workboard_profile_detail_update_fname").value != "") {
+            updated_info['fname'] = document.getElementById("workboard_profile_detail_update_fname").value;
+        }
+        if (document.getElementById("workboard_profile_detail_update_lname").value != "") {
+            updated_info['lname'] = document.getElementById("workboard_profile_detail_update_lname").value;
+        }
+        if (document.getElementById("workboard_profile_detail_update_email").value != "") {
+            updated_info['email'] = document.getElementById("workboard_profile_detail_update_email").value;
+        }
+        if (document.getElementById("workboard_profile_detail_update_mobile").value != "") {
+            updated_info['mobile'] = document.getElementById("workboard_profile_detail_update_mobile").value;
+        }
+        if (document.getElementById("workboard_profile_detail_update_address").value != "") {
+            updated_info['address'] = document.getElementById("workboard_profile_detail_update_address").value;
+        }
+        if (document.getElementById("workboard_profile_detail_update_pincode").value != "") {
+            updated_info['pincode'] = document.getElementById("workboard_profile_detail_update_pincode").value;
+        }
+        fetch("/api/profile/update/", {
+            method: "POST",
+            body: JSON.stringify(updated_info)
+        }).then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                document.getElementById("loading_rounder").classList.add("hidd")
+                if (result.code == 200) {
+                    if ('pincode' in updated_info) {
+                        location.reload();
+                    }
+                    else {
+                        short_notification(result.detail, 5000);
+                        for (let k in updated_info) {
+                            document.getElementById(`workboard_profile_detail_${k}`).innerText = updated_info[k];
+                        }
+                        document.getElementById("workboard_profile_page_profile_detail").click();
+                    }
+                }
+                else {
+                    short_notification(result.detail, 5000);
+                }
+            });
+        favi.href = "/static/icon/fav.svg";
+    }
+
+
 
 
     Array.from(pending_pages).forEach((pages) => {
@@ -562,10 +677,10 @@ window.onload = () => {
                     short_notification(result.detail, 5000);
                 }
             })
-            // .catch((error) => {
-            //     document.getElementById("loading_rounder").classList.add("hidd");
-            //     short_notification(error, 5000);
-            // });
+        // .catch((error) => {
+        //     document.getElementById("loading_rounder").classList.add("hidd");
+        //     short_notification(error, 5000);
+        // });
     }
 
     document.getElementById("completed_task_more_detail").onclick = () => {
@@ -587,8 +702,8 @@ window.onload = () => {
 
     var socket = new WebSocket(`ws://${window.location.host}/ws/expire/`);
     socket.onopen = (e) => {
-        console.log("connected");
         socket.send("agent")
+        document.getElementById("sidemenu_profile").click();
         document.getElementById("loading_rounder").classList.add("hidd");
         short_notification("Connected", 3000);
     }
@@ -604,17 +719,13 @@ window.onload = () => {
             clearInterval(pinging);
             short_notification(data.detail, 5000, `location.href = "/";clearInterval(${pinging});`);
         }
-        else if(data.typex == "updated")
-        {
+        else if (data.typex == "updated") {
             received_data = JSON.parse(data.data);
-            if(data.accepted == 1)
-            {
-                if("deadline" in  received_data)
-                {
-    
+            if (data.accepted == 1) {
+                if ("deadline" in received_data) {
+
                     Array.from(pending_task_detail['selected_deadline_intervals']).forEach((open_inte) => {
-                        if(open_inte.id == `${data.pending_id}`)
-                        {
+                        if (open_inte.id == `${data.pending_id}`) {
                             clearInterval(open_inte.interval);
                             let emt = pending_task_detail['selected_deadline_intervals'].splice(pending_task_detail['selected_deadline_intervals'].indexOf(open_inte), 1);
                         }
@@ -624,25 +735,21 @@ window.onload = () => {
                         interval: open_task_reverse_timer(`pending_task_selector_timer_${data.pending_id}`, Number(received_data.deadline))
                     })
                 }
-                if("image" in received_data)
-                {
+                if ("image" in received_data) {
                     document.getElementById(`pending_task_card_image_${data.pending_id}`).src = `/media/${received_data.image}`;
                 }
                 document.getElementById("pending_more_detail_popup").classList.add("hidd");
                 document.getElementById(`pending_card_${data.pending_id}`).style.backgroundColor = "orange";
                 setTimeout(() => {
                     document.getElementById(`pending_card_${data.pending_id}`).style.backgroundColor = "white";
-                } , 10000)
-                short_notification("your task is updated" , 5000)
+                }, 10000)
+                short_notification("your task is updated", 5000)
             }
-            else
-            {
-                if("deadline" in  received_data)
-                {
+            else {
+                if ("deadline" in received_data) {
 
                     Array.from(open_task_detail['selected_deadline_intervals']).forEach((open_inte) => {
-                        if(open_inte.id == `${data.pending_id}`)
-                        {
+                        if (open_inte.id == `${data.pending_id}`) {
                             clearInterval(open_inte.interval);
                             let emt = open_task_detail["selected_deadline_intervals"].splice(open_task_detail["selected_deadline_intervals"].indexOf(open_inte), 1);
                         }
@@ -652,23 +759,20 @@ window.onload = () => {
                         interval: open_task_reverse_timer(`open_task_deadline_${data.pending_id}`, Number(received_data.deadline))
                     })
                 }
-                if("image" in received_data)
-                {
+                if ("image" in received_data) {
                     document.getElementById(`open_task_image_${data.pending_id}`).src = `/media/${received_data.image}`;
                     document.getElementById(`open_task_image_link_${data.pending_id}`).href = `/media/${received_data.image}`;
                     console.log(document.getElementById(`open_task_image_link_${data.pending_id}`))
                     console.log(`/media/${received_data.image}`)
-                    
+
                 }
-                if("address" in received_data)
-                {
+                if ("address" in received_data) {
                     document.getElementById(`open_task_address_${data.pending_id}`).innerText = received_data.address;
                 }
-                if("gmap" in received_data)
-                {
+                if ("gmap" in received_data) {
                     document.getElementById(`open_task_address_location_link_${data.pending_id}`).href = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${JSON.parse(received_data.gmap).lat},${JSON.parse(received_data.gmap).lng}&output=embed`;
                 }
-            }   
+            }
         }
         else if (data.typex == 'notification') {
             if (!open_task_detail['id'].includes(String(data.pending_id))) {
@@ -773,31 +877,26 @@ window.onload = () => {
             // code for adding task in expired list in completed page
             gender_ico = ""
             payment_ico = ""
-            if(data.gender == "Male")
-            {
+            if (data.gender == "Male") {
                 gender_ico = "male_symbol.svg";
             }
-            else
-            {
+            else {
                 gender_ico = "female_symbol.svg";
             }
-            if(data.payment_status == "success")
-            {
+            if (data.payment_status == "success") {
                 payment_ico = "pending_round.svg"
             }
-            else if(data.payment_status == "pending")
-            {
+            else if (data.payment_status == "pending") {
                 payment_ico = "pending_round.svg"
             }
-            else
-            {
+            else {
                 payment_ico = "false_round.svg"
             }
-            
+
             document.getElementById("workboard_completed_page_part_expired").innerHTML += `
             <div class="workboard-completed-page-expired-task-detail">
                 <img class="workboard-completed-page-expired-task-detail-profile-img"
-                    src="/media/${data.image}" alt="">
+                    src="/static/icon/user_img.svg" alt="">
                 <div class="workboard-completed-page-expired-task-detail-name">
                     ${data.name}</div>
                 <img class="workboard-completed-page-expired-task-detail-gender"
@@ -855,8 +954,7 @@ window.onload = () => {
 
             }
         }
-        else if(data.typex == "completed")
-        {
+        else if (data.typex == "completed") {
             Array.from(pending_task_detail['selected_deadline_intervals']).forEach((inter_id) => {
                 if (inter_id.id == Number(data.pending_id)) {
                     let emt = pending_task_detail["selected_deadline_intervals"].splice(pending_task_detail["selected_deadline_intervals"].indexOf(inter_id), 1)
@@ -876,31 +974,26 @@ window.onload = () => {
             // code for adding task in completed list in completed page
             gender_ico = ""
             payment_ico = ""
-            if(data.gender == "Male")
-            {
+            if (data.gender == "Male") {
                 gender_ico = "male_symbol.svg";
             }
-            else
-            {
+            else {
                 gender_ico = "female_symbol.svg";
             }
-            if(data.payment_status == "success")
-            {
+            if (data.payment_status == "success") {
                 payment_ico = "true_round.svg"
             }
-            else if(data.payment_status == "pending")
-            {
+            else if (data.payment_status == "pending") {
                 payment_ico = "pending_round.svg"
             }
-            else
-            {
+            else {
                 payment_ico = "false_round.svg"
             }
-            
+
             document.getElementById("workboard_completed_page_part_completed").innerHTML += `
             <div class="workboard-completed-page-expired-task-detail">
                 <img class="workboard-completed-page-expired-task-detail-profile-img"
-                    src="/media/${data.image}" alt="">
+                    src="/static/icon/user_img.svg" alt="">
                 <div class="workboard-completed-page-expired-task-detail-name">
                     ${data.name}</div>
                 <img class="workboard-completed-page-expired-task-detail-gender"

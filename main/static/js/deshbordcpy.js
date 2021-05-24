@@ -1,7 +1,7 @@
 
 document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-        document.getElementById("loading_rounder").classList.add("hidd");
+        short_notification("Page Loaded. Wait for a while we connect.", 10000)  
     }
 };
 
@@ -254,18 +254,18 @@ function generate_reverse_timer(task_id, datestr) {
 
 
 
-
+var profile_pages = ['profile_detail', 'update_detail']
 
 var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_pending', 'sidemenu_completed']
-var deshboard_pages = ['deshboard_page_profile', 'deshboard_page_add', 'deshboard_page_pending', 'deshboard_page_completed']
+var dashboard_pages = ['dashboard_page_profile', 'dashboard_page_add', 'dashboard_page_pending', 'dashboard_page_completed']
 
 function clearmenu() {
     sidemenuids.forEach((allmenu) => {
         allmenuattr = document.getElementById(allmenu);
         document.getElementById(allmenu + "_icon").style.color = "#1E75D9";
-        allmenuattr.classList.remove("deshboard-sidemenu-tab-selected");
+        allmenuattr.classList.remove("dashboard-sidemenu-tab-selected");
     });
-    deshboard_pages.forEach((allpage) => {
+    dashboard_pages.forEach((allpage) => {
         document.getElementById(allpage).style.display = "none";
     });
 }
@@ -517,22 +517,22 @@ window.onload = () => {
     side_profileattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_profile_icon").style.color = "#175aa7";
-        side_profileattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_profile').style.display = "block";
+        side_profileattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_profile').style.display = "block";
     });
     side_addattr = document.getElementById("sidemenu_add");
     side_addattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_add_icon").style.color = "#175aa7";
-        side_addattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_add').style.display = "block";
+        side_addattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_add').style.display = "block";
     });
     side_pendingattr = document.getElementById("sidemenu_pending");
     side_pendingattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_pending_icon").style.color = "#175aa7";
-        side_pendingattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_pending').style.display = "block";
+        side_pendingattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_pending').style.display = "block";
         if (document.getElementById("pending_details_map_container").innerHTML == "") {
             var myLatlng = {
                 lat: 22.2587,
@@ -546,8 +546,8 @@ window.onload = () => {
     side_completedattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_completed_icon").style.color = "#175aa7";
-        side_completedattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_completed').style.display = "block";
+        side_completedattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_completed').style.display = "block";
         document.getElementById("completed_page_part_selector_completed").click();
         document.getElementById(`completed_page_part_selector_completed`).style.borderColor = "#1E75D9";
         document.getElementById(`completed_page_part_selector_completed`).style.color = "#175aa7";
@@ -558,8 +558,128 @@ window.onload = () => {
 
 
 
-    // defalt menu click
-    document.getElementById("sidemenu_completed").click(); // this is default click
+
+    // profile script
+
+    document.getElementById("agent_request_btn").onclick = () => {
+        location.href = "/profile/update/agent/"
+    }
+    
+    document.getElementById("logout_request_btn").onclick = () => {
+        document.getElementById("loading_rounder").classList.remove("hidd");
+        fetch('/api/logout/', {
+            method: 'POST',
+        }).then((response) => response.json())
+            .then((result) => {
+                if (result.code == 200) {
+                    document.getElementById("loading_rounder").classList.add("hidd");
+                    location.href = "/login/";
+                }
+                else {
+                    document.getElementById("loading_rounder").classList.add("hidd");
+                    short_notification(result.detail, 5000);
+                }
+            });
+    }
+
+    Array.from(profile_pages).forEach((pages) => {
+        document.getElementById(`dashboard_profile_page_${pages}`).onclick = () => {
+            Array.from(profile_pages).forEach((pagesx) => {
+                document.getElementById(`dashboard_profile_page_${pagesx}`).classList.remove("dashboard-page-part-selector-selected");
+                document.getElementById(`dashboard_profile_page_${pagesx}_page`).classList.add('hidd');
+            });
+            document.getElementById(`dashboard_profile_page_${pages}`).classList.add("dashboard-page-part-selector-selected");
+            document.getElementById(`dashboard_profile_page_${pages}_page`).classList.remove('hidd');
+
+        }
+    });
+
+    document.getElementById("dashboard_profile_image_update_btn").onclick = () => {
+        document.getElementById('dashboard_profile_image_updated').click();
+    }
+
+    document.getElementById("dashboard_profile_image_updated").onchange = () => {
+        if (document.getElementById("dashboard_profile_image_updated").files[0] != undefined) {
+
+            var fread = new FileReader();
+            fread.readAsDataURL(document.getElementById("dashboard_profile_image_updated").files[0]);
+
+            fread.onload = function (imag) {
+                let profile_update_formdata_image = new FormData()
+                profile_update_formdata_image.append("updated_profile_img", document.getElementById("dashboard_profile_image_updated").files[0])
+
+                favi.href = "/static/icon/favicon_offline.svg";
+                document.getElementById("loading_rounder").classList.remove("hidd");
+                fetch("/api/profile/update/image/", {
+                    method: "POST",
+                    body: profile_update_formdata_image
+                }).then((response) => response.json())
+                    .then((result) => {
+                        console.log(result);
+                        document.getElementById("loading_rounder").classList.add("hidd")
+                        if (result.code == 200) {
+                            short_notification(result.detail, 5000);
+                            document.getElementById("dashboard_profile_image_show").src = imag.target.result;
+                            document.getElementById("dashboard_profile_image_link").href = `/media/${result.data.img_url}`;
+                        }
+                        else {
+                            short_notification(result.detail, 5000);
+                        }
+                    });
+
+                favi.href = "/static/icon/fav.svg";
+
+            };
+        }
+    }
+
+    document.getElementById("dashboard_profile_detail_update_btn").onclick = () => {
+        favi.href = "/static/icon/favicon_offline.svg";
+        document.getElementById("loading_rounder").classList.remove("hidd");
+        updated_info = {}
+        if (document.getElementById("dashboard_profile_detail_update_fname").value != "") {
+            updated_info['fname'] = document.getElementById("dashboard_profile_detail_update_fname").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_lname").value != "") {
+            updated_info['lname'] = document.getElementById("dashboard_profile_detail_update_lname").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_email").value != "") {
+            updated_info['email'] = document.getElementById("dashboard_profile_detail_update_email").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_mobile").value != "") {
+            updated_info['mobile'] = document.getElementById("dashboard_profile_detail_update_mobile").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_address").value != "") {
+            updated_info['address'] = document.getElementById("dashboard_profile_detail_update_address").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_pincode").value != "") {
+            updated_info['pincode'] = document.getElementById("dashboard_profile_detail_update_pincode").value;
+        }
+        fetch("/api/profile/update/", {
+            method: "POST",
+            body: JSON.stringify(updated_info)
+        }).then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                document.getElementById("loading_rounder").classList.add("hidd")
+                if (result.code == 200) {
+                    if ('pincode' in updated_info) {
+                        location.reload();
+                    }
+                    else {
+                        short_notification(result.detail, 5000);
+                        for (let k in updated_info) {
+                            document.getElementById(`dashboard_profile_detail_${k}`).innerText = updated_info[k];
+                        }
+                        document.getElementById("dashboard_profile_page_profile_detail").click();
+                    }
+                }
+                else {
+                    short_notification(result.detail, 5000);
+                }
+            });
+        favi.href = "/static/icon/fav.svg";
+    }
 
 
     // add task scripts
@@ -1067,6 +1187,9 @@ window.onload = () => {
     socket.onopen = (e) => {
         // send that socket is now connected as user mode
         socket.send("user")
+        document.getElementById("sidemenu_profile").click();
+        document.getElementById("loading_rounder").classList.add("hidd");
+        short_notification("Connected", 3000);
 
     }
 
@@ -1109,7 +1232,7 @@ window.onload = () => {
         // it means pending task is accepted
         else if (data.typex == "accepted") {
 
-            if (document.getElementById("deshboard_page_pending").style.display == "none") {
+            if (document.getElementById("dashboard_page_pending").style.display == "none") {
                 document.getElementById("sidemenu_pending").click();
             }
             if (pending_task_detail['selected_id'] != String(data.pending_id)) {
@@ -1227,7 +1350,7 @@ window.onload = () => {
                                 
                                 <div class="completed-page-expired-task-detail">
                                     <img class="completed-page-expired-task-detail-profile-img"
-                                        src="/media/${data.image}" alt="">
+                                        src="/static/icon/user_img.svg" alt="">
                                     <div class="completed-page-expired-task-detail-name">
                                         ${data.task_name}</div>
                                     <img class="completed-page-expired-task-detail-gender"
@@ -1334,7 +1457,7 @@ window.onload = () => {
             document.getElementById("completed_page_part_completed").innerHTML += `
             <div class="completed-page-completed-task-detail" >
                 <img class="completed-page-completed-task-detail-profile-img"
-                    src="/media/${data.image}" alt="">
+                    src="/static/icon/user_img.svg" alt="">
                 <div class="completed-page-completed-task-detail-name">
                     ${data.task_name}</div>
                 <img class="completed-page-completed-task-detail-gender"
@@ -1375,6 +1498,8 @@ window.onload = () => {
 
     completed_task_detail['page_part_list'].forEach((selector) => {
         document.getElementById(`completed_page_part_selector_${selector}`).onclick = () => {
+            console.log("completed page changed");
+            document.getElementById("page_loading_rounder").classList.remove("hidd");
             completed_task_detail['page_part_list'].forEach((selectorx) => {
                 document.getElementById(`completed_page_part_selector_${selectorx}`).style.borderColor = "transparent";
                 document.getElementById(`completed_page_part_selector_${selectorx}`).style.color = "black";
@@ -1392,8 +1517,6 @@ window.onload = () => {
                 document.getElementById(`completed_page_completed_task_${idx}`).innerText = "Select";
                 document.getElementById(`completed_page_completed_task_${idx}`).style.color = "#1E75D9";
             });
-
-
             if (selector == "completed") {
                 document.getElementById("completed_page_detail_part_selector_refund_info").classList.add("hidd");
             } else if (selector == "expired") {
@@ -1401,8 +1524,9 @@ window.onload = () => {
 
             } else if (selector == "cancelled") {
                 document.getElementById("completed_page_detail_part_selector_refund_info").classList.remove("hidd");
-
+                
             }
+            document.getElementById("page_loading_rounder").classList.add("hidd");
         }
     })
 

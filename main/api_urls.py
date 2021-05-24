@@ -2,6 +2,8 @@ from .api import *
 from django.urls import path
 
 urlpatterns = [
+    path("profile/update/" , update_user_profile),
+    path("profile/update/image/" , update_user_profile_img),
     path("task/payment/" , task_payment),
     path("login/" , log_in),
     path("signup/" , signup),

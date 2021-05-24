@@ -1,6 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
+from io import BytesIO
+from PIL import Image
+from django.core.files import File
 
+
+def compress(image , Iquality=50):
+    print(Iquality)
+    im = Image.open(image)
+    # create a BytesIO object
+    im_io = BytesIO() 
+    # save image to BytesIO object
+    im.save(im_io, 'JPEG', quality=Iquality) 
+    # create a django-friendly Files object
+    new_image = File(im_io, name=image.name)
+    return new_image
+    
 
 # class exntend_user_details(models.Model):
 class extended_user_details(models.Model):
@@ -38,9 +53,14 @@ class extended_user_details(models.Model):
                 except Exception as ex:  # Catch field does not exist exception
                     pass
             kwargs['update_fields'] = changed_fields
+            if 'image' in changed_fields:
+                new_image = compress(self.image , 50)
+                self.image = new_image
         super().save(*args, **kwargs)
-    # def __str__(self):
-    #     return self.user.username
+
+
+    def __str__(self):
+        return self.user.username
 
 
 class online(models.Model):
@@ -53,6 +73,9 @@ class online(models.Model):
     state = models.CharField(max_length=6 , choices=state_choice , default="user")
     date = models.DateTimeField(auto_now_add = True)
     # socket_name = models.CharField(max_length = 100 )
+
+    def __str__(self):
+        return self.user.username
 
 class task_detail(models.Model):
     gender_choice = (
@@ -90,6 +113,13 @@ class task_detail(models.Model):
                 except Exception as ex:  # Catch field does not exist exception
                     pass
             kwargs['update_fields'] = changed_fields
+            if 'image' in changed_fields and int(self.image.size) < 5000000:
+                new_image = compress(self.image , 30)
+                self.image = new_image
+            elif 'image' in changed_fields and int(self.image.size) >= 5000000:
+                new_image = compress(self.image , 15)
+                self.image = new_image
+
         super().save(*args, **kwargs)
 
     # def __str__(self):
