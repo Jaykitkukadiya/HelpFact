@@ -4,11 +4,29 @@ document.onreadystatechange = function() {
     }
 };
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 function getpending(id) {
     console.log("getpending" , id);
     document.getElementById('loading_box').style.display = "block";
     fetch('/api/task/getmoredetails/', {
         method: 'POST',
+        headers : {'X-CSRFToken' : getCookie('csrftoken')},
         body: JSON.stringify({'pending_id' : id})
         })
         .then((response) => response.json())
@@ -111,6 +129,7 @@ function send_accept_task(pending_id , agent_location)
     document.getElementById('loading_box').style.display = "block";
     fetch('/api/task/accept/', {
         method: 'POST',
+        headers : {'X-CSRFToken' : getCookie('csrftoken')},
         body: JSON.stringify({'pending_id' : pending_id , 'agent_location' : agent_location})
     })
     .then((response) => response.json())
@@ -154,6 +173,7 @@ window.onload = () => {
         document.getElementById('loading_box').style.display = "block";
         fetch('/api/logout/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: ""
         })
         .then((response) => response.json())
@@ -358,6 +378,7 @@ window.onbeforeunload = function(event)
         var complete_otp = document.getElementById("complete_otp").value;
         fetch('/api/task/complete/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: JSON.stringify({'pending_id' : Number(document.getElementById("more_task_id").innerText) , 'otp' : complete_otp})
             })
             .then((response) => response.json())

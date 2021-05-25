@@ -17,6 +17,7 @@ from background_task.models import Task
 ch_ly = get_channel_layer()
 
 @csrf_protect
+@login_required
 def task_payment(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
@@ -28,7 +29,7 @@ def task_payment(request):
         return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
     
 
-@csrf_exempt
+@csrf_protect
 def log_in(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -48,7 +49,7 @@ def log_in(request):
     else:
         return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+@csrf_protect
 def signup(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -78,7 +79,7 @@ def signup(request):
     else:
         return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+@csrf_protect
 @login_required
 def log_out(request):
     if request.method == "POST":
@@ -91,7 +92,8 @@ def log_out(request):
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
 
-@csrf_exempt
+@csrf_protect
+@login_required
 def accept_task(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -107,7 +109,9 @@ def accept_task(request):
 
 
 
-@csrf_exempt
+
+@csrf_protect
+@login_required
 def complete_task(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -126,7 +130,8 @@ def complete_task(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+@csrf_protect
+@login_required
 def cancel_task(request):
     if request.method == "POST":
         data = JSONParser().parse(request, request)
@@ -155,7 +160,9 @@ def cancel_task(request):
     else:
         return JsonResponse({"cause" : "" , "data" : "" , "code" : 405 , "detail" : "Invalid Method."})
 
-@csrf_exempt
+
+@csrf_protect
+@login_required
 def agent_cancel_task(request):
     if request.method == "POST":
         data = JSONParser().parse(request, request)
@@ -203,7 +210,9 @@ def agent_cancel_task(request):
 
 
 
-@csrf_exempt
+
+@csrf_protect
+@login_required
 def remove_agent(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -234,7 +243,9 @@ def remove_agent(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+
+@csrf_protect
+@login_required
 def generate_otp(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -251,8 +262,11 @@ def generate_otp(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+
+@csrf_protect
+@login_required
 def get_more_details(request):
+    print(request.headers)
     if request.method == "POST":
         data = JSONParser().parse(request)
         pending_task_obj = pending_task.objects.filter(id = int(data['pending_id'])).first()
@@ -300,8 +314,8 @@ def get_more_details(request):
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
 
-
-@csrf_exempt
+@csrf_protect
+@login_required
 def complete_task_more_details(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -357,8 +371,8 @@ def complete_task_more_details(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-
-@csrf_exempt
+@csrf_protect
+@login_required
 def delete_task(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
@@ -368,19 +382,19 @@ def delete_task(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-
-@csrf_exempt
+@csrf_protect
 def contact_us(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
-        contactobj = contactus.objects.create(first_name=data['first_name'] , last_name= data['last_name'] , email_address=data['email_address'] , mobile_number=data['mobile_number'] , message=data['message'])
-        contactobj.save()
+        print(data)
+        # contactobj = contactus.objects.create(first_name=data['first_name'] , last_name= data['last_name'] , email_address=data['email_address'] , mobile_number=data['mobile_number'] , message=data['message'])
+        # contactobj.save()
         return JsonResponse({"cause": "", "data": "", "code": 200, "detail": "contact recorded successful"}, safe=False)
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
 
-@csrf_exempt
+@csrf_protect
 @login_required
 @parser_classes([JSONParser, FormParser, MultiPartParser])
 def update_user_profile_img(request):
@@ -392,7 +406,7 @@ def update_user_profile_img(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+@csrf_protect
 @login_required
 def update_user_profile(request):
     if(request.method == "POST"):
@@ -418,7 +432,8 @@ def update_user_profile(request):
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 
-@csrf_exempt
+@csrf_protect
+@login_required
 @parser_classes([JSONParser, FormParser, MultiPartParser])
 def update_task(request):
     if(request.method == "POST"):

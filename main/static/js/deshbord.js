@@ -5,6 +5,22 @@ document.onreadystatechange = function () {
     }
 };
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 
 // this is for google map loading
 const initMap = () => {
@@ -67,6 +83,7 @@ function getpending(id) {
 
     fetch('/api/task/getmoredetails/', {
         method: 'POST',
+        headers : {'X-CSRFToken' : getCookie('csrftoken')},
         body: JSON.stringify({ 'pending_id': id })
     })
         .then((response) => response.json())
@@ -131,6 +148,7 @@ function getcompleted(id) {
 
     fetch('/api/task/complete/getmoredetails/', {
         method: 'POST',
+        headers : {'X-CSRFToken' : getCookie('csrftoken')},
         body: JSON.stringify({ 'pending_id': id })
     })
         .then((response) => response.json())
@@ -223,6 +241,7 @@ window.onload = () => {
         // call logout api
         fetch('/api/logout/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: ""
         })
         .then((response) => response.json())
@@ -342,6 +361,7 @@ window.onload = () => {
             console.log("remove_agent");
             fetch('/api/task/remove_agent/', {
                 method: 'POST',
+                headers : {'X-CSRFToken' : getCookie('csrftoken')},
                 body: JSON.stringify({ 'pending_id': id })
             })
                 .then((response) => response.json())

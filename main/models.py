@@ -19,6 +19,7 @@ def compress(image , Iquality=50):
 
 # class exntend_user_details(models.Model):
 class extended_user_details(models.Model):
+    
     xender_choice = (
         ("Male" , "Male"),
         ("Female" , "Female")

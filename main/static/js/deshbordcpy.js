@@ -270,6 +270,22 @@ function clearmenu() {
     });
 }
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 
 function get_task_details() {
     favi.href = "/static/icon/favicon_offline.svg";
@@ -278,9 +294,11 @@ function get_task_details() {
         clearInterval(intervalobj.interval);
     });
 
+
     if (pending_task_detail['selected_id'] != "") {
         fetch('/api/task/getmoredetails/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: JSON.stringify({
                 'pending_id': Number(pending_task_detail['selected_id'])
             })
@@ -381,6 +399,7 @@ function get_completed_task_details() {
     if (completed_task_detail["completed_selected_id"] != "") {
         fetch('/api/task/complete/getmoredetails/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: JSON.stringify({
                 'task_id': Number(completed_task_detail["completed_selected_id"])
             })
@@ -561,14 +580,22 @@ window.onload = () => {
 
     // profile script
 
-    document.getElementById("agent_request_btn").onclick = () => {
-        location.href = "/profile/update/agent/"
+    try
+    {
+        document.getElementById("agent_request_btn").onclick = () => {
+            location.href = "/profile/update/agent/"
+        }
+    }
+    catch
+    {
+        console.log("user is authenticated as agent");
     }
     
     document.getElementById("logout_request_btn").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/logout/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
         }).then((response) => response.json())
             .then((result) => {
                 if (result.code == 200) {
@@ -612,6 +639,7 @@ window.onload = () => {
                 document.getElementById("loading_rounder").classList.remove("hidd");
                 fetch("/api/profile/update/image/", {
                     method: "POST",
+                    headers : {'X-CSRFToken' : getCookie('csrftoken')},
                     body: profile_update_formdata_image
                 }).then((response) => response.json())
                     .then((result) => {
@@ -657,6 +685,7 @@ window.onload = () => {
         }
         fetch("/api/profile/update/", {
             method: "POST",
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: JSON.stringify(updated_info)
         }).then((response) => response.json())
             .then((result) => {
@@ -852,6 +881,7 @@ window.onload = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/gotp/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: JSON.stringify({
                 'pending_id': Number(pending_task_detail['selected_id'])
             })
@@ -880,6 +910,7 @@ window.onload = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/remove_agent/', {
             method: 'POST',
+            headers : {'X-CSRFToken' : getCookie('csrftoken')},
             body: JSON.stringify({
                 'pending_id': Number(pending_task_detail['selected_id'])
             })
@@ -1075,6 +1106,7 @@ window.onload = () => {
 
                 fetch("/api/task/update/", {
                     method: "POST",
+                    headers : {'X-CSRFToken' : getCookie('csrftoken')},
                     body: update_formdata
                 }).then((response) => response.json())
                     .then((result) => {
@@ -1103,10 +1135,11 @@ window.onload = () => {
         document.getElementById("loading_rounder").classList.remove("hidd")
         if (pending_task_detail["selected_id"] != "") {
             pending_id = Number(pending_task_detail["selected_id"]);
-            let header = new Headers()
+            // let header = new Headers()
             fetch("/api/task/cancel/", {
                 method: "POST",
-                headers: header,
+                headers : {'X-CSRFToken' : getCookie('csrftoken')},
+                // headers: header,
                 body: JSON.stringify({
                     'pending_id': pending_id
                 })

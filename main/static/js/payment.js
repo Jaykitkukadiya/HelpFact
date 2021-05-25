@@ -1,22 +1,22 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 window.onload = () => {
     // document.getElementById("gmaplink").href =`https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${JSON.parse(gmap).lat},${JSON.parse(gmap).lng}&output=embed`;
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    const csrftoken = getCookie('csrftoken');
 
 
 
@@ -93,6 +93,7 @@ window.onload = () => {
             document.getElementById("loading_box").style.display = "block";
             fetch('/api/task/delete/', {
                 method: 'POST',
+                headers : {'X-CSRFToken' : getCookie('csrftoken')},
                 body: JSON.stringify({"task_id" : task_id })
             })
                 .then((response) => response.json())
