@@ -112,3 +112,7 @@ def expire_task(user_id , pending_id):
                     )
         pending_task_obj.delete()
     
+
+    # ttBDRDzpX63tcUciMrH7KCx6wBXhFrNfODVsHBYOLZyhNLE1wbs6wR4B4cxHlNvU
+    # https://www.freemaptools.com/find-indian-pincodes-inside-radius.htm
+    # https://www.codeproject.com/Questions/693159/Getting-all-Zip-Codes-in-a-given-Radius-km-from-gi
