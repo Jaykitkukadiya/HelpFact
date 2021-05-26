@@ -75,7 +75,6 @@ def signup(request):
                 return JsonResponse({"cause": "", "data":"", "code": 200, "detail": "successful signup"}, safe=False)
         else:
             return JsonResponse({"cause": "", "data": "", "code": 406, "detail": "please fill valid data"}, safe=False)
-        
     else:
         return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
 

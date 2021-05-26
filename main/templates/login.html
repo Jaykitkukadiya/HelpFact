@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +12,7 @@
 </head>
 
 <body>
+    {% csrf_token %}
 
     <div class="lower-screen-resolution-notify">
         please open website with minimum resolution of 1366 X 766<br>or<br>use desktop mode

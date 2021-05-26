@@ -17,7 +17,7 @@
 </head>
 
 <body style="background: url({% static 'photos/background.webp' %}) no-repeat center center / cover;">
-
+    {% csrf_token %}
 
     <div class="overlay" id="pageloader" style="display:block; background-color:white ;">
         <div class="message_box" style="height: 144px;width: 302px;">

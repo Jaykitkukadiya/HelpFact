@@ -21,7 +21,7 @@
 
     {{response}}
     <div>
-
+        {% csrf_token %}
         <h2>Payment status regarding your order Id {{response.ORDERID}}</h2>
         {% if response.RESPCODE == '01' %}
         ORDER SUCCESS
