@@ -78,6 +78,27 @@ class online(models.Model):
     def __str__(self):
         return self.user.username
 
+class message_user_state(models.Model):
+    state_choice = (
+        ("user","user"),
+        ("agent","agent")
+    )
+    user = models.ForeignKey(User , on_delete=models.CASCADE)
+    channel_name = models.CharField(max_length=400)
+    state = models.CharField(max_length=6 , choices=state_choice , default="user")
+    date = models.DateTimeField(auto_now_add = True)
+    # socket_name = models.CharField(max_length = 100 )
+
+    def __str__(self):
+        return self.user.username
+class user_connections(models.Model):
+    user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="user")
+    connection = models.ForeignKey(User , on_delete=models.CASCADE , related_name="connection")
+    date = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return f"{self.user.username} to {self.connection.username}"
+
 class task_detail(models.Model):
     gender_choice = (
         ("Male","Male"),

@@ -1,9 +1,33 @@
 
 document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-        short_notification("Page Loaded. Wait for a while we connect.", 10000)  
+        short_notification("Page Loaded. Wait for a while we connect.", 10000)
     }
 };
+
+function dec2hex(dec) {
+    return dec.toString(16).padStart(2, "0")
+}
+
+// generateId :: Integer -> String
+function generateId(len) {
+    var arr = new Uint8Array((len || 40) / 2)
+    window.crypto.getRandomValues(arr)
+    return Array.from(arr, dec2hex).join('')
+}
+
+var message_details = {
+    user_ids: [],
+    user_selected: "",
+    messages: [
+        // {
+        //     user_id: "2",
+        //     message: "",
+        //     message_id : ""
+        // },
+       
+    ]
+}
 
 var pending_task_detail = {
     id: [],
@@ -256,8 +280,8 @@ function generate_reverse_timer(task_id, datestr) {
 
 var profile_pages = ['profile_detail', 'update_detail']
 
-var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_pending', 'sidemenu_completed']
-var dashboard_pages = ['dashboard_page_profile', 'dashboard_page_add', 'dashboard_page_pending', 'dashboard_page_completed']
+var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_pending', 'sidemenu_completed', 'sidemenu_messages']
+var dashboard_pages = ['dashboard_page_profile', 'dashboard_page_add', 'dashboard_page_pending', 'dashboard_page_completed', 'dashboard_page_message']
 
 function clearmenu() {
     sidemenuids.forEach((allmenu) => {
@@ -298,7 +322,7 @@ function get_task_details() {
     if (pending_task_detail['selected_id'] != "") {
         fetch('/api/task/getmoredetails/', {
             method: 'POST',
-            headers : {'X-CSRFToken' : getCookie('csrftoken')},
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
                 'pending_id': Number(pending_task_detail['selected_id'])
             })
@@ -399,7 +423,7 @@ function get_completed_task_details() {
     if (completed_task_detail["completed_selected_id"] != "") {
         fetch('/api/task/complete/getmoredetails/', {
             method: 'POST',
-            headers : {'X-CSRFToken' : getCookie('csrftoken')},
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
                 'task_id': Number(completed_task_detail["completed_selected_id"])
             })
@@ -572,6 +596,12 @@ window.onload = () => {
         document.getElementById(`completed_page_part_selector_completed`).style.color = "#175aa7";
         document.getElementById(`completed_page_part_completed`).classList.remove("hidd");
     });
+    side_messageattr = document.getElementById("sidemenu_messages");
+    side_messageattr.addEventListener('click', () => {
+        clearmenu();
+        side_messageattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_message').style.display = "block";
+    });
 
     // }); // end of not working loop
 
@@ -580,8 +610,7 @@ window.onload = () => {
 
     // profile script
 
-    try
-    {
+    try {
         document.getElementById("agent_request_btn").onclick = () => {
             location.href = "/profile/update/agent/"
         }
@@ -590,12 +619,12 @@ window.onload = () => {
     {
         console.log("user is authenticated as agent");
     }
-    
+
     document.getElementById("logout_request_btn").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/logout/', {
             method: 'POST',
-            headers : {'X-CSRFToken' : getCookie('csrftoken')},
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
         }).then((response) => response.json())
             .then((result) => {
                 if (result.code == 200) {
@@ -639,7 +668,7 @@ window.onload = () => {
                 document.getElementById("loading_rounder").classList.remove("hidd");
                 fetch("/api/profile/update/image/", {
                     method: "POST",
-                    headers : {'X-CSRFToken' : getCookie('csrftoken')},
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
                     body: profile_update_formdata_image
                 }).then((response) => response.json())
                     .then((result) => {
@@ -685,7 +714,7 @@ window.onload = () => {
         }
         fetch("/api/profile/update/", {
             method: "POST",
-            headers : {'X-CSRFToken' : getCookie('csrftoken')},
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify(updated_info)
         }).then((response) => response.json())
             .then((result) => {
@@ -881,7 +910,7 @@ window.onload = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/gotp/', {
             method: 'POST',
-            headers : {'X-CSRFToken' : getCookie('csrftoken')},
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
                 'pending_id': Number(pending_task_detail['selected_id'])
             })
@@ -910,7 +939,7 @@ window.onload = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/remove_agent/', {
             method: 'POST',
-            headers : {'X-CSRFToken' : getCookie('csrftoken')},
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
                 'pending_id': Number(pending_task_detail['selected_id'])
             })
@@ -1106,7 +1135,7 @@ window.onload = () => {
 
                 fetch("/api/task/update/", {
                     method: "POST",
-                    headers : {'X-CSRFToken' : getCookie('csrftoken')},
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
                     body: update_formdata
                 }).then((response) => response.json())
                     .then((result) => {
@@ -1138,7 +1167,7 @@ window.onload = () => {
             // let header = new Headers()
             fetch("/api/task/cancel/", {
                 method: "POST",
-                headers : {'X-CSRFToken' : getCookie('csrftoken')},
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
                 // headers: header,
                 body: JSON.stringify({
                     'pending_id': pending_id
@@ -1160,13 +1189,11 @@ window.onload = () => {
                     document.getElementById(`pending_task_selector_${id}`).remove();
                     document.getElementById("loading_rounder").classList.add("hidd")
                 }
-                else if(data.code == 401)
-                {
+                else if (data.code == 401) {
                     short_notification(data.detail, 5000);
                 }
-                else if(data.code == 405)
-                {
-                    short_notification(data.detail , 5000);
+                else if (data.code == 405) {
+                    short_notification(data.detail, 5000);
                 }
             })
         } else {
@@ -1203,8 +1230,236 @@ window.onload = () => {
 
 
 
+    var message_socket = new WebSocket(`ws://${window.location.host}/ws/message/`);
+
+    message_socket.onopen = (e) => {
+        // send that socket is now connected as user mode
+        message_socket.send("user")
+        short_notification("Connected to message server", 3000);
+
+    }
+
+    // pinging function to keep connection live
+    var pinging_message = setInterval(() => {
+        message_socket.send("ping")
+    }, 1000)
 
 
+    message_socket.onmessage = (e) => {
+        data = JSON.parse(e.data);
+        console.log(data);
+        
+        if (data.typex == 'session_expire') {
+            clearInterval(pinging_message);
+            short_notification(data.detail, 5000, `location.href = "/";`);
+        }
+
+        else if (data.typex == "message_sent") {
+            document.getElementById(`message_${data.detail}`).src = "/static/icon/single_tick.svg"
+        }
+
+        else if (data.typex == "new_mess_recv") {
+            // send event that mes recved
+            detail = JSON.parse(data.detail)
+
+            message_socket.send(JSON.stringify({
+                "message_type": "received_mes",
+                "user_id": userid, //my user id
+                "receiver_id": detail.user_id, //id to which i want to send message
+                "message_id": detail.message_id,
+                "receive_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+            }));
+            // conditions for add messages
+
+            //tab is already there but not opened yet
+            if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] != detail.user_id) {
+                message_details["messages"].push(
+                    { "user_id": detail.user_id, "message": detail.message,"message_id" : detail.message_id , "time" : detail.time }
+                )
+                document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure")
+            }
+
+            //tab is there and opened
+            else if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] == detail.user_id) {
+                document.getElementById(`message_inner_container_${detail.user_id}`).innerHTML += `
+                
+                        <div class="message-aligner-left">
+                        <div class="message-box">
+                        <span class="message-text">${detail.message}</span>
+                            <span class="message-info-container">
+                            <span class="message-time">${detail.time}</span>
+                            </span>
+                        </div>
+                        </div>
+                        
+                        `;
+                message_socket.send(JSON.stringify({
+                    "message_type": "viewed_mes",
+                    "user_id": userid, //my user id
+                    "receiver_id": detail.user_id, //id to which i want to send message
+                    "message_id": detail.message_id,
+                    "view_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                }));
+
+            }
+
+            // tab is not available mean new user message come
+            else if (!message_details["user_ids"].includes(detail.user_id)) {
+
+                document.getElementById("message_sidemenu_conainer").innerHTML += `
+                
+                <div class="message-account-indecator" id="message_indecator_${detail.user_id}">
+                    <img class="message-account-image"
+                        src="/media/{{user_connection.connection.extended_user_details.image}}" alt="none">
+                    <div class="message-indecator-detail-container">
+                        <p class="message-indecator-field">jaykit kukadiya
+                           </p>
+                        <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
+                            395001</p>
+                    </div>
+                </div>
+                
+                `;
+                message_details["user_ids"].push(detail.user_id);
+                document.getElementById("message_ac_container").innerHTML += `
+                        
+                        <div class="message-body-message-container hidd" id="message_outer_container_${detail.user_id}">
+                        <div class="message-body-message-inner-container" id="message_inner_container_${detail.user_id}">
+                        </div>
+                        </div>
+                        
+                        `;
+                message_details["messages"].push(
+                    { "user_id": detail.user_id, "message": detail.message,"message_id":detail.message_id , "time" : detail.time }
+                )
+                document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure");
+
+
+                document.getElementById(`message_indecator_${detail.user_id}`).onclick = () => {
+                    Array.from(message_details["user_ids"]).forEach(
+                        (idx) => {
+                            document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
+                            document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
+                        });
+                    document.getElementById(`message_indecator_${detail.user_id}`).classList.remove("message-account-indecator-event-occure");
+                    document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-selected");
+                    document.getElementById(`message_outer_container_${detail.user_id}`).classList.remove("hidd");
+                    message_details["user_selected"] = detail.user_id;
+                    Array.from(message_details["messages"]).forEach((data) => {
+                        if (data.user_id == detail.user_id) {
+                            document.getElementById(`message_inner_container_${detail.user_id}`).innerHTML += `
+                            
+                            <div class="message-aligner-left" id="message_${data.message_id}">
+                            <div class="message-box">
+                                <span class="message-text">${data.message}</span>
+                                <span class="message-info-container">
+                                    <span class="message-time">${data.time}</span>
+                                </span>
+                            </div>
+                            </div>
+                            
+                            `;
+                            message_socket.send(JSON.stringify({
+                                "message_type": "viewed_mes",
+                                "user_id": userid, //my user id
+                                "receiver_id": data.user_id, //id to which i want to send message
+                                "message_id": data.message_id,
+                                "view_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                            }));
+                            message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
+                        }
+                    });
+                }
+            }
+        }
+
+        else if (data.typex == "received_mes") {
+            detail = JSON.parse(data.detail)
+            document.getElementById(`message_${detail.message_id}`).src = "/static/icon/double_tick_dark.svg"
+        }
+        else if (data.typex == "viewed_mes") {
+            detail = JSON.parse(data.detail)
+            document.getElementById(`message_${detail.message_id}`).src = "/static/icon/double_tick.svg"
+        }
+
+    }
+
+    message_socket.onclose = (e) => {
+        console.log('disconnect message connection');
+    }
+
+
+    document.getElementById("message_send_btn").onclick = () => {
+        let message = document.getElementById("message_text").value;
+        console.log(message)
+        if (message != "") {
+            message_state_id = generateId(13);
+            message_socket.send(JSON.stringify({
+                "message_type": "new_mes",
+                "user_id": String(userid),
+                "receiver_id": message_details["user_selected"],
+                "message_id": message_state_id,
+                "message": message,
+                "time" : new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+            }));
+            document.getElementById(`message_inner_container_${message_details["user_selected"]}`).innerHTML += `
+
+                        <div class="message-aligner-right">
+                            <div class="message-box">
+                                <span class="message-text">${message}</span>
+                                <span class="message-info-container">
+                                    <span class="message-time">${new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                                    <img class="message-state-img" id="message_${message_state_id}" src="/static/icon/wait_watch.svg"
+                                        alt="">
+                                </span>
+                            </div>
+                        </div>
+                        
+                        `;
+            document.getElementById("message_text").value = "";
+            document.getElementById("message_text").focus();
+        }
+
+    }
+
+    Array.from(message_details["user_ids"]).forEach((id) => {
+
+        document.getElementById(`message_indecator_${id}`).onclick = () => {
+            Array.from(message_details["user_ids"]).forEach(
+                (idx) => {
+                    document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
+                    document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
+                });
+            document.getElementById(`message_indecator_${id}`).classList.remove("message-account-indecator-event-occure");
+            document.getElementById(`message_indecator_${id}`).classList.add("message-account-indecator-selected");
+            document.getElementById(`message_outer_container_${id}`).classList.remove("hidd");
+            message_details["user_selected"] = id;
+            Array.from(message_details["messages"]).forEach((data) => {
+                if (data.user_id == id) {
+                    document.getElementById(`message_inner_container_${id}`).innerHTML += `
+                        
+                        <div class="message-aligner-left" id="message_${data.message_id}">
+                        <div class="message-box">
+                            <span class="message-text">${data.message}</span>
+                            <span class="message-info-container">
+                                <span class="message-time">${data.time}</span>
+                            </span>
+                        </div>
+                        </div>
+                        
+                        `;
+                    message_socket.send(JSON.stringify({
+                        "message_type": "viewed_mes",
+                        "user_id": userid, //my user id
+                        "receiver_id": data.user_id, //id to which i want to send message
+                        "message_id": data.message_id,
+                        "view_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                    }));
+                    message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
+                }
+            });
+        }
+    });
 
 
 
@@ -1241,7 +1496,7 @@ window.onload = () => {
         // it means this site is open in other window so keep this window close
         if (data.typex == 'session_expire') {
             clearInterval(pinging);
-            short_notification(data.detail, 5000, `location.href = "/";clearInterval(${pinging});`);
+            short_notification(data.detail, 5000, `location.href = "/";`);
         }
         //it means new notification is arrive
         else if (data.typex == 'notification') {
@@ -1457,8 +1712,7 @@ window.onload = () => {
 
             short_notification(`Task cancelled please see details in task history.`, 5000);
         }
-        else if (data.typex == "remove_accepted_task")
-        {
+        else if (data.typex == "remove_accepted_task") {
             if (pending_task_detail['selected_id'] == String(data.pending_id)) {
                 document.getElementById("pending_details_task_waiting").classList.remove("hidd");
                 document.getElementById("pending_details_task_accepted").classList.add("hidd");
@@ -1516,12 +1770,14 @@ window.onload = () => {
     }
     window.onbeforeunload = function (event) {
         socket.send("disconnect");
-        console.log('dis')
-        // socket.onclose = (e) => {
-        //     console.log('disconnect');
-        // }
+        socket.close()
+        message_socket.send("disconnect");
+        message_socket.close()
         return null;
     };
+    socket.onclose = (e) => {
+        console.log('disconnect live connection');
+    }
 
 
 
@@ -1557,7 +1813,7 @@ window.onload = () => {
 
             } else if (selector == "cancelled") {
                 document.getElementById("completed_page_detail_part_selector_refund_info").classList.remove("hidd");
-                
+
             }
             document.getElementById("page_loading_rounder").classList.add("hidd");
         }

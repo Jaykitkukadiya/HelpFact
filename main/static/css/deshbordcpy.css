@@ -12,6 +12,10 @@
     --font-color: #212121;
     --title-font-family: norwester;
     --detail-background: rgba(224, 225, 235, 0.2);
+    
+    
+    --message-sidebar-width : 20%;
+    --message-sidebar-tab-height: 70px;
 }
 
 @font-face {
@@ -1947,6 +1951,260 @@ a {
 .flx
 {
     display: flex;
+}
+
+
+
+/* message page css */
+.dashboard-page-message {
+    display: none;
+}
+.dashboard-page-message-inner-container{
+    width: 100%;
+    height: 100%;
+    display:flex;
+    flex-direction: row-reverse;
+    justify-content:space-between;
+}
+.message-sidemenu{
+    width:var(--message-sidebar-width);
+    min-height:calc(100vh - var(--nav-height));
+    background-color: white;
+    box-shadow: 0px 0px 9px -7px black;
+    margin: 0px 5px;
+}
+.message-account-indecator{
+    width: var(100% - 5px);
+    border-right: 5px solid transparent;
+    height: var(--message-sidebar-tab-height);
+    margin: 5px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+.message-account-indecator-selected{
+    border-right: 5px solid var(--site-color-dark);
+    background-color:#ecf0f3;
+}
+.message-account-indecator-event-occure{
+border-right: 5px solid orange;
+background-color:#ecf0f3;
+}
+.message-account-indecator:hover{
+    background-color:#ecf0f3 !important;
+    border-right: 5px solid var(--site-color) !important;
+}
+
+.message-account-image{
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    border-radius: 50%;
+}
+
+.message-indecator-detail-container{
+    width: calc(100% - 70px);
+}
+
+.message-indecator-field{
+    line-height: 25px;
+    max-width: calc(100% - 10px);
+    margin: 0px 5px;
+    font-family: -webkit-pictograph;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-body-container{
+    width: calc(100% - var(--message-sidebar-width) - 10px);
+    min-height:calc(100vh - var(--nav-height));
+    background-color: rgb(36, 36, 36);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+}
+.message-body-header{
+    width: 100%;
+    height:var(--nav-height);
+    background-color: white;
+    box-shadow: 0px 0px 9px -7px black;
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.message-header-first-part{
+    width:80%;
+    min-width:400px; 
+    display: flex;
+    align-items: center;
+}
+.message-header-user-state{
+    width:10px;
+    height:10px;
+    margin: 5px 10px;
+    border-radius: 50%;
+    background-color:gray;
+    
+}
+.message-header-user-name{
+    font-family: -webkit-pictograph;
+    width: calc(100% - 30px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+.message-header-secound-part{
+    width:20%;
+    min-width:150px; 
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+}
+.message-header-more-img{
+    width:30px;
+    height:30px;
+    margin:calc(calc(var(--nav-height) - 30px) / 2);
+    margin-left: 15px;
+}
+
+.message-body-message-container{
+    max-height: calc(100vh - var(--nav-height) - var(--nav-height) - 50px);
+    height: calc(100vh - var(--nav-height) - var(--nav-height) - 50px);
+    background-color: transparent;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    overflow: auto;
+}
+
+.message-body-message-inner-container{
+    background-color: transparent;
+    height : auto;
+    width: 100%; 
+}
+.message-body-footer{
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0px 0px 9px -7px black;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+}
+
+.message-input{
+    width: calc(100% - 95px);
+    height: 20px;
+    outline:none;
+    margin:10px 0px 10px 10px;
+    padding: 0px 10px;
+    border: 0px;
+    font-family: -webkit-pictograph;
+    
+    
+}
+.message-send-btn{
+    width: 50px;
+    height: 50px;
+    margin: 0px 10px 0px 0px;
+}
+
+
+
+.message-aligner-left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height:auto;
+    /* background-color: rgb(116, 116, 116); */
+    width:100%;
+}
+.message-aligner-right{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height:auto;
+    /* background-color: rgb(116, 116, 116); */
+    width:100%;
+}
+.message-box{
+    border-radius: 5px;
+    background-color: rgb(245, 244, 244);
+    max-width:30%;
+    position:relative;
+    margin:5px 10px 15px 10px;
+    padding:6px 7px 8px 9px;
+    transition: margin 0.2s linear;
+    
+}
+.message-box:hover{
+    margin:5px 15px 15px 15px;
+    
+}
+
+.message-aligner-right > div::before{
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    right: 0px;
+    width: 0px;
+    height:0px;
+    border: 15px solid rgb(245, 244, 244);
+    border-bottom: 15px solid transparent ;
+    border-left: 15px solid transparent ;
+    border-top: 15px solid transparent ;
+    
+}
+.message-aligner-left > div::before{
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 0px;
+    width: 0px;
+    height:0px;
+    border: 15px solid rgb(245, 244, 244);
+    border-bottom: 15px solid transparent ;
+    border-right: 15px solid transparent ;
+    border-top: 15px solid transparent ;
+    
+}
+.message-text{
+    line-height: 20px;
+    font-family: -webkit-pictograph;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    margin-bottom: -10px;
+}
+
+.message-info-container{
+    float: right;
+    padding: 0px 5px 0px 10px;
+    margin:7px 0px -5px 0px;
+    width: 90px;
+    display: inline-flex;
+    justify-content:space-around;
+    align-items:center;
+}
+.message-time{
+    font-family: -webkit-pictograph;
+    font-size: small;
+}
+.message-state-img{
+    width: 18px;
+    height: 18px;
+    margin: 0px 5px;
+}
+
+.message-ac-container
+{
+    max-height: calc(100vh - var(--nav-height) - var(--nav-height) - 50px);
+    height: calc(100vh - var(--nav-height) - var(--nav-height) - 50px);
+    background-color: transparent;
+    width: 100%;
 }
 
 
