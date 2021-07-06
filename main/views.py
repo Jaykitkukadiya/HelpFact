@@ -44,7 +44,8 @@ def deshbordcpy(request):
             completed_task_user=request.user , status="expired")
         completed_task_objs_cancelled = completed_task.objects.filter(
             completed_task_user=request.user , status="cancelled" )
-        user_connections_obj = user_connections.objects.filter(user = request.user)
+        user_connections_obj = user_connections.objects.filter(Q(user = request.user) | Q(connection = request.user) )
+        print(user_connections_obj)
         return render(request, "deshbordcpy.html", {'pending_tasks': pending_tasks, 'completed_task_objs_completed': completed_task_objs_completed , "completed_task_objs_expired" : completed_task_objs_expired , "completed_task_objs_cancelled" : completed_task_objs_cancelled , "user_connections" : user_connections_obj } )
     else:
         return redirect('/login/')

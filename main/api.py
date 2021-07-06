@@ -9,12 +9,80 @@ from django.contrib.auth import login, logout , authenticate
 from datetime import datetime
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.db.models import Q
 import random
 import string
 
 from background_task.models import Task
 
 ch_ly = get_channel_layer()
+
+
+@csrf_protect
+@login_required
+def new_ac_find(request):
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        if data["query_str"] != "":
+            user_object_list = User.objects.filter( Q(username__startswith = data["query_str"]) | Q(first_name__startswith = data["query_str"]) | Q(last_name__startswith = data["query_str"]) | Q(email__startswith = data["query_str"]) | Q(email__contains = data["query_str"]) | Q(extended_user_details__pincode__startswith = data["query_str"]) )
+            user_data = []
+            for user_obj in user_object_list:
+                user_name = ""
+                is_online = 0
+                if user_obj.first_name == "":
+                    user_name = user_obj.username
+                else:
+                    user_name = f"{user_obj.first_name} {user_obj.last_name}"
+                online_user_list = message_user_state.objects.filter(user = user_obj)
+                if len(online_user_list) > 0:
+                    is_online = 1
+                
+
+                data = {
+                    "id" : user_obj.id,
+                    "fullname" : user_name,
+                    "username" : user_obj.username,
+                    "image" : str(user_obj.extended_user_details.image),
+                    "pincode" : user_obj.extended_user_details.pincode,
+                    "is_online" : is_online
+                }
+                user_data.append(data)
+            
+            return JsonResponse({"cause": "", "data": user_data, "code": 200, "detail": "query resolved successful"}, safe=False)
+        else:
+            return JsonResponse({"cause": "", "data": "", "code": 404, "detail": "please fill data"}, safe=False)
+    else:
+        return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "invalid method"}, safe=False)
+
+    online_users = []
+    # for connect in connections_obj:
+    #     user_data = {
+
+    #     }
+    #     if connect.user == self.scope["user"]:
+    #         message_stat_obj = message_user_state.objects.filter(user = connect.connection)
+    #         if message_stat_obj.count() >= 1:
+    #             message_stat_obj = message_stat_obj.last()
+    #     else:
+    #         message_stat_obj = message_user_state.objects.filter(user = connect.user)
+    #         if message_stat_obj.count() >= 1:
+    #             message_stat_obj = message_stat_obj.last()
+    #             async_to_sync(chly.send)(
+    #                 message_stat_obj.channel_name,
+    #                 {
+    #                     'type': 'sendevent_message',
+    #                     'typex' : 'connection_state',
+    #                     'state' : 1,
+    #                     'connection_id' : str(self.scope["user"].id)
+    #                 }
+    #             )
+    #             online_users.append(message_stat_obj.user.id)
+
+    #     online_users.append({
+    #         "image":str() 
+    #     })
+
+
 
 @csrf_protect
 @login_required

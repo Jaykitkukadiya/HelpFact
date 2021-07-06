@@ -825,10 +825,10 @@
                     </div>
 
                     <!-- this is popup for google map which is shown in this div -->
-                    <div class="popup-outer-container hidd" style="z-index: 9999999;" id="update_map_popup">
+                    <div class="popup-outer-container hidd" style="z-index: 10;" id="update_map_popup">
                         <div class="popup-map-box">
                             <div class="popup-content" id="update_googlemap_container"></div>
-                            <svg id="update_map_popup_exit" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
+                            <svg id="update_map_popup_exit" style="z-index: 11;" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
                                 width="512" height="512" viewBox="0 0 384 384" version="1.2">
                                 <defs>
                                     <clipPath id="a">
@@ -1731,48 +1731,57 @@
             <!-- message page -->
             <div class="dashboard-page-message" id="dashboard_page_message">
                 <div class="dashboard-page-message-inner-container">
-                    
-                    <div class="message-body-container">
+                    <div class="message-body-container-no-selected" id="add_new_message_container">
+                        <div class="message-body-container-new-message-btn" id="add_new_message">New Message</div>
+                    </div>
+                    <div class="new-message-popup-container hidd" id="new_message_popup_container">
+                        <div class="new-message-add-box" id="new_message_popup">
+
+                            <!-- <div class="new-message-title">
+                                New Message
+                            </div> -->
+                            <div class="search_box">
+                                <div class="new-message-btn-container">
+                                    <input type="text" id="new_message_ac_search_taxt" placeholder="Enter Pincode or email or username"
+                                    class="new-message-ac-search-taxt">
+                                    <img src="{% static 'icon/search_btn.svg' %}" alt="" 
+                                    class="new-message-ac-search-btn">
+                                    <img src="{% static 'icon/search_arrow.svg' %}" alt="" id="new_message_ac_search_btn"
+                                    class="new-message-ac-search-arrow">
+                                </div>
+                            </div>
+                            <div class="new-message-empty-message-container" id="new_message_no_user">
+                                <p class="new-message-empty-message" id="new_message_box_message">No Users</p>
+                            </div>
+                            <div class="new-message-ac-indecator-container" id="new_message_ac_container">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="message-body-container hidd" id="message_body_container">
+
                         <div class="message-body-header">
                             <div class="message-header-first-part">
-                                <div class="message-header-user-state"></div>
-                                <p class="message-header-user-name">jaykit kukadiya</p>
+                                <div class="message-header-user-state" id="message_receiver_state"></div>
+                                <p class="message-header-user-name" id="message_ac_name">jaykit kukadiya</p>
                             </div>
                             <div class="message-header-secound-part">
                                 <img class="message-header-more-img" src="{% static 'icon/3_dots.svg' %}" alt="">
                             </div>
 
                         </div>
-                        <div class="message-ac-container" id="message_ac_container">
-
-                            <!-- <div class="message-body-message-container">
-                                <div class="message-body-message-inner-container">
-                                    <div class="message-aligner-left">
-                                        <div class="message-box">
-                                            <span class="message-text">hi i am hay</span>
-                                            <span class="message-info-container">
-                                                <span class="message-time">9:30 PM</span>
-                                                <img class="message-state-img" src="{% static 'icon/double_tick.svg' %}"
-                                                    alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="message-aligner-right">
-                                        <div class="message-box">
-                                            <span class="message-text">hi i am
-                                                hayhghsdfsdfsdhfssdfsdfsddfgdfsgdffsasadsds
-                                                dfsdsfsdfsdfsdfsdgdfgdfgdfgdfgdfgfddsfsdfsdfsdffsd ssdfdsdfsfsd</span>
-                                            <span class="message-info-container">
-                                                <span class="message-time">9:30 PM</span>
-                                                <img class="message-state-img" src="{% static 'icon/single_tick.svg' %}"
-                                                    alt="">
-                                            </span>
-                                        </div>
-                                    </div>
-
+                        <div class="message-ac-container" >
+                            <div class="message-ac-inner-container" id="message_ac_container"></div>
+                            <!-- this is more options -->
+                            <div id="message-ac-detail-container" class="message-ac-inner-container-message-detail">
+                                <div id="message-ac-detail-box" class="message-ac-message-detail-btn-outer-container">
+                                   <p class="message-ac-messsage-detail-btn" id="message_detail_save">Save Message</p> 
+                                   <p class="message-ac-messsage-detail-btn" id="message_detail_reply">Reply Message</p> 
+                                   <p class="message-ac-messsage-detail-btn" id="message_detail_delete">Delete Message</p> 
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                         <div class="message-body-footer">
                             <input class="message-input" id="message_text" type="text" placeholder="Message" id="">
@@ -1780,17 +1789,24 @@
                                 alt="">
                         </div>
                     </div>
+
                     <div class="message-sidemenu" id="message_sidemenu_conainer">
+                        <div class="message-body-container-no-selected-sidemenu hidd"
+                            id="add_new_message_container_inline">
+                            <div class="message-body-container-new-message-btn-sidemenu" id="add_new_message_inline">New
+                                Message</div>
+                        </div>
                         {% for user_connection in user_connections %}
+                        {% if user_connection.user.id == request.user.id %}
                         <div class="message-account-indecator" id="message_indecator_{{user_connection.connection.id}}">
                             <img class="message-account-image"
                                 src="/media/{{user_connection.connection.extended_user_details.image}}" alt="none">
                             <div class="message-indecator-detail-container">
                                 {% if user_connection.connection.first_name != "" %}
-                                <p class="message-indecator-field">{{user_connection.connection.first_name}}
+                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.connection.id}}">{{user_connection.connection.first_name}}
                                     {{user_connection.connection.last_name}}</p>
                                 {% else %}
-                                <p class="message-indecator-field">{{user_connection.connection.username}}</p>
+                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.connection.id}}">{{user_connection.connection.username}}</p>
                                 {% endif %}
                                 <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
                                     {{user_connection.connection.extended_user_details.pincode}}</p>
@@ -1806,7 +1822,36 @@
                             </div>
 
                             `;
+                            
                         </script>
+                        {% elif user_connection.connection.id == request.user.id %}
+                        <div class="message-account-indecator" id="message_indecator_{{user_connection.user.id}}">
+                            <img class="message-account-image"
+                                src="/media/{{user_connection.user.extended_user_details.image}}" alt="none">
+                            <div class="message-indecator-detail-container">
+                                {% if user_connection.user.first_name != "" %}
+                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.user.id}}">{{user_connection.user.first_name}}
+                                    {{user_connection.user.last_name}}</p>
+                                {% else %}
+                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.user.id}}">{{user_connection.connection.username}}</p>
+                                {% endif %}
+                                <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
+                                    {{user_connection.user.extended_user_details.pincode}}</p>
+                            </div>
+                        </div>
+                        <script>
+                            message_details["user_ids"].push("{{user_connection.user.id}}");
+                            document.getElementById("message_ac_container").innerHTML += `
+                            
+                            <div class="message-body-message-container hidd" id="message_outer_container_{{user_connection.user.id}}">
+                                <div class="message-body-message-inner-container" id="message_inner_container_{{user_connection.user.id}}">{{user_connection.user.id}}
+                                </div>
+                            </div>
+
+                            `;
+                        </script>
+
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>

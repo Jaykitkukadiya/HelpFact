@@ -5,28 +5,22 @@ document.onreadystatechange = function () {
     }
 };
 
-function dec2hex(dec) {
-    return dec.toString(16).padStart(2, "0")
-}
-
-// generateId :: Integer -> String
-function generateId(len) {
-    var arr = new Uint8Array((len || 40) / 2)
-    window.crypto.getRandomValues(arr)
-    return Array.from(arr, dec2hex).join('')
-}
 
 var message_details = {
     user_ids: [],
     user_selected: "",
+    online_users : [],
+    new_user_list : [], 
     messages: [
         // {
         //     user_id: "2",
         //     message: "",
         //     message_id : ""
         // },
-       
-    ]
+
+    ],
+    selected_message_id : "",
+    
 }
 
 var pending_task_detail = {
@@ -43,6 +37,240 @@ var completed_task_detail = {
     detail_page_part_list: ["basic_info", "payment_info", "agent_info", "refund_info"]
 };
 
+
+
+function dec2hex(dec) {
+    return dec.toString(16).padStart(2, "0")
+}
+
+// generateId :: Integer -> String
+function generateId(len) {
+    var arr = new Uint8Array((len || 40) / 2)
+    window.crypto.getRandomValues(arr)
+    return Array.from(arr, dec2hex).join('')
+}
+
+
+function add_new_message() {
+    document.getElementById("new_message_popup_container").classList.remove("hidd");
+    setTimeout(() => {
+        document.getElementById("new_message_popup").classList.add("new-message-add-box-open");
+    } ,1)
+}
+
+function message_ac_click_listener(message_socket)
+{
+    Array.from(message_details["user_ids"]).forEach((id) => {
+
+        document.getElementById(`message_indecator_${id}`).onclick = () => {
+            Array.from(message_details["user_ids"]).forEach(
+                (idx) => {
+                    document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
+                    document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
+                });
+                document.getElementById(`message_indecator_${id}`).classList.remove("message-account-indecator-event-occure");
+                document.getElementById(`message_indecator_${id}`).classList.add("message-account-indecator-selected");
+            document.getElementById(`message_outer_container_${id}`).classList.remove("hidd");
+            document.getElementById("message_ac_name").innerText = document.getElementById(`message_indecator_name_${id}`).innerText;
+            if (message_details["online_users"].includes(String(id))) {
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                document.getElementById("message_text").placeholder = "Message";
+                document.getElementById("message_text").disabled  = false;
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                document.getElementById("message_text").placeholder = "User is offline";
+                document.getElementById("message_text").disabled  = true;
+            }
+            message_details["user_selected"] = id;
+            Array.from(message_details["messages"]).forEach((data) => {
+                if (data.user_id == id) {
+                    document.getElementById(`message_inner_container_${id}`).innerHTML += `
+                        
+                    <div class="message-aligner-left" >
+                    <div class="message-box" onclick="show_more_opt('${data.message_id}')" id="message_box_${data.message_id}">
+                    <span class="message-text" id="message_text_${data.message_id}">${data.message}</span>
+                    <span class="message-info-container">
+                    <span class="message-time" id="message_time_${data.message_id}">${data.time}</span>
+                                </span>
+                                </div>
+                                </div>
+                                
+                                `;
+                    message_socket.send(JSON.stringify({
+                        "typex": "message",
+                        "message_type": "viewed_mes",
+                        "user_id": userid, //my user id
+                        "receiver_id": data.user_id, //id to which i want to send message
+                        "message_id": data.message_id,
+                        "view_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                    }));
+                    message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
+                }
+            });
+            document.getElementById("add_new_message_container").classList.add("hidd");
+            document.getElementById("message_body_container").classList.remove("hidd");
+            document.getElementById("add_new_message_container_inline").classList.remove("hidd");
+            document.getElementById("add_new_message_inline").onclick = add_new_message;
+        }
+    });
+    
+}
+
+function message_ac_add_click_listener()
+{
+    Array.from(message_details["user_ids"]).forEach((id) => {
+        
+        document.getElementById(`message_indecator_${id}`).onclick = () => {
+            Array.from(message_details["user_ids"]).forEach(
+                (idx) => {
+                    document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
+                    document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
+                });
+                document.getElementById(`message_indecator_${id}`).classList.remove("message-account-indecator-event-occure");
+                document.getElementById(`message_indecator_${id}`).classList.add("message-account-indecator-selected");
+                document.getElementById(`message_outer_container_${id}`).classList.remove("hidd");
+            document.getElementById("message_ac_name").innerText = document.getElementById(`message_indecator_name_${id}`).innerText;
+                
+            if (message_details["online_users"].includes(String(id))) {
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                document.getElementById("message_text").placeholder = "Message";
+                document.getElementById("message_text").disabled  = false;
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                document.getElementById("message_text").placeholder = "User is offline";
+                document.getElementById("message_text").disabled  = true;
+            }
+            message_details["user_selected"] = id;
+            
+            document.getElementById("add_new_message_container").classList.add("hidd");
+            document.getElementById("message_body_container").classList.remove("hidd");
+            document.getElementById("add_new_message_container_inline").classList.remove("hidd");
+            document.getElementById("add_new_message_inline").onclick = add_new_message;
+        }
+    });
+
+}
+
+function show_more_opt(message_id)
+{
+    message_details["selected_message_id"] = message_id;
+    document.getElementById("message-ac-detail-container").style.display = "flex";
+}
+
+function setnewmessagelistner(){
+    Array.from(message_details["new_user_list"]).forEach((new_user_id) => {
+        console.log(new_user_id);
+        document.getElementById(`new_message_ac_indecator_${new_user_id}`).onclick = () => {
+            document.getElementById("message_sidemenu_conainer").innerHTML += `
+
+                <div class="message-account-indecator" id="message_indecator_${new_user_id}">
+                    <img class="message-account-image"
+                        src="${document.getElementById(`new_message_ac_indecator_image_${new_user_id}`).src}" alt="none">
+                    <div class="message-indecator-detail-container">
+                        <p class="message-indecator-field" id="message_indecator_name_${new_user_id}">${document.getElementById(`new_message_ac_indecator_fullname_${new_user_id}`).innerText}
+                        </p>
+                        <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
+                            ${document.getElementById(`new_message_ac_indecator_pincode_${new_user_id}`).innerText}</p>
+                    </div>
+                </div>
+                
+                `;
+                message_details["user_ids"].push(new_user_id);
+                document.getElementById("message_ac_container").innerHTML += `
+                            
+                            <div class="message-body-message-container hidd" id="message_outer_container_${new_user_id}">
+                            <div class="message-body-message-inner-container" id="message_inner_container_${new_user_id}">
+                            </div>
+                            </div>
+                            
+                    `;
+                document.getElementById("new_message_popup_container").classList.add("hidd");
+                message_ac_add_click_listener();
+                // document.getElementById(`message_indecator_${new_user_id}`).click();
+        }
+    });
+    message_details["new_user_list"] = [];
+}
+
+function new_message_search()
+{
+    
+    query_str = document.getElementById("new_message_ac_search_taxt");
+
+    if(query_str.value == "")
+    {
+        short_notification("enter name or other detail for search new user" , 5000 , "");
+        document.getElementById("new_message_ac_search_taxt").placeholder = "Enter Pincode or email or username";
+        document.getElementById("new_message_ac_search_taxt").focus();
+    }
+    else
+    {
+        fetch("/api/new_ac_find/", {
+            method:"POST",
+            headers:{ 'X-CSRFToken': getCookie('csrftoken') },
+            body:JSON.stringify({
+                "query_str" : query_str.value,
+            })
+        }).then((response) => response.json()).then((result) => {
+            
+            console.log(result);
+            query_str_value = query_str.value
+            query_str.value = "";
+    
+            if (Array.from(result.data).length == 0)
+            {
+                document.getElementById("new_message_ac_container").classList.add("hidd");
+                document.getElementById("new_message_no_user").classList.remove("hidd");
+                query_str.placeholder = "no user found..";
+            }
+            else
+            {
+                document.getElementById("new_message_ac_container").innerHTML = "";
+                let flag = 0
+                Array.from(result.data).forEach((user_obj) => {
+                    if( !Array.from(message_details["user_ids"]).includes(String(user_obj.id)) && String(user_obj.id) != String(userid))
+                    {
+                        console.log(user_obj);
+                        flag = 1;
+                        document.getElementById("new_message_ac_container").innerHTML += `
+                        
+                        <div class="new-message-ac-indecator" id="new_message_ac_indecator_${user_obj.id}" >
+                        <img class="new-message-indecator-img" id="new_message_ac_indecator_image_${user_obj.id}" src="/media/${user_obj.image}" alt="">
+                        <div class="new-message-indecator-detail-container">
+                            <p class="new-message-indecator-detail-fullname" id="new_message_ac_indecator_fullname_${user_obj.id}">${user_obj.fullname}</p>
+                            <p class="new-message-indecator-detail-inner-container">
+                                <span class="new-message-indecator-detail-username">@${user_obj.username}</span> - 
+                                <span class="new-message-indecator-detail-pincode" id="new_message_ac_indecator_pincode_${user_obj.id}">${user_obj.pincode}</span>
+                            </p>
+                        </div>
+                        </div>
+                        
+                        `;
+                        message_details["new_user_list"].push(String(user_obj.id));
+                        if(user_obj.is_online == 1)
+                        {
+                            message_details["online_users"].push(String(user_obj.id))
+                        }
+                    }
+                });
+                if (flag == 1)
+                {
+                    document.getElementById("new_message_ac_container").classList.remove("hidd");
+                    document.getElementById("new_message_no_user").classList.add("hidd");
+                    query_str.placeholder = query_str_value;
+                    setnewmessagelistner();
+                }
+                else
+                {
+                    query_str.placeholder = "user already added in your contact..";
+                }
+            }
+        });
+    }
+
+}
 
 // readymade function
 function parseISOString(s) {
@@ -1234,24 +1462,86 @@ window.onload = () => {
 
     message_socket.onopen = (e) => {
         // send that socket is now connected as user mode
-        message_socket.send("user")
+        message_socket.send(JSON.stringify({
+            "typex": "register",
+            "user_type": "user",
+        }));
         short_notification("Connected to message server", 3000);
 
     }
 
     // pinging function to keep connection live
     var pinging_message = setInterval(() => {
-        message_socket.send("ping")
+        message_socket.send(JSON.stringify({
+            "typex": "ping",
+            // "receiver_id" : message_details["user_selected"],
+        }))
     }, 1000)
 
 
     message_socket.onmessage = (e) => {
         data = JSON.parse(e.data);
         console.log(data);
-        
-        if (data.typex == 'session_expire') {
+
+        if (data.typex == 'ping') {
+            if (data.receiver_state == 1) {
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+            }
+        }
+
+        else if (data.typex == "connection_state") {
+
+            if (message_details["user_selected"] == String(data.connection_id)){
+
+                if (data.state == 1) {
+                    document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                    document.getElementById("message_text").placeholder = "Message";
+                    document.getElementById("message_text").disabled  = false;
+                }
+                else {
+                    document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                    document.getElementById("message_text").placeholder = "User is offline";
+                    document.getElementById("message_text").disabled  = true;
+                }
+            }
+            if (data.state == 1) {
+                message_details["online_users"].push(String(data.connection_id));
+            }
+            else {
+                message_details["online_users"].splice(message_details["online_users"].indexOf(String(data.connection_id)) , 1);
+            }
+            
+        }
+        else if (data.typex == "initial_connection_state") {
+
+            if (data.connection_ids.includes(message_details["user_selected"])){
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                document.getElementById("message_text").placeholder = "Message";
+                document.getElementById("message_text").disabled  = false;
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                document.getElementById("message_text").placeholder = "User is offline";
+                document.getElementById("message_text").disabled  = true;
+            }
+            
+            data.connection_ids.forEach( (id) => {
+                if (!message_details["online_users"].includes(String(id))){
+                    message_details["online_users"].push(String(id));
+                }
+            })
+        }
+
+        else if (data.typex == 'session_expire') {
             clearInterval(pinging_message);
             short_notification(data.detail, 5000, `location.href = "/";`);
+        }
+
+        else if (data.typex == "invelid_data") {
+            short_notification(data.detail, 4000)
         }
 
         else if (data.typex == "message_sent") {
@@ -1263,18 +1553,23 @@ window.onload = () => {
             detail = JSON.parse(data.detail)
 
             message_socket.send(JSON.stringify({
+                "typex": "message",
                 "message_type": "received_mes",
                 "user_id": userid, //my user id
                 "receiver_id": detail.user_id, //id to which i want to send message
                 "message_id": detail.message_id,
-                "receive_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                "receive_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
             }));
             // conditions for add messages
+
+            if (document.getElementById("dashboard_page_message").style.display == "none") {
+                short_notification("new message received", 3000);
+            }
 
             //tab is already there but not opened yet
             if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] != detail.user_id) {
                 message_details["messages"].push(
-                    { "user_id": detail.user_id, "message": detail.message,"message_id" : detail.message_id , "time" : detail.time }
+                    { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time }
                 )
                 document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure")
             }
@@ -1283,45 +1578,64 @@ window.onload = () => {
             else if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] == detail.user_id) {
                 document.getElementById(`message_inner_container_${detail.user_id}`).innerHTML += `
                 
-                        <div class="message-aligner-left">
-                        <div class="message-box">
-                        <span class="message-text">${detail.message}</span>
+                        <div class="message-aligner-left" >
+                        <div class="message-box" onclick="show_more_opt('${detail.message_id}')" id="message_box_${detail.message_id}">
+                        <span class="message-text" id="message_text_${detail.message_id}">${detail.message}</span>
                             <span class="message-info-container">
-                            <span class="message-time">${detail.time}</span>
+                            <span class="message-time" id="message_time_${detail.message_id}">${detail.time}</span>
                             </span>
                         </div>
                         </div>
                         
                         `;
                 message_socket.send(JSON.stringify({
+                    "typex": "message",
                     "message_type": "viewed_mes",
                     "user_id": userid, //my user id
                     "receiver_id": detail.user_id, //id to which i want to send message
                     "message_id": detail.message_id,
-                    "view_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                    "view_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
                 }));
-
             }
+        }
 
-            // tab is not available mean new user message come
-            else if (!message_details["user_ids"].includes(detail.user_id)) {
+        // tab is not available mean new user message come
+        else if (data.typex == "new_user_mess_recv") {
 
-                document.getElementById("message_sidemenu_conainer").innerHTML += `
+            // send event that mes recved
+            detail = JSON.parse(data.detail)
+
+            message_socket.send(JSON.stringify({
+                "typex": "message",
+                "message_type": "received_mes",
+                "user_id": userid, //my user id
+                "receiver_id": detail.user_id, //id to which i want to send message
+                "message_id": detail.message_id,
+                "receive_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+            }));
+            let user_name = ""
+            if (detail.user_fullname.trim() == "") {
+                user_name = detail.user_fullname
+            }
+            else {
+                user_name = detail.user_name
+            }
+            document.getElementById("message_sidemenu_conainer").innerHTML += `
                 
                 <div class="message-account-indecator" id="message_indecator_${detail.user_id}">
                     <img class="message-account-image"
-                        src="/media/{{user_connection.connection.extended_user_details.image}}" alt="none">
+                        src="/media/${detail.user_img}" alt="none">
                     <div class="message-indecator-detail-container">
-                        <p class="message-indecator-field">jaykit kukadiya
+                        <p class="message-indecator-field" id="message_indecator_name_${detail.user_id}">${detail.user_name}
                            </p>
                         <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
-                            395001</p>
+                            ${detail.user_pincode}</p>
                     </div>
                 </div>
                 
                 `;
-                message_details["user_ids"].push(detail.user_id);
-                document.getElementById("message_ac_container").innerHTML += `
+            message_details["user_ids"].push(detail.user_id);
+            document.getElementById("message_ac_container").innerHTML += `
                         
                         <div class="message-body-message-container hidd" id="message_outer_container_${detail.user_id}">
                         <div class="message-body-message-inner-container" id="message_inner_container_${detail.user_id}">
@@ -1329,48 +1643,12 @@ window.onload = () => {
                         </div>
                         
                         `;
-                message_details["messages"].push(
-                    { "user_id": detail.user_id, "message": detail.message,"message_id":detail.message_id , "time" : detail.time }
-                )
-                document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure");
-
-
-                document.getElementById(`message_indecator_${detail.user_id}`).onclick = () => {
-                    Array.from(message_details["user_ids"]).forEach(
-                        (idx) => {
-                            document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
-                            document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
-                        });
-                    document.getElementById(`message_indecator_${detail.user_id}`).classList.remove("message-account-indecator-event-occure");
-                    document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-selected");
-                    document.getElementById(`message_outer_container_${detail.user_id}`).classList.remove("hidd");
-                    message_details["user_selected"] = detail.user_id;
-                    Array.from(message_details["messages"]).forEach((data) => {
-                        if (data.user_id == detail.user_id) {
-                            document.getElementById(`message_inner_container_${detail.user_id}`).innerHTML += `
-                            
-                            <div class="message-aligner-left" id="message_${data.message_id}">
-                            <div class="message-box">
-                                <span class="message-text">${data.message}</span>
-                                <span class="message-info-container">
-                                    <span class="message-time">${data.time}</span>
-                                </span>
-                            </div>
-                            </div>
-                            
-                            `;
-                            message_socket.send(JSON.stringify({
-                                "message_type": "viewed_mes",
-                                "user_id": userid, //my user id
-                                "receiver_id": data.user_id, //id to which i want to send message
-                                "message_id": data.message_id,
-                                "view_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-                            }));
-                            message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
-                        }
-                    });
-                }
-            }
+            message_details["messages"].push(
+                { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time }
+            )
+            document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure");
+            message_details["online_users"].push(String(detail.user_id))
+            message_ac_click_listener(message_socket);
         }
 
         else if (data.typex == "received_mes") {
@@ -1392,78 +1670,80 @@ window.onload = () => {
     document.getElementById("message_send_btn").onclick = () => {
         let message = document.getElementById("message_text").value;
         console.log(message)
-        if (message != "") {
-            message_state_id = generateId(13);
-            message_socket.send(JSON.stringify({
-                "message_type": "new_mes",
-                "user_id": String(userid),
-                "receiver_id": message_details["user_selected"],
-                "message_id": message_state_id,
-                "message": message,
-                "time" : new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-            }));
-            document.getElementById(`message_inner_container_${message_details["user_selected"]}`).innerHTML += `
+        if (message_details["user_selected"] != "") {
+            if (message != "") {
+                message_state_id = generateId(13);
+                message_socket.send(JSON.stringify({
+                    "typex": "message",
+                    "message_type": "new_mes",
+                    "user_id": String(userid),
+                    "receiver_id": message_details["user_selected"],
+                    "message_id": message_state_id,
+                    "message": message,
+                    "time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                }));
+                document.getElementById(`message_inner_container_${message_details["user_selected"]}`).innerHTML += `
 
-                        <div class="message-aligner-right">
-                            <div class="message-box">
-                                <span class="message-text">${message}</span>
-                                <span class="message-info-container">
-                                    <span class="message-time">${new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
-                                    <img class="message-state-img" id="message_${message_state_id}" src="/static/icon/wait_watch.svg"
-                                        alt="">
-                                </span>
+                            <div class="message-aligner-right" >
+                                <div class="message-box" onclick="show_more_opt('${message_state_id}')" id="message_box_${message_state_id}">
+                                    <span class="message-text" id="message_text_${message_state_id}">${message}</span>
+                                    <span class="message-info-container">
+                                        <span class="message-time" id="message_time_${message_state_id}">${new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                                        <img class="message-state-img" id="message_${message_state_id}" src="/static/icon/wait_watch.svg"
+                                            alt="">
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        
-                        `;
-            document.getElementById("message_text").value = "";
-            document.getElementById("message_text").focus();
+                            
+                            `;
+                document.getElementById("message_text").value = "";
+                
+                document.getElementById("message_text").focus();
+            }
+        }
+        else {
+            short_notification("please select user first", 5000);
         }
 
     }
 
-    Array.from(message_details["user_ids"]).forEach((id) => {
-
-        document.getElementById(`message_indecator_${id}`).onclick = () => {
-            Array.from(message_details["user_ids"]).forEach(
-                (idx) => {
-                    document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
-                    document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
-                });
-            document.getElementById(`message_indecator_${id}`).classList.remove("message-account-indecator-event-occure");
-            document.getElementById(`message_indecator_${id}`).classList.add("message-account-indecator-selected");
-            document.getElementById(`message_outer_container_${id}`).classList.remove("hidd");
-            message_details["user_selected"] = id;
-            Array.from(message_details["messages"]).forEach((data) => {
-                if (data.user_id == id) {
-                    document.getElementById(`message_inner_container_${id}`).innerHTML += `
-                        
-                        <div class="message-aligner-left" id="message_${data.message_id}">
-                        <div class="message-box">
-                            <span class="message-text">${data.message}</span>
-                            <span class="message-info-container">
-                                <span class="message-time">${data.time}</span>
-                            </span>
-                        </div>
-                        </div>
-                        
-                        `;
-                    message_socket.send(JSON.stringify({
-                        "message_type": "viewed_mes",
-                        "user_id": userid, //my user id
-                        "receiver_id": data.user_id, //id to which i want to send message
-                        "message_id": data.message_id,
-                        "view_time":new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-                    }));
-                    message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
-                }
-            });
+    document.getElementById("message_text").addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            document.getElementById("message_send_btn").click();
         }
-    });
+    })
+    
+    message_ac_click_listener(message_socket);
 
+    document.getElementById("message_detail_delete").onclick = () => {
+        message_details["selected_message_id"]
+    }
+    
+    document.getElementById("add_new_message").onclick = add_new_message;
 
-
-
+    document.getElementById("new_message_popup_container").addEventListener("click", (e) => {
+        if (e.target.id == "new_message_popup_container") {
+            document.getElementById("new_message_popup").classList.remove("new-message-add-box-open");;
+            setTimeout(() => {
+                e.target.classList.add("hidd");
+                
+            } , 1)
+        }
+    })
+    
+    document.getElementById("message-ac-detail-container").addEventListener("click", (e) => {
+        if (e.target.id == "message-ac-detail-container") {
+            document.getElementById("message-ac-detail-container").style.display = "none";
+        }
+    })
+    
+    
+    document.getElementById("new_message_ac_search_taxt").addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            new_message_search();
+        }
+    })
+    document.getElementById("new_message_ac_search_btn").onclick = new_message_search;
 
 
 
@@ -1769,10 +2049,8 @@ window.onload = () => {
         }
     }
     window.onbeforeunload = function (event) {
-        socket.send("disconnect");
         socket.close()
-        message_socket.send("disconnect");
-        message_socket.close()
+        message_socket.close();
         return null;
     };
     socket.onclose = (e) => {

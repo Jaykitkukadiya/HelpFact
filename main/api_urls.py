@@ -19,4 +19,6 @@ urlpatterns = [
     path("task/gotp/" , generate_otp),
     path("task/delete/" , delete_task),
     path("contactus/" , contact_us),
+
+    path("new_ac_find/" , new_ac_find),
 ]
