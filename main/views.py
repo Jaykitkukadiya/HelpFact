@@ -9,7 +9,7 @@ MERCHANT_KEY = 'bKMfNxPPf_QdZppa'
 
 def home(request):
     if request.user.is_authenticated:
-        role = request.user.exntend_user_details.role
+        role = request.user.extended_user_details.role
     else:
         role = "nouser"
     return render(request, 'home.html', {'user_role': role})
@@ -24,12 +24,12 @@ def login(request):
 
 def deshbord(request):
     if str(request.user) != "AnonymousUser":
-        panding_tasks = panding_task.objects.filter(
-            panding_task_user=request.user)
+        pending_tasks = pending_task.objects.filter(
+            pending_task_user=request.user)
         completed_task_objs = completed_task.objects.filter(
             completed_task_user=request.user)
         # print(completed_task_objs)
-        return render(request, "deshbord.html", {'panding_tasks': panding_tasks, 'completed_tasks': completed_task_objs})
+        return render(request, "deshbord.html", {'pending_tasks': pending_tasks, 'completed_tasks': completed_task_objs})
        
     else:
         return redirect('/login/')
@@ -37,14 +37,16 @@ def deshbord(request):
 
 def deshbordcpy(request):
     if str(request.user) != "AnonymousUser" :
-        panding_tasks = panding_task.objects.filter(
-            panding_task_user=request.user)
+        pending_tasks = pending_task.objects.filter(
+            pending_task_user=request.user)
         completed_task_objs_completed = completed_task.objects.filter(completed_task_user=request.user , status="success")
         completed_task_objs_expired = completed_task.objects.filter(
             completed_task_user=request.user , status="expired")
         completed_task_objs_cancelled = completed_task.objects.filter(
             completed_task_user=request.user , status="cancelled" )
-        return render(request, "deshbordcpy.html", {'panding_tasks': panding_tasks, 'completed_task_objs_completed': completed_task_objs_completed , "completed_task_objs_expired" : completed_task_objs_expired , "completed_task_objs_cancelled" : completed_task_objs_cancelled} )
+        user_connections_obj = user_connections.objects.filter(Q(user = request.user) | Q(connection = request.user) )
+        print(user_connections_obj)
+        return render(request, "deshbordcpy.html", {'pending_tasks': pending_tasks, 'completed_task_objs_completed': completed_task_objs_completed , "completed_task_objs_expired" : completed_task_objs_expired , "completed_task_objs_cancelled" : completed_task_objs_cancelled , "user_connections" : user_connections_obj } )
     else:
         return redirect('/login/')
 
@@ -82,7 +84,7 @@ def payment(request):
                     param_dict, MERCHANT_KEY)
                 return render(request, "payment.html", {"payment_obj": task_obj.payment_info, 'param_dict': param_dict})
             else:
-                return redirect("/deshboardcpy")
+                return redirect("/dashboard")
         else:
             return render(request, "deshbord.html")
         
@@ -131,12 +133,12 @@ def paytm_payget(request):
 
 def work_bord(request):
     if str(request.user) != "AnonymousUser": 
-        if request.user.exntend_user_details.role == "agent":
-            # task_obj = task_detail.objects.filter(pincode=request.user.exntend_user_details.pincode)
-            pand_obj = panding_task.objects.filter(
-                task_detail_link__pincode=request.user.exntend_user_details.pincode, status="initilize")
-            pand_accepted_obj = panding_task.objects.filter(
-                panding_task_agent=request.user, status="accepted")
+        if request.user.extended_user_details.role == "agent":
+            # task_obj = task_detail.objects.filter(pincode=request.user.extended_user_details.pincode)
+            pand_obj = pending_task.objects.filter(
+                task_detail_link__pincode=request.user.extended_user_details.pincode, status="initilize")
+            pand_accepted_obj = pending_task.objects.filter(
+                pending_task_agent=request.user, status="accepted")
             return render(request, "work_bord.html", {"pand_obj": pand_obj, "pand_accepted_obj": pand_accepted_obj})
         else:
             return redirect('/')
@@ -146,12 +148,12 @@ def work_bord(request):
 
 def work_bordcpy(request):
     if str(request.user) != "AnonymousUser": 
-        if request.user.exntend_user_details.role == "agent":
-            # task_obj = task_detail.objects.filter(pincode=request.user.exntend_user_details.pincode)
-            pand_obj = panding_task.objects.filter(
-                task_detail_link__pincode=request.user.exntend_user_details.pincode, status="initilize")
-            pand_accepted_obj = panding_task.objects.filter(
-                panding_task_agent=request.user, status="accepted").exclude(panding_task_user=request.user)
+        if request.user.extended_user_details.role == "agent":
+            # task_obj = task_detail.objects.filter(pincode=request.user.extended_user_details.pincode)
+            pand_obj = pending_task.objects.filter(
+                task_detail_link__pincode=request.user.extended_user_details.pincode, status="initilize")
+            pand_accepted_obj = pending_task.objects.filter(
+                pending_task_agent=request.user, status="accepted").exclude(pending_task_user=request.user)
             completed_task_objs_completed = completed_task.objects.filter(completed_task_agent=request.user , accepted="accepted" , status = "success")
             completed_task_objs_expired = completed_task.objects.filter(completed_task_agent=request.user , accepted="accepted" , status = "expired")
             return render(request, "work_bordcpy.html", {"pand_obj": pand_obj, "pand_accepted_obj": pand_accepted_obj , "completed_task_objs_completed" : completed_task_objs_completed , "completed_task_objs_expired" : completed_task_objs_expired })

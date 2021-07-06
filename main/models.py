@@ -1,8 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
+from io import BytesIO
+from PIL import Image
+from django.core.files import File
 
 
-class exntend_user_details(models.Model):
+def compress(image , Iquality=50):
+    print(Iquality)
+    im = Image.open(image)
+    # create a BytesIO object
+    im_io = BytesIO() 
+    # save image to BytesIO object
+    im.save(im_io, 'JPEG', quality=Iquality) 
+    # create a django-friendly Files object
+    new_image = File(im_io, name=image.name)
+    return new_image
+    
+
+# class exntend_user_details(models.Model):
+class extended_user_details(models.Model):
+    
     xender_choice = (
         ("Male" , "Male"),
         ("Female" , "Female")
@@ -37,9 +54,14 @@ class exntend_user_details(models.Model):
                 except Exception as ex:  # Catch field does not exist exception
                     pass
             kwargs['update_fields'] = changed_fields
+            if 'image' in changed_fields:
+                new_image = compress(self.image , 50)
+                self.image = new_image
         super().save(*args, **kwargs)
-    # def __str__(self):
-    #     return self.user.username
+
+
+    def __str__(self):
+        return self.user.username
 
 
 class online(models.Model):
@@ -52,6 +74,30 @@ class online(models.Model):
     state = models.CharField(max_length=6 , choices=state_choice , default="user")
     date = models.DateTimeField(auto_now_add = True)
     # socket_name = models.CharField(max_length = 100 )
+
+    def __str__(self):
+        return self.user.username
+
+class message_user_state(models.Model):
+    state_choice = (
+        ("user","user"),
+        ("agent","agent")
+    )
+    user = models.ForeignKey(User , on_delete=models.CASCADE)
+    channel_name = models.CharField(max_length=400)
+    state = models.CharField(max_length=6 , choices=state_choice , default="user")
+    date = models.DateTimeField(auto_now_add = True)
+    # socket_name = models.CharField(max_length = 100 )
+
+    def __str__(self):
+        return self.user.username
+class user_connections(models.Model):
+    user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="user")
+    connection = models.ForeignKey(User , on_delete=models.CASCADE , related_name="connection")
+    date = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return f"{self.user.username} to {self.connection.username}"
 
 class task_detail(models.Model):
     gender_choice = (
@@ -89,6 +135,13 @@ class task_detail(models.Model):
                 except Exception as ex:  # Catch field does not exist exception
                     pass
             kwargs['update_fields'] = changed_fields
+            if 'image' in changed_fields and int(self.image.size) < 5000000:
+                new_image = compress(self.image , 30)
+                self.image = new_image
+            elif 'image' in changed_fields and int(self.image.size) >= 5000000:
+                new_image = compress(self.image , 15)
+                self.image = new_image
+
         super().save(*args, **kwargs)
 
     # def __str__(self):
@@ -117,7 +170,7 @@ class payment_info(models.Model):
     status_choice = (
         ("success","success"),
         ("fail","fail"),
-        ("panding","panding"),
+        ("pending","pending"),
     )
     task_detail_link = models.OneToOneField(task_detail , on_delete=models.CASCADE , unique=True)
     user = models.ForeignKey(User , on_delete=models.CASCADE)
@@ -154,7 +207,7 @@ class payment_info(models.Model):
             kwargs['update_fields'] = changed_fields
         super().save(*args, **kwargs)
 
-class panding_task(models.Model):
+class pending_task(models.Model):
 
     status_choice = (
         ("initilize","initilize"),
@@ -162,8 +215,8 @@ class panding_task(models.Model):
     )
     payment = models.ForeignKey(payment_info , on_delete=models.DO_NOTHING)
     task_detail_link = models.OneToOneField(task_detail , on_delete=models.CASCADE , unique=True)
-    panding_task_agent = models.ForeignKey(User ,on_delete=models.DO_NOTHING , related_name="panding_task_agent" , blank=True , null=True)
-    panding_task_user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="panding_task_user")
+    pending_task_agent = models.ForeignKey(User ,on_delete=models.DO_NOTHING , related_name="pending_task_agent" , blank=True , null=True)
+    pending_task_user = models.ForeignKey(User , on_delete=models.CASCADE , related_name="pending_task_user")
     status = models.CharField(max_length=10 , choices=status_choice , default="initilize")
     accept_time = models.DateTimeField(blank=True , null=True)
     agent_location = models.CharField(max_length=500, blank=True , null=True)
@@ -197,12 +250,12 @@ class refund_detail(models.Model):
     refund_status_choice = (
         ("success","success"),
         ("fail","fail"),
-        ("panding","panding"),
+        ("pending","pending"),
     )
     
     refund_amount = models.IntegerField()
     refund_id = models.CharField(max_length = 200)
-    refund_status = models.CharField(max_length=20 , choices=refund_status_choice , default="panding")
+    refund_status = models.CharField(max_length=20 , choices=refund_status_choice , default="pending")
     date = models.DateTimeField(auto_now_add = True)
 
 
@@ -239,7 +292,7 @@ class completed_task(models.Model):
     )
     refund_status_choice = (
         ("-","-"),
-        ("panding","panding"),
+        ("pending","pending"),
     )
 
     payment = models.ForeignKey(payment_info , on_delete=models.DO_NOTHING)

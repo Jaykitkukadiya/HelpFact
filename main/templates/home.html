@@ -13,6 +13,11 @@
 </head>
 
 <body>
+    {% csrf_token %}
+    <div class="lower-screen-resolution-notify">
+        please open website with minimum resolution of 1366 X 766<br>or<br>use desktop mode
+    </div>
+
     <div class="navbar" id="navbar">
         <div class="site-logo-container">
             <img class="site-logo" src="{% static 'icon/siteLogo1.svg' %}" alt="site logo">
@@ -204,7 +209,7 @@
 
     <div class="noti-overlay" id="notificationbx">
         <div class="notification-box" id="notif_name">
-            message hereflkdgjdfgoidfljgodigjkdfoig
+            message 
         </div>
     </div>
 </body>

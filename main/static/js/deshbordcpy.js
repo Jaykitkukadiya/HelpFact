@@ -1,11 +1,29 @@
 
 document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-        document.getElementById("loading_rounder").classList.add("hidd");
+        short_notification("Page Loaded. Wait for a while we connect.", 10000)
     }
 };
 
-var panding_task_detail = {
+
+var message_details = {
+    user_ids: [],
+    user_selected: "",
+    online_users : [],
+    new_user_list : [], 
+    messages: [
+        // {
+        //     user_id: "2",
+        //     message: "",
+        //     message_id : ""
+        // },
+
+    ],
+    selected_message_id : "",
+    
+}
+
+var pending_task_detail = {
     id: [],
     selected_id: "",
     selected_deadline_intervals: [],
@@ -19,6 +37,240 @@ var completed_task_detail = {
     detail_page_part_list: ["basic_info", "payment_info", "agent_info", "refund_info"]
 };
 
+
+
+function dec2hex(dec) {
+    return dec.toString(16).padStart(2, "0")
+}
+
+// generateId :: Integer -> String
+function generateId(len) {
+    var arr = new Uint8Array((len || 40) / 2)
+    window.crypto.getRandomValues(arr)
+    return Array.from(arr, dec2hex).join('')
+}
+
+
+function add_new_message() {
+    document.getElementById("new_message_popup_container").classList.remove("hidd");
+    setTimeout(() => {
+        document.getElementById("new_message_popup").classList.add("new-message-add-box-open");
+    } ,1)
+}
+
+function message_ac_click_listener(message_socket)
+{
+    Array.from(message_details["user_ids"]).forEach((id) => {
+
+        document.getElementById(`message_indecator_${id}`).onclick = () => {
+            Array.from(message_details["user_ids"]).forEach(
+                (idx) => {
+                    document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
+                    document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
+                });
+                document.getElementById(`message_indecator_${id}`).classList.remove("message-account-indecator-event-occure");
+                document.getElementById(`message_indecator_${id}`).classList.add("message-account-indecator-selected");
+            document.getElementById(`message_outer_container_${id}`).classList.remove("hidd");
+            document.getElementById("message_ac_name").innerText = document.getElementById(`message_indecator_name_${id}`).innerText;
+            if (message_details["online_users"].includes(String(id))) {
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                document.getElementById("message_text").placeholder = "Message";
+                document.getElementById("message_text").disabled  = false;
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                document.getElementById("message_text").placeholder = "User is offline";
+                document.getElementById("message_text").disabled  = true;
+            }
+            message_details["user_selected"] = id;
+            Array.from(message_details["messages"]).forEach((data) => {
+                if (data.user_id == id) {
+                    document.getElementById(`message_inner_container_${id}`).innerHTML += `
+                        
+                    <div class="message-aligner-left" >
+                    <div class="message-box" onclick="show_more_opt('${data.message_id}')" id="message_box_${data.message_id}">
+                    <span class="message-text" id="message_text_${data.message_id}">${data.message}</span>
+                    <span class="message-info-container">
+                    <span class="message-time" id="message_time_${data.message_id}">${data.time}</span>
+                                </span>
+                                </div>
+                                </div>
+                                
+                                `;
+                    message_socket.send(JSON.stringify({
+                        "typex": "message",
+                        "message_type": "viewed_mes",
+                        "user_id": userid, //my user id
+                        "receiver_id": data.user_id, //id to which i want to send message
+                        "message_id": data.message_id,
+                        "view_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                    }));
+                    message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
+                }
+            });
+            document.getElementById("add_new_message_container").classList.add("hidd");
+            document.getElementById("message_body_container").classList.remove("hidd");
+            document.getElementById("add_new_message_container_inline").classList.remove("hidd");
+            document.getElementById("add_new_message_inline").onclick = add_new_message;
+        }
+    });
+    
+}
+
+function message_ac_add_click_listener()
+{
+    Array.from(message_details["user_ids"]).forEach((id) => {
+        
+        document.getElementById(`message_indecator_${id}`).onclick = () => {
+            Array.from(message_details["user_ids"]).forEach(
+                (idx) => {
+                    document.getElementById(`message_indecator_${idx}`).classList.remove("message-account-indecator-selected");
+                    document.getElementById(`message_outer_container_${idx}`).classList.add("hidd");
+                });
+                document.getElementById(`message_indecator_${id}`).classList.remove("message-account-indecator-event-occure");
+                document.getElementById(`message_indecator_${id}`).classList.add("message-account-indecator-selected");
+                document.getElementById(`message_outer_container_${id}`).classList.remove("hidd");
+            document.getElementById("message_ac_name").innerText = document.getElementById(`message_indecator_name_${id}`).innerText;
+                
+            if (message_details["online_users"].includes(String(id))) {
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                document.getElementById("message_text").placeholder = "Message";
+                document.getElementById("message_text").disabled  = false;
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                document.getElementById("message_text").placeholder = "User is offline";
+                document.getElementById("message_text").disabled  = true;
+            }
+            message_details["user_selected"] = id;
+            
+            document.getElementById("add_new_message_container").classList.add("hidd");
+            document.getElementById("message_body_container").classList.remove("hidd");
+            document.getElementById("add_new_message_container_inline").classList.remove("hidd");
+            document.getElementById("add_new_message_inline").onclick = add_new_message;
+        }
+    });
+
+}
+
+function show_more_opt(message_id)
+{
+    message_details["selected_message_id"] = message_id;
+    document.getElementById("message-ac-detail-container").style.display = "flex";
+}
+
+function setnewmessagelistner(){
+    Array.from(message_details["new_user_list"]).forEach((new_user_id) => {
+        console.log(new_user_id);
+        document.getElementById(`new_message_ac_indecator_${new_user_id}`).onclick = () => {
+            document.getElementById("message_sidemenu_conainer").innerHTML += `
+
+                <div class="message-account-indecator" id="message_indecator_${new_user_id}">
+                    <img class="message-account-image"
+                        src="${document.getElementById(`new_message_ac_indecator_image_${new_user_id}`).src}" alt="none">
+                    <div class="message-indecator-detail-container">
+                        <p class="message-indecator-field" id="message_indecator_name_${new_user_id}">${document.getElementById(`new_message_ac_indecator_fullname_${new_user_id}`).innerText}
+                        </p>
+                        <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
+                            ${document.getElementById(`new_message_ac_indecator_pincode_${new_user_id}`).innerText}</p>
+                    </div>
+                </div>
+                
+                `;
+                message_details["user_ids"].push(new_user_id);
+                document.getElementById("message_ac_container").innerHTML += `
+                            
+                            <div class="message-body-message-container hidd" id="message_outer_container_${new_user_id}">
+                            <div class="message-body-message-inner-container" id="message_inner_container_${new_user_id}">
+                            </div>
+                            </div>
+                            
+                    `;
+                document.getElementById("new_message_popup_container").classList.add("hidd");
+                message_ac_add_click_listener();
+                // document.getElementById(`message_indecator_${new_user_id}`).click();
+        }
+    });
+    message_details["new_user_list"] = [];
+}
+
+function new_message_search()
+{
+    
+    query_str = document.getElementById("new_message_ac_search_taxt");
+
+    if(query_str.value == "")
+    {
+        short_notification("enter name or other detail for search new user" , 5000 , "");
+        document.getElementById("new_message_ac_search_taxt").placeholder = "Enter Pincode or email or username";
+        document.getElementById("new_message_ac_search_taxt").focus();
+    }
+    else
+    {
+        fetch("/api/new_ac_find/", {
+            method:"POST",
+            headers:{ 'X-CSRFToken': getCookie('csrftoken') },
+            body:JSON.stringify({
+                "query_str" : query_str.value,
+            })
+        }).then((response) => response.json()).then((result) => {
+            
+            console.log(result);
+            query_str_value = query_str.value
+            query_str.value = "";
+    
+            if (Array.from(result.data).length == 0)
+            {
+                document.getElementById("new_message_ac_container").classList.add("hidd");
+                document.getElementById("new_message_no_user").classList.remove("hidd");
+                query_str.placeholder = "no user found..";
+            }
+            else
+            {
+                document.getElementById("new_message_ac_container").innerHTML = "";
+                let flag = 0
+                Array.from(result.data).forEach((user_obj) => {
+                    if( !Array.from(message_details["user_ids"]).includes(String(user_obj.id)) && String(user_obj.id) != String(userid))
+                    {
+                        console.log(user_obj);
+                        flag = 1;
+                        document.getElementById("new_message_ac_container").innerHTML += `
+                        
+                        <div class="new-message-ac-indecator" id="new_message_ac_indecator_${user_obj.id}" >
+                        <img class="new-message-indecator-img" id="new_message_ac_indecator_image_${user_obj.id}" src="/media/${user_obj.image}" alt="">
+                        <div class="new-message-indecator-detail-container">
+                            <p class="new-message-indecator-detail-fullname" id="new_message_ac_indecator_fullname_${user_obj.id}">${user_obj.fullname}</p>
+                            <p class="new-message-indecator-detail-inner-container">
+                                <span class="new-message-indecator-detail-username">@${user_obj.username}</span> - 
+                                <span class="new-message-indecator-detail-pincode" id="new_message_ac_indecator_pincode_${user_obj.id}">${user_obj.pincode}</span>
+                            </p>
+                        </div>
+                        </div>
+                        
+                        `;
+                        message_details["new_user_list"].push(String(user_obj.id));
+                        if(user_obj.is_online == 1)
+                        {
+                            message_details["online_users"].push(String(user_obj.id))
+                        }
+                    }
+                });
+                if (flag == 1)
+                {
+                    document.getElementById("new_message_ac_container").classList.remove("hidd");
+                    document.getElementById("new_message_no_user").classList.add("hidd");
+                    query_str.placeholder = query_str_value;
+                    setnewmessagelistner();
+                }
+                else
+                {
+                    query_str.placeholder = "user already added in your contact..";
+                }
+            }
+        });
+    }
+
+}
 
 // readymade function
 function parseISOString(s) {
@@ -35,16 +287,16 @@ var update_proof_listner, update_document_listner;
 
 var favi = document.querySelector("link[rel~='icon']");
 
-function panding_task_select_listener() {
-    panding_task_detail['id'].forEach((id) => {
-        document.getElementById(`panding_task_select_${id}`).addEventListener('click', () => {
-            panding_task_detail['id'].forEach((idx) => {
-                document.getElementById(`panding_task_select_${idx}`).style.backgroundColor = "#1E75D9";
-                document.getElementById(`panding_task_select_${idx}`).innerText = "Select";
+function pending_task_select_listener() {
+    pending_task_detail['id'].forEach((id) => {
+        document.getElementById(`pending_task_select_${id}`).addEventListener('click', () => {
+            pending_task_detail['id'].forEach((idx) => {
+                document.getElementById(`pending_task_select_${idx}`).style.backgroundColor = "#1E75D9";
+                document.getElementById(`pending_task_select_${idx}`).innerText = "Select";
             });
-            document.getElementById(`panding_task_select_${id}`).style.backgroundColor = "#212121c0";
-            panding_task_detail['selected_id'] = id;
-            document.getElementById(`panding_task_select_${id}`).innerText = "Selected";
+            document.getElementById(`pending_task_select_${id}`).style.backgroundColor = "#212121c0";
+            pending_task_detail['selected_id'] = id;
+            document.getElementById(`pending_task_select_${id}`).innerText = "Selected";
 
         });
     });
@@ -232,7 +484,7 @@ function load_fixed_map(myLatlng, divid) {
 
 
 function generate_reverse_timer(task_id, datestr) {
-    panding_task_detail['selected_deadline_timestemp'] = Number(datestr);
+    pending_task_detail['selected_deadline_timestemp'] = Number(datestr);
     let deadlinetimestemp = (new Date(Number(datestr)) - Date.now()) / 1000;
     let interval_id = setInterval(function () { // execute code each second
         deadlinetimestemp--;
@@ -240,13 +492,13 @@ function generate_reverse_timer(task_id, datestr) {
         let minutes = Math.floor(deadlinetimestemp / 60) % 60; // minutes
         let seconds = Math.floor(deadlinetimestemp / 1) % 60; // seconds
         if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-            document.getElementById("panding_details_task_deadline_timer").innerText = `Task crossing the deadline..`;
+            document.getElementById("pending_details_task_deadline_timer").innerText = `Task crossing the deadline..`;
             clearInterval(interval_id);
         } else {
-            document.getElementById("panding_details_task_deadline_timer").innerText = `${hours}:${minutes}:${seconds} *(H:M:S) `;
+            document.getElementById("pending_details_task_deadline_timer").innerText = `${hours}:${minutes}:${seconds} *(H:M:S) `;
         }
     }, 1000);
-    panding_task_detail['selected_deadline_intervals'].push({
+    pending_task_detail['selected_deadline_intervals'].push({
         id: task_id,
         interval: interval_id
     });
@@ -254,35 +506,53 @@ function generate_reverse_timer(task_id, datestr) {
 
 
 
+var profile_pages = ['profile_detail', 'update_detail']
 
-
-var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_panding', 'sidemenu_completed']
-var deshboard_pages = ['deshboard_page_profile', 'deshboard_page_add', 'deshboard_page_panding', 'deshboard_page_completed']
+var sidemenuids = ['sidemenu_profile', 'sidemenu_add', 'sidemenu_pending', 'sidemenu_completed', 'sidemenu_messages']
+var dashboard_pages = ['dashboard_page_profile', 'dashboard_page_add', 'dashboard_page_pending', 'dashboard_page_completed', 'dashboard_page_message']
 
 function clearmenu() {
     sidemenuids.forEach((allmenu) => {
         allmenuattr = document.getElementById(allmenu);
         document.getElementById(allmenu + "_icon").style.color = "#1E75D9";
-        allmenuattr.classList.remove("deshboard-sidemenu-tab-selected");
+        allmenuattr.classList.remove("dashboard-sidemenu-tab-selected");
     });
-    deshboard_pages.forEach((allpage) => {
+    dashboard_pages.forEach((allpage) => {
         document.getElementById(allpage).style.display = "none";
     });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 
 function get_task_details() {
     favi.href = "/static/icon/favicon_offline.svg";
 
-    panding_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
+    pending_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
         clearInterval(intervalobj.interval);
     });
 
-    if (panding_task_detail['selected_id'] != "") {
+
+    if (pending_task_detail['selected_id'] != "") {
         fetch('/api/task/getmoredetails/', {
             method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
-                'panding_id': Number(panding_task_detail['selected_id'])
+                'pending_id': Number(pending_task_detail['selected_id'])
             })
         })
             .then((response) => response.json())
@@ -291,70 +561,70 @@ function get_task_details() {
                 if (result.code == 200) {
 
                     // setup task image
-                    document.getElementById("panding_details_profile_image").src = `/media/${result.data.image}`;
-                    document.getElementById("panding_details_profile_image").classList.remove("hidd");
-                    document.getElementById("panding_details_default_profile_image").classList.add("hidd");
-                    document.getElementById("panding_details_profile_image_link").href = `/media/${result.data.image}`;
+                    document.getElementById("pending_details_profile_image").src = `/media/${result.data.image}`;
+                    document.getElementById("pending_details_profile_image").classList.remove("hidd");
+                    document.getElementById("pending_details_default_profile_image").classList.add("hidd");
+                    document.getElementById("pending_details_profile_image_link").href = `/media/${result.data.image}`;
 
-                    document.getElementById("panding_details_name").innerText = result.data.name;
-                    document.getElementById("panding_details_task_address").innerText = result.data.address;
-                    document.getElementById("panding_details_task_pincode").innerText = result.data.pincode;
-                    document.getElementById("panding_details_task_mobile").innerText = result.data.mobile_number;
-                    document.getElementById("panding_details_task_note").innerText = result.data.note;
-                    document.getElementById("panding_details_task_proof_btn").href = `/media/${result.data.proof}`;
-                    document.getElementById("panding_details_task_document_btn").href = `/media/${result.data.document}`;
+                    document.getElementById("pending_details_name").innerText = result.data.name;
+                    document.getElementById("pending_details_task_address").innerText = result.data.address;
+                    document.getElementById("pending_details_task_pincode").innerText = result.data.pincode;
+                    document.getElementById("pending_details_task_mobile").innerText = result.data.mobile_number;
+                    document.getElementById("pending_details_task_note").innerText = result.data.note;
+                    document.getElementById("pending_details_task_proof_btn").href = `/media/${result.data.proof}`;
+                    document.getElementById("pending_details_task_document_btn").href = `/media/${result.data.document}`;
 
                     // setup payment info
-                    document.getElementById("panding_details_payment_status").innerText = result.data.payment_status;
-                    document.getElementById("panding_details_payment_bank").innerText = result.data.user_bankname;
-                    document.getElementById("panding_details_payment_mode").innerText = result.data.user_paymentmode;
-                    document.getElementById("panding_details_payment_id").innerText = result.data.user_txnid;
-                    document.getElementById("panding_details_payment_date").innerText = result.data.user_txndate;
+                    document.getElementById("pending_details_payment_status").innerText = result.data.payment_status;
+                    document.getElementById("pending_details_payment_bank").innerText = result.data.user_bankname;
+                    document.getElementById("pending_details_payment_mode").innerText = result.data.user_paymentmode;
+                    document.getElementById("pending_details_payment_id").innerText = result.data.user_txnid;
+                    document.getElementById("pending_details_payment_date").innerText = result.data.user_txndate;
 
                     // steup map
-                    panding_task_detail['selected_map_letlong'] = result.data.gmaplink;
-                    load_fixed_map(JSON.parse(result.data.gmaplink), "panding_details_map_container")
+                    pending_task_detail['selected_map_letlong'] = result.data.gmaplink;
+                    load_fixed_map(JSON.parse(result.data.gmaplink), "pending_details_map_container")
                     if (result.data.accepted == 1) {
 
                         // setup task accepted basic operation
-                        document.getElementById("panding_details_task_waiting").classList.add("hidd");
-                        document.getElementById("panding_details_task_accepted").classList.remove("hidd");
-                        document.getElementById("panding_details_agent_block").classList.remove("hidd");
+                        document.getElementById("pending_details_task_waiting").classList.add("hidd");
+                        document.getElementById("pending_details_task_accepted").classList.remove("hidd");
+                        document.getElementById("pending_details_agent_block").classList.remove("hidd");
 
                         // steup agent image
-                        document.getElementById("panding_details_agent_profile_image").classList.remove("hidd");
-                        document.getElementById("panding_details_agent_default_profile_image").classList.add("hidd");
-                        document.getElementById("panding_details_agent_profile_image").src = `/media/${result.data.agent_image}`;
-                        document.getElementById("panding_details_agent_profile_image_link").href = `/media/${result.data.agent_image}`;
+                        document.getElementById("pending_details_agent_profile_image").classList.remove("hidd");
+                        document.getElementById("pending_details_agent_default_profile_image").classList.add("hidd");
+                        document.getElementById("pending_details_agent_profile_image").src = `/media/${result.data.agent_image}`;
+                        document.getElementById("pending_details_agent_profile_image_link").href = `/media/${result.data.agent_image}`;
 
-                        document.getElementById("panding_details_agent_track_agent_btn").href = result.data.agent_location;
-                        document.getElementById("panding_details_agent_name").innerText = result.data.agent_name;
-                        document.getElementById("panding_details_agent_mobile").innerText = result.data.agent_mobile;
-                        document.getElementById("panding_details_agent_accepted_time").innerText = String(parseISOString(`${result.data.accepted_time}`));
+                        document.getElementById("pending_details_agent_track_agent_btn").href = result.data.agent_location;
+                        document.getElementById("pending_details_agent_name").innerText = result.data.agent_name;
+                        document.getElementById("pending_details_agent_mobile").innerText = result.data.agent_mobile;
+                        document.getElementById("pending_details_agent_accepted_time").innerText = String(parseISOString(`${result.data.accepted_time}`));
 
                         // setup icon for gender
                         if (result.data.agent_xender == "Male") {
-                            document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/boy.svg";
+                            document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/boy.svg";
 
                         } else {
-                            document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/girl.svg";
+                            document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/girl.svg";
                         }
-                        document.getElementById("panding_details_agent_gender").innerText = result.data.agent_xender;
+                        document.getElementById("pending_details_agent_gender").innerText = result.data.agent_xender;
 
                     } else {
 
                         // setup waiting state task's basic operation
-                        document.getElementById("panding_details_task_waiting").classList.remove("hidd");
-                        document.getElementById("panding_details_task_accepted").classList.add("hidd");
-                        document.getElementById("panding_details_agent_block").classList.add("hidd");
+                        document.getElementById("pending_details_task_waiting").classList.remove("hidd");
+                        document.getElementById("pending_details_task_accepted").classList.add("hidd");
+                        document.getElementById("pending_details_agent_block").classList.add("hidd");
 
                     }
                     // setup deadline
-                    generate_reverse_timer(Number(panding_task_detail['selected_id']), result.data.deadline);
+                    generate_reverse_timer(Number(pending_task_detail['selected_id']), result.data.deadline);
 
-                    document.getElementById("panding_task_status_container").classList.remove("hidd");
-                    document.getElementById("panding_task_empty_detail_container").classList.add("hidd");
-                    document.getElementById("panding_task_detail_container").classList.remove("hidd");
+                    document.getElementById("pending_task_status_container").classList.remove("hidd");
+                    document.getElementById("pending_task_empty_detail_container").classList.add("hidd");
+                    document.getElementById("pending_task_detail_container").classList.remove("hidd");
                 } else if (result.code == 405) {
 
                     short_notification(result.detail, 5000);
@@ -364,8 +634,8 @@ function get_task_details() {
             .catch((error) => {
                 short_notification(error, 5000);
             });
-        document.getElementById("panding_task_controller_container").classList.remove("hidd");
-        console.log("SELECTED IF", panding_task_detail['selected_id']);
+        document.getElementById("pending_task_controller_container").classList.remove("hidd");
+        console.log("SELECTED IF", pending_task_detail['selected_id']);
     } else {
         short_notification("please select any task to get details", 5000);
     }
@@ -381,6 +651,7 @@ function get_completed_task_details() {
     if (completed_task_detail["completed_selected_id"] != "") {
         fetch('/api/task/complete/getmoredetails/', {
             method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
                 'task_id': Number(completed_task_detail["completed_selected_id"])
             })
@@ -393,7 +664,7 @@ function get_completed_task_details() {
 
                     load_fixed_map(JSON.parse(result.data.gmaplink), "completed_task_more_detail_task_map")
 
-                    document.getElementById("completed_task_more_detail_ref_id").innerText = result.data.panding_id;
+                    document.getElementById("completed_task_more_detail_ref_id").innerText = result.data.pending_id;
                     document.getElementById("completed_task_more_detail_task_name").innerText = result.data.name;
                     document.getElementById("completed_task_more_detail_task_gender").innerText = result.data.gender;
                     document.getElementById("completed_task_more_detail_task_address").innerText = result.data.address;
@@ -495,10 +766,10 @@ function get_completed_task_details() {
 
 window.onload = () => {
 
-    if (panding_task_detail['id'].length > 0) {
-        document.getElementById("panding_task_status_container").classList.remove("hidd");
-        document.getElementById("panding_task_controller_container").classList.add("hidd");
-        document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected";
+    if (pending_task_detail['id'].length > 0) {
+        document.getElementById("pending_task_status_container").classList.remove("hidd");
+        document.getElementById("pending_task_controller_container").classList.add("hidd");
+        document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected";
     }
 
     window.onscroll = () => {
@@ -517,49 +788,184 @@ window.onload = () => {
     side_profileattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_profile_icon").style.color = "#175aa7";
-        side_profileattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_profile').style.display = "block";
+        side_profileattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_profile').style.display = "block";
     });
     side_addattr = document.getElementById("sidemenu_add");
     side_addattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_add_icon").style.color = "#175aa7";
-        side_addattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_add').style.display = "block";
+        side_addattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_add').style.display = "block";
     });
-    side_pandingattr = document.getElementById("sidemenu_panding");
-    side_pandingattr.addEventListener('click', () => {
+    side_pendingattr = document.getElementById("sidemenu_pending");
+    side_pendingattr.addEventListener('click', () => {
         clearmenu();
-        document.getElementById("sidemenu_panding_icon").style.color = "#175aa7";
-        side_pandingattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_panding').style.display = "block";
-        if (document.getElementById("panding_details_map_container").innerHTML == "") {
+        document.getElementById("sidemenu_pending_icon").style.color = "#175aa7";
+        side_pendingattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_pending').style.display = "block";
+        if (document.getElementById("pending_details_map_container").innerHTML == "") {
             var myLatlng = {
                 lat: 22.2587,
                 lng: 71.1924
             };
-            load_fixed_map(myLatlng, "panding_details_map_container");
+            load_fixed_map(myLatlng, "pending_details_map_container");
         }
-        console.log("panding map loded");
+        console.log("pending map loded");
     });
     side_completedattr = document.getElementById("sidemenu_completed");
     side_completedattr.addEventListener('click', () => {
         clearmenu();
         document.getElementById("sidemenu_completed_icon").style.color = "#175aa7";
-        side_completedattr.classList.add("deshboard-sidemenu-tab-selected");
-        document.getElementById('deshboard_page_completed').style.display = "block";
+        side_completedattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_completed').style.display = "block";
         document.getElementById("completed_page_part_selector_completed").click();
         document.getElementById(`completed_page_part_selector_completed`).style.borderColor = "#1E75D9";
         document.getElementById(`completed_page_part_selector_completed`).style.color = "#175aa7";
         document.getElementById(`completed_page_part_completed`).classList.remove("hidd");
+    });
+    side_messageattr = document.getElementById("sidemenu_messages");
+    side_messageattr.addEventListener('click', () => {
+        clearmenu();
+        side_messageattr.classList.add("dashboard-sidemenu-tab-selected");
+        document.getElementById('dashboard_page_message').style.display = "block";
     });
 
     // }); // end of not working loop
 
 
 
-    // defalt menu click
-    document.getElementById("sidemenu_completed").click(); // this is default click
+
+    // profile script
+
+    try {
+        document.getElementById("agent_request_btn").onclick = () => {
+            location.href = "/profile/update/agent/"
+        }
+    }
+    catch
+    {
+        console.log("user is authenticated as agent");
+    }
+
+    document.getElementById("logout_request_btn").onclick = () => {
+        document.getElementById("loading_rounder").classList.remove("hidd");
+        fetch('/api/logout/', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        }).then((response) => response.json())
+            .then((result) => {
+                if (result.code == 200) {
+                    document.getElementById("loading_rounder").classList.add("hidd");
+                    location.href = "/login/";
+                }
+                else {
+                    document.getElementById("loading_rounder").classList.add("hidd");
+                    short_notification(result.detail, 5000);
+                }
+            });
+    }
+
+    Array.from(profile_pages).forEach((pages) => {
+        document.getElementById(`dashboard_profile_page_${pages}`).onclick = () => {
+            Array.from(profile_pages).forEach((pagesx) => {
+                document.getElementById(`dashboard_profile_page_${pagesx}`).classList.remove("dashboard-page-part-selector-selected");
+                document.getElementById(`dashboard_profile_page_${pagesx}_page`).classList.add('hidd');
+            });
+            document.getElementById(`dashboard_profile_page_${pages}`).classList.add("dashboard-page-part-selector-selected");
+            document.getElementById(`dashboard_profile_page_${pages}_page`).classList.remove('hidd');
+
+        }
+    });
+
+    document.getElementById("dashboard_profile_image_update_btn").onclick = () => {
+        document.getElementById('dashboard_profile_image_updated').click();
+    }
+
+    document.getElementById("dashboard_profile_image_updated").onchange = () => {
+        if (document.getElementById("dashboard_profile_image_updated").files[0] != undefined) {
+
+            var fread = new FileReader();
+            fread.readAsDataURL(document.getElementById("dashboard_profile_image_updated").files[0]);
+
+            fread.onload = function (imag) {
+                let profile_update_formdata_image = new FormData()
+                profile_update_formdata_image.append("updated_profile_img", document.getElementById("dashboard_profile_image_updated").files[0])
+
+                favi.href = "/static/icon/favicon_offline.svg";
+                document.getElementById("loading_rounder").classList.remove("hidd");
+                fetch("/api/profile/update/image/", {
+                    method: "POST",
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                    body: profile_update_formdata_image
+                }).then((response) => response.json())
+                    .then((result) => {
+                        console.log(result);
+                        document.getElementById("loading_rounder").classList.add("hidd")
+                        if (result.code == 200) {
+                            short_notification(result.detail, 5000);
+                            document.getElementById("dashboard_profile_image_show").src = imag.target.result;
+                            document.getElementById("dashboard_profile_image_link").href = `/media/${result.data.img_url}`;
+                        }
+                        else {
+                            short_notification(result.detail, 5000);
+                        }
+                    });
+
+                favi.href = "/static/icon/fav.svg";
+
+            };
+        }
+    }
+
+    document.getElementById("dashboard_profile_detail_update_btn").onclick = () => {
+        favi.href = "/static/icon/favicon_offline.svg";
+        document.getElementById("loading_rounder").classList.remove("hidd");
+        updated_info = {}
+        if (document.getElementById("dashboard_profile_detail_update_fname").value != "") {
+            updated_info['fname'] = document.getElementById("dashboard_profile_detail_update_fname").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_lname").value != "") {
+            updated_info['lname'] = document.getElementById("dashboard_profile_detail_update_lname").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_email").value != "") {
+            updated_info['email'] = document.getElementById("dashboard_profile_detail_update_email").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_mobile").value != "") {
+            updated_info['mobile'] = document.getElementById("dashboard_profile_detail_update_mobile").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_address").value != "") {
+            updated_info['address'] = document.getElementById("dashboard_profile_detail_update_address").value;
+        }
+        if (document.getElementById("dashboard_profile_detail_update_pincode").value != "") {
+            updated_info['pincode'] = document.getElementById("dashboard_profile_detail_update_pincode").value;
+        }
+        fetch("/api/profile/update/", {
+            method: "POST",
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            body: JSON.stringify(updated_info)
+        }).then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                document.getElementById("loading_rounder").classList.add("hidd")
+                if (result.code == 200) {
+                    if ('pincode' in updated_info) {
+                        location.reload();
+                    }
+                    else {
+                        short_notification(result.detail, 5000);
+                        for (let k in updated_info) {
+                            document.getElementById(`dashboard_profile_detail_${k}`).innerText = updated_info[k];
+                        }
+                        document.getElementById("dashboard_profile_page_profile_detail").click();
+                    }
+                }
+                else {
+                    short_notification(result.detail, 5000);
+                }
+            });
+        favi.href = "/static/icon/fav.svg";
+    }
 
 
     // add task scripts
@@ -699,7 +1105,7 @@ window.onload = () => {
 
 
 
-    // panding task script
+    // pending task script
 
 
 
@@ -712,28 +1118,29 @@ window.onload = () => {
         document.getElementById("update_map_popup").classList.remove("hidd");
     }
 
-    document.getElementById("panding_task_list_btn").onclick = () => {
-        document.getElementById("panding_list_popup").classList.remove("hidd");
+    document.getElementById("pending_task_list_btn").onclick = () => {
+        document.getElementById("pending_list_popup").classList.remove("hidd");
     }
 
-    document.getElementById("panding_list_popup_exit").onclick = () => {
+    document.getElementById("pending_list_popup_exit").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         short_notification("Arranging details..", 5000);
         get_task_details();
-        document.getElementById("panding_list_popup").classList.add("hidd");
+        document.getElementById("pending_list_popup").classList.add("hidd");
         document.getElementById("loading_rounder").classList.add("hidd");
     }
 
-    document.getElementById("panding_update_popup_exit").onclick = () => {
-        document.getElementById("panding_update_popup").classList.add("hidd");
+    document.getElementById("pending_update_popup_exit").onclick = () => {
+        document.getElementById("pending_update_popup").classList.add("hidd");
     }
 
-    document.getElementById("panding_details_task_generate_otp_btn").onclick = () => {
+    document.getElementById("pending_details_task_generate_otp_btn").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/gotp/', {
             method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
-                'panding_id': Number(panding_task_detail['selected_id'])
+                'pending_id': Number(pending_task_detail['selected_id'])
             })
         })
             .then((response) => response.json())
@@ -741,7 +1148,7 @@ window.onload = () => {
                 document.getElementById("loading_rounder").classList.add("hidd");
                 console.log('Success:', result);
                 if (result.code == 200) {
-                    if (panding_task_detail['selected_id'] == String(result.data.panding_id)) {
+                    if (pending_task_detail['selected_id'] == String(result.data.pending_id)) {
                         short_notification(`<div><p>OTP :<b>${result.data.otp}</b>,otp for agent to cancel task :<b>${result.data.otp_cancel_agent}</b></p><i>"valid for only next 10 minutes"</i></div>`, 30000);
                     }
                 } else if (result.code == 405) {
@@ -756,12 +1163,13 @@ window.onload = () => {
 
     }
 
-    document.getElementById("panding_details_agent_remove_agent_btn").onclick = () => {
+    document.getElementById("pending_details_agent_remove_agent_btn").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd");
         fetch('/api/task/remove_agent/', {
             method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
             body: JSON.stringify({
-                'panding_id': Number(panding_task_detail['selected_id'])
+                'pending_id': Number(pending_task_detail['selected_id'])
             })
         })
             .then((response) => response.json())
@@ -769,10 +1177,10 @@ window.onload = () => {
                 console.log('Success:', result);
                 document.getElementById("loading_rounder").classList.add("hidd");
                 if (result.code == 200) {
-                    if (panding_task_detail['selected_id'] == String(result.data.panding_id)) {
-                        document.getElementById("panding_details_task_waiting").classList.remove("hidd");
-                        document.getElementById("panding_details_task_accepted").classList.add("hidd");
-                        document.getElementById("panding_details_agent_block").classList.add("hidd");
+                    if (pending_task_detail['selected_id'] == String(result.data.pending_id)) {
+                        document.getElementById("pending_details_task_waiting").classList.remove("hidd");
+                        document.getElementById("pending_details_task_accepted").classList.add("hidd");
+                        document.getElementById("pending_details_agent_block").classList.add("hidd");
                     }
                     short_notification(result.detail, 5000);
                 } else if (result.code == 405) {
@@ -790,32 +1198,32 @@ window.onload = () => {
 
 
     //    runs when update button click
-    document.getElementById("panding_task_update_btn_selector").onclick = () => {
+    document.getElementById("pending_task_update_btn_selector").onclick = () => {
 
         document.getElementById("loading_rounder").classList.remove("hidd");
         // arranging details
 
         let update_img_ele = document.createElement('a');
-        update_img_ele.href = String(document.getElementById("panding_details_profile_image").src);
+        update_img_ele.href = String(document.getElementById("pending_details_profile_image").src);
         document.getElementById('update_form_profile_image_prv').src = String(update_img_ele.pathname);
         document.getElementById('update_form_profile_image_prv').classList.add("add-page-img");
 
-        let flnames = document.getElementById("panding_details_name").innerText.split(" ");
-        if (panding_task_detail['selected_deadline_timestemp'] != 0) {
-            document.getElementById("update_form_deadline").value = String(new Date((new Date(Number(panding_task_detail['selected_deadline_timestemp']))).getTime() - ((new Date(Number(panding_task_detail['selected_deadline_timestemp']))).getTimezoneOffset() * 60000)).toISOString().substring(0, 16));
+        let flnames = document.getElementById("pending_details_name").innerText.split(" ");
+        if (pending_task_detail['selected_deadline_timestemp'] != 0) {
+            document.getElementById("update_form_deadline").value = String(new Date((new Date(Number(pending_task_detail['selected_deadline_timestemp']))).getTime() - ((new Date(Number(pending_task_detail['selected_deadline_timestemp']))).getTimezoneOffset() * 60000)).toISOString().substring(0, 16));
         }
 
-        document.getElementById("update_form_gmap").value = panding_task_detail['selected_map_letlong'];
+        document.getElementById("update_form_gmap").value = pending_task_detail['selected_map_letlong'];
         initMap("googlemap_container", "add_form_gmap", "add_form_first_name");
         document.getElementById("update_form_first_name").value = flnames[0];
         document.getElementById("update_form_last_name").value = flnames[1];
-        document.getElementById("update_form_mobile_number").value = Number(document.getElementById("panding_details_task_mobile").innerText);
-        document.getElementById("update_form_address").value = document.getElementById("panding_details_task_address").innerText;
-        document.getElementById("update_form_pincode").value = document.getElementById("panding_details_task_pincode").innerText;
-        document.getElementById("update_form_note").value = document.getElementById("panding_details_task_note").innerText;
+        document.getElementById("update_form_mobile_number").value = Number(document.getElementById("pending_details_task_mobile").innerText);
+        document.getElementById("update_form_address").value = document.getElementById("pending_details_task_address").innerText;
+        document.getElementById("update_form_pincode").value = document.getElementById("pending_details_task_pincode").innerText;
+        document.getElementById("update_form_note").value = document.getElementById("pending_details_task_note").innerText;
 
         let update_proof_ele = document.createElement('a');
-        update_proof_ele.href = String(document.getElementById("panding_details_task_proof_btn").href);
+        update_proof_ele.href = String(document.getElementById("pending_details_task_proof_btn").href);
         update_proof_flag = update_proof_ele.pathname != "/media/profile/defaultprofile.png"
         if (update_proof_flag) {
             document.getElementById("update_form_add_proof_selector").classList.add("disabled-btn");
@@ -825,7 +1233,7 @@ window.onload = () => {
         }
 
         let update_document_ele = document.createElement('a');
-        update_document_ele.href = String(document.getElementById("panding_details_task_proof_btn").href);
+        update_document_ele.href = String(document.getElementById("pending_details_task_proof_btn").href);
         update_document_flag = update_document_ele.pathname != "/media/profile/defaultprofile.png"
         if (update_document_flag) {
             document.getElementById("update_form_add_document_selector").classList.add("disabled-btn")
@@ -834,7 +1242,7 @@ window.onload = () => {
         }
 
 
-        document.getElementById("panding_update_popup").classList.remove("hidd");
+        document.getElementById("pending_update_popup").classList.remove("hidd");
         document.getElementById("loading_rounder").classList.add("hidd")
     }
 
@@ -867,9 +1275,9 @@ window.onload = () => {
         document.getElementById("update_form_add_document").click();
     }
 
-    // submit updated details for panding task
+    // submit updated details for pending task
     document.getElementById("update_form_submit").onclick = () => {
-        document.getElementById("panding_update_popup_exit").onclick();
+        document.getElementById("pending_update_popup_exit").onclick();
         favi.href = "/static/icon/favicon_offline.svg";
         document.getElementById("loading_rounder").classList.remove("hidd")
         if (document.getElementById("update_form_tandcbx").checked) {
@@ -903,7 +1311,7 @@ window.onload = () => {
             } else {
                 update_task_mobile.style.borderColor = "#686868c0";
             }
-            //            if (Number(update_task_deadline.value) < panding_task_detail['selected_deadline_timestemp']) {
+            //            if (Number(update_task_deadline.value) < pending_task_detail['selected_deadline_timestemp']) {
             //                flag = 0;
             //                update_task_deadline.style.borderColor = "red";
             //                errdenoter += "&nbspenter extended deadline for tasks,&nbsp";
@@ -939,7 +1347,7 @@ window.onload = () => {
 
 
                 let update_formdata = new FormData()
-                update_formdata.append("id", panding_task_detail['selected_id'])
+                update_formdata.append("id", pending_task_detail['selected_id'])
                 update_formdata.append("update_profile_img", update_profile_img.files[0])
                 update_formdata.append("update_task_mobile", update_task_mobile.value)
                 update_formdata.append("update_task_deadline", update_task_deadline.value)
@@ -955,6 +1363,7 @@ window.onload = () => {
 
                 fetch("/api/task/update/", {
                     method: "POST",
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
                     body: update_formdata
                 }).then((response) => response.json())
                     .then((result) => {
@@ -979,41 +1388,40 @@ window.onload = () => {
 
     }
 
-    document.getElementById("panding_task_cancel_btn_selector").onclick = () => {
+    document.getElementById("pending_task_cancel_btn_selector").onclick = () => {
         document.getElementById("loading_rounder").classList.remove("hidd")
-        if (panding_task_detail["selected_id"] != "") {
-            panding_id = Number(panding_task_detail["selected_id"]);
-            let header = new Headers()
+        if (pending_task_detail["selected_id"] != "") {
+            pending_id = Number(pending_task_detail["selected_id"]);
+            // let header = new Headers()
             fetch("/api/task/cancel/", {
                 method: "POST",
-                headers: header,
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                // headers: header,
                 body: JSON.stringify({
-                    'panding_id': panding_id
+                    'pending_id': pending_id
                 })
             }).then(res => res.json()).then((data) => {
                 if (data.code == 200) {
 
-                    let id = panding_task_detail["id"].splice(panding_task_detail["id"].indexOf(String(data.panding_id)), 1)
-                    if (panding_task_detail['selected_id'] == id) {
-                        if (panding_task_detail['id'].length > 0) {
-                            document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected"
+                    let id = pending_task_detail["id"].splice(pending_task_detail["id"].indexOf(String(data.pending_id)), 1)
+                    if (pending_task_detail['selected_id'] == id) {
+                        if (pending_task_detail['id'].length > 0) {
+                            document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected"
                         } else {
-                            document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are assigned"
-                            document.getElementById("panding_task_status_container").classList.add("hidd");
+                            document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are assigned"
+                            document.getElementById("pending_task_status_container").classList.add("hidd");
                         }
-                        document.getElementById("panding_task_empty_detail_container").classList.remove("hidd");
-                        document.getElementById("panding_task_detail_container").classList.add("hidd");
+                        document.getElementById("pending_task_empty_detail_container").classList.remove("hidd");
+                        document.getElementById("pending_task_detail_container").classList.add("hidd");
                     }
-                    document.getElementById(`panding_task_selector_${id}`).remove();
+                    document.getElementById(`pending_task_selector_${id}`).remove();
                     document.getElementById("loading_rounder").classList.add("hidd")
                 }
-                else if(data.code == 401)
-                {
+                else if (data.code == 401) {
                     short_notification(data.detail, 5000);
                 }
-                else if(data.code == 405)
-                {
-                    short_notification(data.detail , 5000);
+                else if (data.code == 405) {
+                    short_notification(data.detail, 5000);
                 }
             })
         } else {
@@ -1050,12 +1458,292 @@ window.onload = () => {
 
 
 
+    var message_socket = new WebSocket(`ws://${window.location.host}/ws/message/`);
+
+    message_socket.onopen = (e) => {
+        // send that socket is now connected as user mode
+        message_socket.send(JSON.stringify({
+            "typex": "register",
+            "user_type": "user",
+        }));
+        short_notification("Connected to message server", 3000);
+
+    }
+
+    // pinging function to keep connection live
+    var pinging_message = setInterval(() => {
+        message_socket.send(JSON.stringify({
+            "typex": "ping",
+            // "receiver_id" : message_details["user_selected"],
+        }))
+    }, 1000)
 
 
+    message_socket.onmessage = (e) => {
+        data = JSON.parse(e.data);
+        console.log(data);
+
+        if (data.typex == 'ping') {
+            if (data.receiver_state == 1) {
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+            }
+        }
+
+        else if (data.typex == "connection_state") {
+
+            if (message_details["user_selected"] == String(data.connection_id)){
+
+                if (data.state == 1) {
+                    document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                    document.getElementById("message_text").placeholder = "Message";
+                    document.getElementById("message_text").disabled  = false;
+                }
+                else {
+                    document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                    document.getElementById("message_text").placeholder = "User is offline";
+                    document.getElementById("message_text").disabled  = true;
+                }
+            }
+            if (data.state == 1) {
+                message_details["online_users"].push(String(data.connection_id));
+            }
+            else {
+                message_details["online_users"].splice(message_details["online_users"].indexOf(String(data.connection_id)) , 1);
+            }
+            
+        }
+        else if (data.typex == "initial_connection_state") {
+
+            if (data.connection_ids.includes(message_details["user_selected"])){
+                document.getElementById("message_receiver_state").style.backgroundColor = "green";
+                document.getElementById("message_text").placeholder = "Message";
+                document.getElementById("message_text").disabled  = false;
+            }
+            else {
+                document.getElementById("message_receiver_state").style.backgroundColor = "red";
+                document.getElementById("message_text").placeholder = "User is offline";
+                document.getElementById("message_text").disabled  = true;
+            }
+            
+            data.connection_ids.forEach( (id) => {
+                if (!message_details["online_users"].includes(String(id))){
+                    message_details["online_users"].push(String(id));
+                }
+            })
+        }
+
+        else if (data.typex == 'session_expire') {
+            clearInterval(pinging_message);
+            short_notification(data.detail, 5000, `location.href = "/";`);
+        }
+
+        else if (data.typex == "invelid_data") {
+            short_notification(data.detail, 4000)
+        }
+
+        else if (data.typex == "message_sent") {
+            document.getElementById(`message_${data.detail}`).src = "/static/icon/single_tick.svg"
+        }
+
+        else if (data.typex == "new_mess_recv") {
+            // send event that mes recved
+            detail = JSON.parse(data.detail)
+
+            message_socket.send(JSON.stringify({
+                "typex": "message",
+                "message_type": "received_mes",
+                "user_id": userid, //my user id
+                "receiver_id": detail.user_id, //id to which i want to send message
+                "message_id": detail.message_id,
+                "receive_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+            }));
+            // conditions for add messages
+
+            if (document.getElementById("dashboard_page_message").style.display == "none") {
+                short_notification("new message received", 3000);
+            }
+
+            //tab is already there but not opened yet
+            if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] != detail.user_id) {
+                message_details["messages"].push(
+                    { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time }
+                )
+                document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure")
+            }
+
+            //tab is there and opened
+            else if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] == detail.user_id) {
+                document.getElementById(`message_inner_container_${detail.user_id}`).innerHTML += `
+                
+                        <div class="message-aligner-left" >
+                        <div class="message-box" onclick="show_more_opt('${detail.message_id}')" id="message_box_${detail.message_id}">
+                        <span class="message-text" id="message_text_${detail.message_id}">${detail.message}</span>
+                            <span class="message-info-container">
+                            <span class="message-time" id="message_time_${detail.message_id}">${detail.time}</span>
+                            </span>
+                        </div>
+                        </div>
+                        
+                        `;
+                message_socket.send(JSON.stringify({
+                    "typex": "message",
+                    "message_type": "viewed_mes",
+                    "user_id": userid, //my user id
+                    "receiver_id": detail.user_id, //id to which i want to send message
+                    "message_id": detail.message_id,
+                    "view_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                }));
+            }
+        }
+
+        // tab is not available mean new user message come
+        else if (data.typex == "new_user_mess_recv") {
+
+            // send event that mes recved
+            detail = JSON.parse(data.detail)
+
+            message_socket.send(JSON.stringify({
+                "typex": "message",
+                "message_type": "received_mes",
+                "user_id": userid, //my user id
+                "receiver_id": detail.user_id, //id to which i want to send message
+                "message_id": detail.message_id,
+                "receive_time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+            }));
+            let user_name = ""
+            if (detail.user_fullname.trim() == "") {
+                user_name = detail.user_fullname
+            }
+            else {
+                user_name = detail.user_name
+            }
+            document.getElementById("message_sidemenu_conainer").innerHTML += `
+                
+                <div class="message-account-indecator" id="message_indecator_${detail.user_id}">
+                    <img class="message-account-image"
+                        src="/media/${detail.user_img}" alt="none">
+                    <div class="message-indecator-detail-container">
+                        <p class="message-indecator-field" id="message_indecator_name_${detail.user_id}">${detail.user_name}
+                           </p>
+                        <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
+                            ${detail.user_pincode}</p>
+                    </div>
+                </div>
+                
+                `;
+            message_details["user_ids"].push(detail.user_id);
+            document.getElementById("message_ac_container").innerHTML += `
+                        
+                        <div class="message-body-message-container hidd" id="message_outer_container_${detail.user_id}">
+                        <div class="message-body-message-inner-container" id="message_inner_container_${detail.user_id}">
+                        </div>
+                        </div>
+                        
+                        `;
+            message_details["messages"].push(
+                { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time }
+            )
+            document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure");
+            message_details["online_users"].push(String(detail.user_id))
+            message_ac_click_listener(message_socket);
+        }
+
+        else if (data.typex == "received_mes") {
+            detail = JSON.parse(data.detail)
+            document.getElementById(`message_${detail.message_id}`).src = "/static/icon/double_tick_dark.svg"
+        }
+        else if (data.typex == "viewed_mes") {
+            detail = JSON.parse(data.detail)
+            document.getElementById(`message_${detail.message_id}`).src = "/static/icon/double_tick.svg"
+        }
+
+    }
+
+    message_socket.onclose = (e) => {
+        console.log('disconnect message connection');
+    }
 
 
+    document.getElementById("message_send_btn").onclick = () => {
+        let message = document.getElementById("message_text").value;
+        console.log(message)
+        if (message_details["user_selected"] != "") {
+            if (message != "") {
+                message_state_id = generateId(13);
+                message_socket.send(JSON.stringify({
+                    "typex": "message",
+                    "message_type": "new_mes",
+                    "user_id": String(userid),
+                    "receiver_id": message_details["user_selected"],
+                    "message_id": message_state_id,
+                    "message": message,
+                    "time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                }));
+                document.getElementById(`message_inner_container_${message_details["user_selected"]}`).innerHTML += `
 
+                            <div class="message-aligner-right" >
+                                <div class="message-box" onclick="show_more_opt('${message_state_id}')" id="message_box_${message_state_id}">
+                                    <span class="message-text" id="message_text_${message_state_id}">${message}</span>
+                                    <span class="message-info-container">
+                                        <span class="message-time" id="message_time_${message_state_id}">${new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                                        <img class="message-state-img" id="message_${message_state_id}" src="/static/icon/wait_watch.svg"
+                                            alt="">
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            `;
+                document.getElementById("message_text").value = "";
+                
+                document.getElementById("message_text").focus();
+            }
+        }
+        else {
+            short_notification("please select user first", 5000);
+        }
 
+    }
+
+    document.getElementById("message_text").addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            document.getElementById("message_send_btn").click();
+        }
+    })
+    
+    message_ac_click_listener(message_socket);
+
+    document.getElementById("message_detail_delete").onclick = () => {
+        message_details["selected_message_id"]
+    }
+    
+    document.getElementById("add_new_message").onclick = add_new_message;
+
+    document.getElementById("new_message_popup_container").addEventListener("click", (e) => {
+        if (e.target.id == "new_message_popup_container") {
+            document.getElementById("new_message_popup").classList.remove("new-message-add-box-open");;
+            setTimeout(() => {
+                e.target.classList.add("hidd");
+                
+            } , 1)
+        }
+    })
+    
+    document.getElementById("message-ac-detail-container").addEventListener("click", (e) => {
+        if (e.target.id == "message-ac-detail-container") {
+            document.getElementById("message-ac-detail-container").style.display = "none";
+        }
+    })
+    
+    
+    document.getElementById("new_message_ac_search_taxt").addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+            new_message_search();
+        }
+    })
+    document.getElementById("new_message_ac_search_btn").onclick = new_message_search;
 
 
 
@@ -1067,6 +1755,9 @@ window.onload = () => {
     socket.onopen = (e) => {
         // send that socket is now connected as user mode
         socket.send("user")
+        document.getElementById("sidemenu_profile").click();
+        document.getElementById("loading_rounder").classList.add("hidd");
+        short_notification("Connected", 3000);
 
     }
 
@@ -1085,110 +1776,110 @@ window.onload = () => {
         // it means this site is open in other window so keep this window close
         if (data.typex == 'session_expire') {
             clearInterval(pinging);
-            short_notification(data.detail, 5000, `location.href = "/";clearInterval(${pinging});`);
+            short_notification(data.detail, 5000, `location.href = "/";`);
         }
         //it means new notification is arrive
         else if (data.typex == 'notification') {
-            // document.getElementById("panding_task_detail_container").classList.add("hidd");
-            if (Array.from(document.getElementById("panding_task_detail_container").classList).includes("hidd")) {
+            // document.getElementById("pending_task_detail_container").classList.add("hidd");
+            if (Array.from(document.getElementById("pending_task_detail_container").classList).includes("hidd")) {
                 document.getElementById("loading_rounder").classList.remove("hidd");
-                document.getElementById("panding_task_empty_detail_container").classList.add("hidd");
-                document.getElementById("panding_task_status_container").classList.remove("hidd");
+                document.getElementById("pending_task_empty_detail_container").classList.add("hidd");
+                document.getElementById("pending_task_status_container").classList.remove("hidd");
 
-                document.getElementById("panding_task_detail_container").classList.remove("hidd");
-                if (panding_task_detail['selected_id'] != String(data.panding_id)) {
-                    panding_task_detail['selected_id'] = String(data.panding_id)
+                document.getElementById("pending_task_detail_container").classList.remove("hidd");
+                if (pending_task_detail['selected_id'] != String(data.pending_id)) {
+                    pending_task_detail['selected_id'] = String(data.pending_id)
                 }
                 get_task_details()
-                document.getElementById("panding_list_popup").classList.add("hidd");
+                document.getElementById("pending_list_popup").classList.add("hidd");
                 document.getElementById("loading_rounder").classList.add("hidd");
             }
 
             short_notification(`${data.task_name}'s notification spreded among agents`, 5000);
         }
-        // it means panding task is accepted
+        // it means pending task is accepted
         else if (data.typex == "accepted") {
 
-            if (document.getElementById("deshboard_page_panding").style.display == "none") {
-                document.getElementById("sidemenu_panding").click();
+            if (document.getElementById("dashboard_page_pending").style.display == "none") {
+                document.getElementById("sidemenu_pending").click();
             }
-            if (panding_task_detail['selected_id'] != String(data.panding_id)) {
-                panding_task_detail['selected_id'] = String(data.panding_id)
+            if (pending_task_detail['selected_id'] != String(data.pending_id)) {
+                pending_task_detail['selected_id'] = String(data.pending_id)
                 document.getElementById("loading_rounder").classList.remove("hidd");
                 get_task_details()
                 document.getElementById("loading_rounder").classList.add("hidd");
             } else {
 
                 // setup task accepted basic operation
-                document.getElementById("panding_details_task_waiting").classList.add("hidd");
-                document.getElementById("panding_details_task_accepted").classList.remove("hidd");
-                document.getElementById("panding_details_agent_block").classList.remove("hidd");
+                document.getElementById("pending_details_task_waiting").classList.add("hidd");
+                document.getElementById("pending_details_task_accepted").classList.remove("hidd");
+                document.getElementById("pending_details_agent_block").classList.remove("hidd");
 
                 // steup agent image
-                document.getElementById("panding_details_agent_profile_image").classList.remove("hidd");
-                document.getElementById("panding_details_agent_default_profile_image").classList.add("hidd");
-                document.getElementById("panding_details_agent_profile_image").src = `/media/${data.agent_image}`;
-                document.getElementById("panding_details_agent_profile_image_link").href = `/media/${data.agent_image}`;
+                document.getElementById("pending_details_agent_profile_image").classList.remove("hidd");
+                document.getElementById("pending_details_agent_default_profile_image").classList.add("hidd");
+                document.getElementById("pending_details_agent_profile_image").src = `/media/${data.agent_image}`;
+                document.getElementById("pending_details_agent_profile_image_link").href = `/media/${data.agent_image}`;
 
-                document.getElementById("panding_details_agent_track_agent_btn").href = data.agent_location;
-                document.getElementById("panding_details_agent_name").innerText = data.agent_name;
-                document.getElementById("panding_details_agent_mobile").innerText = data.agent_mobile;
-                document.getElementById("panding_details_agent_accepted_time").innerText = data.accepted_time;
+                document.getElementById("pending_details_agent_track_agent_btn").href = data.agent_location;
+                document.getElementById("pending_details_agent_name").innerText = data.agent_name;
+                document.getElementById("pending_details_agent_mobile").innerText = data.agent_mobile;
+                document.getElementById("pending_details_agent_accepted_time").innerText = data.accepted_time;
 
                 // setup icon for gender
                 if (data.agent_xender == "Male") {
-                    document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/boy.svg";
+                    document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/boy.svg";
 
                 } else {
-                    document.getElementById("panding_details_agent_gender_denoter").src = "/static/icon/girl.svg";
+                    document.getElementById("pending_details_agent_gender_denoter").src = "/static/icon/girl.svg";
                 }
-                document.getElementById("panding_details_agent_gender").innerText = data.agent_xender;
+                document.getElementById("pending_details_agent_gender").innerText = data.agent_xender;
 
             }
-            document.getElementById("panding_list_popup").classList.add("hidd");
+            document.getElementById("pending_list_popup").classList.add("hidd");
 
             short_notification(`${data.task_name}'s task is accepted by ${data.agent_name}`, 5000,);
         } else if (data.typex == "updated") {
-            if (panding_task_detail['selected_id'] == String(data.panding_id)) {
+            if (pending_task_detail['selected_id'] == String(data.pending_id)) {
                 received_data = JSON.parse(data.data);
                 document.getElementById("loading_rounder").classList.remove("hidd");
                 updated_str = "updated fields = "
                 if (received_data.image) {
-                    document.getElementById("panding_details_profile_image").src = `/media/${received_data.image}`;
-                    document.getElementById("panding_details_profile_image").classList.remove("hidd");
-                    document.getElementById("panding_details_default_profile_image").classList.add("hidd");
-                    document.getElementById("panding_details_profile_image_link").href = `/media/${received_data.image}`;
+                    document.getElementById("pending_details_profile_image").src = `/media/${received_data.image}`;
+                    document.getElementById("pending_details_profile_image").classList.remove("hidd");
+                    document.getElementById("pending_details_default_profile_image").classList.add("hidd");
+                    document.getElementById("pending_details_profile_image_link").href = `/media/${received_data.image}`;
                     updated_str += "image,"
                 }
                 if (received_data.address) {
-                    document.getElementById("panding_details_task_address").innerText = received_data.address;
+                    document.getElementById("pending_details_task_address").innerText = received_data.address;
                     updated_str += "address"
                 }
                 if (received_data.mobile_number) {
-                    document.getElementById("panding_details_task_mobile").innerText = received_data.mobile_number;
+                    document.getElementById("pending_details_task_mobile").innerText = received_data.mobile_number;
                     updated_str += "mobile number,"
                 }
                 if (received_data.note) {
-                    document.getElementById("panding_details_task_note").innerText = received_data.note;
+                    document.getElementById("pending_details_task_note").innerText = received_data.note;
                     updated_str += "note,"
                 }
                 if (received_data.proof) {
-                    document.getElementById("panding_details_task_proof_btn").href = `/media/${received_data.proof}`;
+                    document.getElementById("pending_details_task_proof_btn").href = `/media/${received_data.proof}`;
                     updated_str += "proof,"
                 }
                 if (received_data.document) {
-                    document.getElementById("panding_details_task_document_btn").href = `/media/${received_data.document}`;
+                    document.getElementById("pending_details_task_document_btn").href = `/media/${received_data.document}`;
                     updated_str += "document,"
                 }
                 if (received_data.deadline) {
-                    panding_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
+                    pending_task_detail['selected_deadline_intervals'].forEach((intervalobj) => {
                         clearInterval(intervalobj.interval);
                     });
-                    generate_reverse_timer(Number(data.panding_id), received_data.deadline);
+                    generate_reverse_timer(Number(data.pending_id), received_data.deadline);
                     updated_str += "deadline,"
                 }
                 if (received_data.gmaplink) {
-                    load_fixed_map(JSON.parse(received_data.gmaplink), "panding_details_map_container")
+                    load_fixed_map(JSON.parse(received_data.gmaplink), "pending_details_map_container")
                     updated_str += "google map,"
                 }
                 document.getElementById("loading_rounder").classList.add("hidd");
@@ -1197,21 +1888,21 @@ window.onload = () => {
                 console.log(received_data);
             }
         }
-        // it means panding task is expire(not accepted tasks)
+        // it means pending task is expire(not accepted tasks)
         else if (data.typex == "expire") {
-            let id = panding_task_detail["id"].splice(panding_task_detail["id"].indexOf(String(data.panding_id)), 1)
-            if (panding_task_detail['selected_id'] == id) {
-                if (panding_task_detail['id'].length > 1) {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected"
+            let id = pending_task_detail["id"].splice(pending_task_detail["id"].indexOf(String(data.pending_id)), 1)
+            if (pending_task_detail['selected_id'] == id) {
+                if (pending_task_detail['id'].length > 1) {
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected"
                 } else {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are assigned"
-                    document.getElementById("panding_task_status_container").classList.add("hidd");
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are assigned"
+                    document.getElementById("pending_task_status_container").classList.add("hidd");
                 }
-                document.getElementById("panding_task_empty_detail_container").classList.remove("hidd");
-                document.getElementById("panding_task_detail_container").classList.add("hidd");
-                document.getElementById("panding_task_controller_container").classList.add("hidd");
+                document.getElementById("pending_task_empty_detail_container").classList.remove("hidd");
+                document.getElementById("pending_task_detail_container").classList.add("hidd");
+                document.getElementById("pending_task_controller_container").classList.add("hidd");
             }
-            document.getElementById(`panding_task_selector_${id}`).remove();
+            document.getElementById(`pending_task_selector_${id}`).remove();
             let gender_expired, accepted_expired;
             if (data.gender == "Male") {
                 gender_expired = "male_symbol.svg";
@@ -1227,7 +1918,7 @@ window.onload = () => {
                                 
                                 <div class="completed-page-expired-task-detail">
                                     <img class="completed-page-expired-task-detail-profile-img"
-                                        src="/media/${data.image}" alt="">
+                                        src="/static/icon/user_img.svg" alt="">
                                     <div class="completed-page-expired-task-detail-name">
                                         ${data.task_name}</div>
                                     <img class="completed-page-expired-task-detail-gender"
@@ -1258,8 +1949,8 @@ window.onload = () => {
             } else {
                 gender = "female_symbol.svg";
             }
-            if (data.refund_status == "panding") {
-                refund_status = "panding_round.svg";
+            if (data.refund_status == "pending") {
+                refund_status = "pending_round.svg";
             } else {
                 refund_status = "true_round.svg";
             }
@@ -1301,29 +1992,28 @@ window.onload = () => {
 
             short_notification(`Task cancelled please see details in task history.`, 5000);
         }
-        else if (data.typex == "remove_accepted_task")
-        {
-            if (panding_task_detail['selected_id'] == String(data.panding_id)) {
-                document.getElementById("panding_details_task_waiting").classList.remove("hidd");
-                document.getElementById("panding_details_task_accepted").classList.add("hidd");
-                document.getElementById("panding_details_agent_block").classList.add("hidd");
+        else if (data.typex == "remove_accepted_task") {
+            if (pending_task_detail['selected_id'] == String(data.pending_id)) {
+                document.getElementById("pending_details_task_waiting").classList.remove("hidd");
+                document.getElementById("pending_details_task_accepted").classList.add("hidd");
+                document.getElementById("pending_details_agent_block").classList.add("hidd");
             }
             short_notification("task is droped by agent", 5000);
         }
         // it means task is completed successfully
         else if (data.typex == "completed") {
-            let id = panding_task_detail["id"].splice(panding_task_detail["id"].indexOf(String(data.panding_id)), 1)
-            if (panding_task_detail['selected_id'] == id) {
-                if (panding_task_detail['id'].length > 1) {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are selected"
+            let id = pending_task_detail["id"].splice(pending_task_detail["id"].indexOf(String(data.pending_id)), 1)
+            if (pending_task_detail['selected_id'] == id) {
+                if (pending_task_detail['id'].length > 1) {
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are selected"
                 } else {
-                    document.getElementById("panding_task_empty_detail_container").innerText = "No tasks are assigned"
-                    document.getElementById("panding_task_status_container").classList.add("hidd");
+                    document.getElementById("pending_task_empty_detail_container").innerText = "No tasks are assigned"
+                    document.getElementById("pending_task_status_container").classList.add("hidd");
                 }
-                document.getElementById("panding_task_empty_detail_container").classList.remove("hidd");
-                document.getElementById("panding_task_detail_container").classList.add("hidd");
+                document.getElementById("pending_task_empty_detail_container").classList.remove("hidd");
+                document.getElementById("pending_task_detail_container").classList.add("hidd");
             }
-            document.getElementById(`panding_task_selector_${id}`).remove();
+            document.getElementById(`pending_task_selector_${id}`).remove();
 
             let gender;
             if (data.gender == "Male") {
@@ -1334,7 +2024,7 @@ window.onload = () => {
             document.getElementById("completed_page_part_completed").innerHTML += `
             <div class="completed-page-completed-task-detail" >
                 <img class="completed-page-completed-task-detail-profile-img"
-                    src="/media/${data.image}" alt="">
+                    src="/static/icon/user_img.svg" alt="">
                 <div class="completed-page-completed-task-detail-name">
                     ${data.task_name}</div>
                 <img class="completed-page-completed-task-detail-gender"
@@ -1359,13 +2049,13 @@ window.onload = () => {
         }
     }
     window.onbeforeunload = function (event) {
-        socket.send("disconnect");
-        console.log('dis')
-        // socket.onclose = (e) => {
-        //     console.log('disconnect');
-        // }
+        socket.close()
+        message_socket.close();
         return null;
     };
+    socket.onclose = (e) => {
+        console.log('disconnect live connection');
+    }
 
 
 
@@ -1375,6 +2065,8 @@ window.onload = () => {
 
     completed_task_detail['page_part_list'].forEach((selector) => {
         document.getElementById(`completed_page_part_selector_${selector}`).onclick = () => {
+            console.log("completed page changed");
+            document.getElementById("page_loading_rounder").classList.remove("hidd");
             completed_task_detail['page_part_list'].forEach((selectorx) => {
                 document.getElementById(`completed_page_part_selector_${selectorx}`).style.borderColor = "transparent";
                 document.getElementById(`completed_page_part_selector_${selectorx}`).style.color = "black";
@@ -1392,8 +2084,6 @@ window.onload = () => {
                 document.getElementById(`completed_page_completed_task_${idx}`).innerText = "Select";
                 document.getElementById(`completed_page_completed_task_${idx}`).style.color = "#1E75D9";
             });
-
-
             if (selector == "completed") {
                 document.getElementById("completed_page_detail_part_selector_refund_info").classList.add("hidd");
             } else if (selector == "expired") {
@@ -1403,6 +2093,7 @@ window.onload = () => {
                 document.getElementById("completed_page_detail_part_selector_refund_info").classList.remove("hidd");
 
             }
+            document.getElementById("page_loading_rounder").classList.add("hidd");
         }
     })
 
@@ -1463,7 +2154,7 @@ window.onload = () => {
 
 
 
-    document.getElementById("panding_details_task_accepted").onclick = () => {
+    document.getElementById("pending_details_task_accepted").onclick = () => {
         window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth'

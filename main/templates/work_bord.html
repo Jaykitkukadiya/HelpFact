@@ -17,7 +17,7 @@
 </head>
 
 <body style="background: url({% static 'photos/background.webp' %}) no-repeat center center / cover;">
-
+    {% csrf_token %}
 
     <div class="overlay" id="pageloader" style="display:block; background-color:white ;">
         <div class="message_box" style="height: 144px;width: 302px;">
@@ -57,9 +57,9 @@
 
 
         <div class="side_container">
-            <div class="panding_task_container">
+            <div class="pending_task_container">
                 <div class="btn_container">
-                    <h3>Panding Task</h3>
+                    <h3>pending Task</h3>
                 </div>
 
                 <div class="task_heading">
@@ -75,15 +75,15 @@
                     </div>
                 </div>
 
-                <div style="overflow-y: auto; height:454px;" id="accepted_panding_task_container">
+                <div style="overflow-y: auto; height:454px;" id="accepted_pending_task_container">
                     {% for com_task in pand_accepted_obj %}
-                    <div class="task_denoter_container" id="panding_task_{{com_task.id}}">
+                    <div class="task_denoter_container" id="pending_task_{{com_task.id}}">
                         <a href="/media/{{com_task.task_detail_link.image}}"><img
                                 src="/media/{{com_task.task_detail_link.image}}" alt="" class="task_denoter_image"></a>
                         <div class="task_denoter_detail_container">
                             <div class="task_denoter_name">{{com_task.task_detail_link.name}}</div>
                             <div class="task_denoter_pay_status">{{com_task.task_detail_link.mobile_number}}</div>
-                            <div class="task_denoter_time_remain" id="panding_deadline_{{com_task.id}}">initilizing...
+                            <div class="task_denoter_time_remain" id="pending_deadline_{{com_task.id}}">initilizing...
                             </div>
                             <div class="more_btn_container" id="more_{{com_task.id}}"><img
                                     style="width: 30px; height: 30px;" src="{% static 'icon/more.png' %}" alt=""></div>
@@ -93,24 +93,24 @@
 
                         more_ids.push({{ com_task.id }});
                         addeventmore(more_ids);
-                        var panding_deadline_{{ com_task.id }} = new Date({{ com_task.task_detail_link.deadline }}) - Date.now();
-                        panding_deadline_{{ com_task.id }} /= 1000;
-                        var panding_timer_{{ com_task.id }} =  setInterval(function () { // execute code each second
-                            panding_deadline_{{ com_task.id }} --;
-                            let hours = component(panding_deadline_{{ com_task.id }}, 60 * 60); // hours
-                        let minutes = component(panding_deadline_{{ com_task.id }}, 60) % 60; // minutes
-                        let seconds = component(panding_deadline_{{ com_task.id }}, 1) % 60; // seconds
+                        var pending_deadline_{{ com_task.id }} = new Date({{ com_task.task_detail_link.deadline }}) - Date.now();
+                        pending_deadline_{{ com_task.id }} /= 1000;
+                        var pending_timer_{{ com_task.id }} =  setInterval(function () { // execute code each second
+                            pending_deadline_{{ com_task.id }} --;
+                            let hours = component(pending_deadline_{{ com_task.id }}, 60 * 60); // hours
+                        let minutes = component(pending_deadline_{{ com_task.id }}, 60) % 60; // minutes
+                        let seconds = component(pending_deadline_{{ com_task.id }}, 1) % 60; // seconds
 
                         if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-                            document.getElementById("panding_deadline_" + {{ com_task.id }}).innerText = `expired..`;
-                        clearInterval(panding_timer_{{ com_task.id }});
+                            document.getElementById("pending_deadline_" + {{ com_task.id }}).innerText = `expired..`;
+                        clearInterval(pending_timer_{{ com_task.id }});
                     }
                     else
                         {
-                            document.getElementById(`panding_deadline_{{com_task.id}}`).innerText = `${hours}:${minutes}:${seconds}`;
+                            document.getElementById(`pending_deadline_{{com_task.id}}`).innerText = `${hours}:${minutes}:${seconds}`;
                         }
                     } , 1000 );
-                        interval_var['panding_timer_{{ com_task.id }}'] = panding_deadline_{{ com_task.id }};
+                        interval_var['pending_timer_{{ com_task.id }}'] = pending_deadline_{{ com_task.id }};
                     </script>
                     {% endfor %}
                 </div>
@@ -225,7 +225,7 @@
             <div class="message_box" style="height: 144px;width: 302px;">
                 <div style="display: flex; height :100%;justify-content: space-around; padding: 10px; align-items: center; height: inherit; flex-direction: column;"
                     id="message_text">
-                    <p id="panding_id"></p>
+                    <p id="pending_id"></p>
                     <input type="text" id="complete_otp">
                     <div class="add_btn_container">
                         <div class="btn" id="complete_task_otp_btn" style="display: none;">complete task</div>

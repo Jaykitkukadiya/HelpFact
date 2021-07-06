@@ -2,3 +2,5 @@ python manage.py rename old_project new new_project  # for rename a project #ful
 
 name : live remote connection
 
+
+python 7.9 required to run website
