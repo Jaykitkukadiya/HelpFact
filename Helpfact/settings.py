@@ -27,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '6*1ah$lqtgy2*&bp38=rrs3pqpc!gbkk!!jpe=zm@qkk-^d1p5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ["127.0.0.1", '.herokuapp.com' , str(socket.gethostbyname(socket.gethostname()))]
-ALLOWED_HOSTS = ["127.0.0.1", '.herokuapp.com' ]
+ALLOWED_HOSTS = ["127.0.0.1", 'hfact.herokuapp.com' ]
 
 # Application definition
 
@@ -64,7 +64,8 @@ WSGI_APPLICATION = 'Helpfact.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['main/templates'],
+        # 'DIRS': ['main/templates'],
+        'DIRS': [os.path.join(BASE_DIR , "main" , "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,7 +99,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-            # "symmetric_encryption_keys": [SECRET_KEY]
+            "symmetric_encryption_keys": [SECRET_KEY]
         },
     },
 }
