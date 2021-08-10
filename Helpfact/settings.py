@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import socket
 import django
+import django_heroku
 django.setup()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -158,3 +159,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR , "media")
 
 MEDIA_URL = '/media/'
 
+# Activate Django-Heroku.
+django_heroku.settings(locals())
