@@ -725,7 +725,7 @@ window.onload = () => {
 
 
 
-    var socket = new WebSocket(`ws://${window.location.host}/ws/expire/`);
+    var socket = new WebSocket(`wss://${window.location.host}/ws/expire/`);
     socket.onopen = (e) => {
         socket.send("agent")
         document.getElementById("sidemenu_profile").click();
