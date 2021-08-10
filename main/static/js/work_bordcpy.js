@@ -755,6 +755,7 @@ window.onload = () => {
                             let emt = pending_task_detail['selected_deadline_intervals'].splice(pending_task_detail['selected_deadline_intervals'].indexOf(open_inte), 1);
                         }
                     })
+                    clearInterval(pending_task_detail['selected_interval']);
                     pending_task_detail['selected_deadline_intervals'].push({
                         id: `${data.pending_id}`,
                         interval: open_task_reverse_timer(`pending_task_selector_timer_${data.pending_id}`, Number(received_data.deadline))

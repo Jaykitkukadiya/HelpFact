@@ -338,6 +338,24 @@ class message(WebsocketConsumer):
                     )
                 else:
                     pass
+            elif data["message_type"] == "delete_mes":
+                user_conn_objs =  user_connections.objects.filter(Q(user = User.objects.filter(id = int(data["user_id"])).first() , connection = User.objects.filter(id = int(data["receiver_id"])).first()) | Q(connection = User.objects.filter(id = int(data["user_id"])).first() , user = User.objects.filter(id = int(data["receiver_id"])).first()) )
+                if len(user_conn_objs) == 1:
+                    mess_user_obj = message_user_state.objects.filter(user = User.objects.filter(id = int(data["receiver_id"])).first() )
+                    if len(mess_user_obj) > 0:
+                        mess_user_obj = mess_user_obj.first()
+                        async_to_sync(self.channel_layer.send)(
+                        mess_user_obj.channel_name,
+                        {
+                            'type': 'sendevent_message',
+                            'typex' : 'delete_mess_recv',
+                            'detail' : json.dumps({
+                                "user_id" : data["user_id"],# sending user id
+                                "message_id": data["message_id"] ,
+                                "time" : data["time"]
+                            })
+                        }
+                        )
                 
 
 

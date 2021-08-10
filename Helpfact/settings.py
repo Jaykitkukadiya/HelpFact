@@ -27,7 +27,7 @@ SECRET_KEY = '6*1ah$lqtgy2*&bp38=rrs3pqpc!gbkk!!jpe=zm@qkk-^d1p5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1" , str(socket.gethostbyname(socket.gethostname()))]
+ALLOWED_HOSTS = ["127.0.0.1", '.herokuapp.com' , str(socket.gethostbyname(socket.gethostname()))]
 
 # Application definition
 
@@ -80,16 +80,25 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#             # "symmetric_encryption_keys": [SECRET_KEY]
+#         },
+#     },
+# }
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
             # "symmetric_encryption_keys": [SECRET_KEY]
         },
     },
 }
-
 
 DATABASES = {
     'default': {
@@ -136,6 +145,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR , "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR , "media")

@@ -15,7 +15,8 @@ var message_details = {
         // {
         //     user_id: "2",
         //     message: "",
-        //     message_id : ""
+        //     message_id : "",
+        //      is_deleted : 0,
         // },
 
     ],
@@ -85,18 +86,44 @@ function message_ac_click_listener(message_socket)
             message_details["user_selected"] = id;
             Array.from(message_details["messages"]).forEach((data) => {
                 if (data.user_id == id) {
-                    document.getElementById(`message_inner_container_${id}`).innerHTML += `
+                    if(data.is_deleted == 0)
+                    {
+                        document.getElementById(`message_inner_container_${id}`).innerHTML += `
                         
                     <div class="message-aligner-left" >
+                    <img class="message-star-img hidd" id="message_saved_star_${data.message_id}" src="/static/icon/star.svg"
+                                                alt="">
+                    <p class = "hidd" id="message_timestemp_${data.message_id}">${(new Date()).getTime()}</p>
                     <div class="message-box" onclick="show_more_opt('${data.message_id}')" id="message_box_${data.message_id}">
                     <span class="message-text" id="message_text_${data.message_id}">${data.message}</span>
                     <span class="message-info-container">
                     <span class="message-time" id="message_time_${data.message_id}">${data.time}</span>
+                    
                                 </span>
                                 </div>
+                                
+                                </div>
+                                `;
+                    }
+                    else if(data.is_deleted == 1)
+                    {
+                        document.getElementById(`message_inner_container_${id}`).innerHTML += `
+                        
+                    <div class="message-aligner-left" >
+                    <img class="message-star-img hidd" id="message_saved_star_${data.message_id}" src="/static/icon/star.svg"
+                                                alt="">
+                    <p class = "hidd" id="message_timestemp_${data.message_id}">${(new Date()).getTime()}</p>
+                    <div class="message-box" onclick="" id="message_box_${data.message_id}">
+                    <span class="message-text" id="message_text_${data.message_id}">${data.message}</span>
+                    <span class="message-info-container">
+                    <span class="message-time" id="message_time_${data.message_id}">${data.time}</span>
+                    
+                                </span>
                                 </div>
                                 
+                                </div>
                                 `;
+                    }
                     message_socket.send(JSON.stringify({
                         "typex": "message",
                         "message_type": "viewed_mes",
@@ -108,6 +135,7 @@ function message_ac_click_listener(message_socket)
                     message_details["messages"].splice(message_details["messages"].indexOf(data), 1)
                 }
             });
+            document.getElementById("message_text").focus();
             document.getElementById("add_new_message_container").classList.add("hidd");
             document.getElementById("message_body_container").classList.remove("hidd");
             document.getElementById("add_new_message_container_inline").classList.remove("hidd");
@@ -156,12 +184,31 @@ function message_ac_add_click_listener()
 function show_more_opt(message_id)
 {
     message_details["selected_message_id"] = message_id;
+    if (Array.from(document.getElementById(`message_box_${message_details["selected_message_id"]}`).parentNode.classList).includes("message-aligner-right"))
+    {
+        document.getElementById("message_detail_delete").classList.remove("hidd");
+    }
+    else if (Array.from(document.getElementById(`message_box_${message_details["selected_message_id"]}`).parentNode.classList).includes("message-aligner-left"))
+    {
+        document.getElementById("message_detail_delete").classList.add("hidd");
+    }
+
+    if( Array.from(document.getElementById(`message_saved_star_${message_id}`).classList).includes("hidd") )
+    {
+        document.getElementById("message_detail_save").classList.remove("hidd");
+        document.getElementById("message_detail_unsave").classList.add("hidd");
+    }
+    else
+    {
+        document.getElementById("message_detail_save").classList.add("hidd");
+        document.getElementById("message_detail_unsave").classList.remove("hidd");
+    }
+
     document.getElementById("message-ac-detail-container").style.display = "flex";
 }
 
 function setnewmessagelistner(){
     Array.from(message_details["new_user_list"]).forEach((new_user_id) => {
-        console.log(new_user_id);
         document.getElementById(`new_message_ac_indecator_${new_user_id}`).onclick = () => {
             document.getElementById("message_sidemenu_conainer").innerHTML += `
 
@@ -778,6 +825,11 @@ window.onload = () => {
         } else {
             document.getElementById("backtohome").style.visibility = "hidden";
         }
+    }
+
+    if(localStorage.getItem("dashboard_messages") == null)
+    {
+        localStorage.setItem("dashboard_messages" , JSON.stringify({}));
     }
 
     // side menu script
@@ -1569,7 +1621,7 @@ window.onload = () => {
             //tab is already there but not opened yet
             if (message_details["user_ids"].includes(detail.user_id) && message_details["user_selected"] != detail.user_id) {
                 message_details["messages"].push(
-                    { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time }
+                    { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time , "is_deleted" : 0 }
                 )
                 document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure")
             }
@@ -1579,14 +1631,17 @@ window.onload = () => {
                 document.getElementById(`message_inner_container_${detail.user_id}`).innerHTML += `
                 
                         <div class="message-aligner-left" >
+                        <img class="message-star-img hidd" id="message_saved_star_${detail.message_id}"  src="/static/icon/star.svg"
+                                                alt="">
+                        <p class = "hidd" id="message_timestemp_${detail.message_id}">${(new Date()).getTime()}</p>
                         <div class="message-box" onclick="show_more_opt('${detail.message_id}')" id="message_box_${detail.message_id}">
                         <span class="message-text" id="message_text_${detail.message_id}">${detail.message}</span>
                             <span class="message-info-container">
                             <span class="message-time" id="message_time_${detail.message_id}">${detail.time}</span>
                             </span>
                         </div>
-                        </div>
                         
+                        </div>
                         `;
                 message_socket.send(JSON.stringify({
                     "typex": "message",
@@ -1644,7 +1699,7 @@ window.onload = () => {
                         
                         `;
             message_details["messages"].push(
-                { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time }
+                { "user_id": detail.user_id, "message": detail.message, "message_id": detail.message_id, "time": detail.time , "is_deleted" : 0}
             )
             document.getElementById(`message_indecator_${detail.user_id}`).classList.add("message-account-indecator-event-occure");
             message_details["online_users"].push(String(detail.user_id))
@@ -1658,6 +1713,23 @@ window.onload = () => {
         else if (data.typex == "viewed_mes") {
             detail = JSON.parse(data.detail)
             document.getElementById(`message_${detail.message_id}`).src = "/static/icon/double_tick.svg"
+        }
+        else if (data.typex == "delete_mess_recv")
+        {
+            detail = JSON.parse(data.detail);
+            let flag_of_messasge_state = 0
+            Array.from(message_details["messages"]).forEach((data) => {
+                if (data.message_id == detail.message_id ) {
+                    data.message = `<i style="font-size : small;">This message was deleted</i>`;
+                    data.is_deleted = 1;
+                    flag_of_messasge_state = 1
+                }
+            });
+            if(flag_of_messasge_state == 0)
+            {
+                document.getElementById(`message_text_${detail.message_id}`).innerHTML = `<i style="font-size : small;">This message was deleted</i>`;
+                document.getElementById(`message_box_${detail.message_id}`).setAttribute('onclick','');
+            }
         }
 
     }
@@ -1683,17 +1755,19 @@ window.onload = () => {
                     "time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
                 }));
                 document.getElementById(`message_inner_container_${message_details["user_selected"]}`).innerHTML += `
-
                             <div class="message-aligner-right" >
+                            <img class="message-star-img hidd" id="message_saved_star_${message_state_id}" src="/static/icon/star.svg"
+                                alt="">
+                            <p class = "hidd" id="message_timestemp_${message_state_id}">${(new Date()).getTime()}</p>
                                 <div class="message-box" onclick="show_more_opt('${message_state_id}')" id="message_box_${message_state_id}">
                                     <span class="message-text" id="message_text_${message_state_id}">${message}</span>
                                     <span class="message-info-container">
                                         <span class="message-time" id="message_time_${message_state_id}">${new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
                                         <img class="message-state-img" id="message_${message_state_id}" src="/static/icon/wait_watch.svg"
                                             alt="">
-                                    </span>
-                                </div>
-                            </div>
+                                            </span>
+                                            </div>
+                                            </div>
                             
                             `;
                 document.getElementById("message_text").value = "";
@@ -1716,8 +1790,180 @@ window.onload = () => {
     message_ac_click_listener(message_socket);
 
     document.getElementById("message_detail_delete").onclick = () => {
-        message_details["selected_message_id"]
+        if (Array.from(document.getElementById(`message_box_${message_details["selected_message_id"]}`).parentNode.classList).includes("message-aligner-right"))
+        {
+            console.log("delete req sent");
+            message_socket.send(JSON.stringify(
+                {
+                    "typex": "message",
+                    "message_type": "delete_mes",
+                    "user_id": String(userid),
+                    "receiver_id": message_details["user_selected"],
+                    "message_id": message_details["selected_message_id"],
+                    "time": new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+                }
+            ));
+            document.getElementById(`message_text_${message_details["selected_message_id"]}`).innerHTML = `<i style="font-size : small;">This message was deleted</i>`;
+            document.getElementById(`message_box_${message_details["selected_message_id"]}`).setAttribute('onclick','');
+            short_notification("Message was deleted",3000);
+        }
+        else
+        {
+            short_notification("you can't delete this message",2000);
+        }
+        document.getElementById("message-ac-detail-container").style.display = "none";
     }
+
+    document.getElementById("message_detail_save").onclick = () => {
+      
+        console.log("save req sent");
+        let is_sent = false , is_saved = false;
+        message_data = JSON.parse(localStorage.getItem("dashboard_messages"));
+        if (Array.from(document.getElementById(`message_box_${message_details["selected_message_id"]}`).parentNode.classList).includes("message-aligner-right"))
+        {
+            is_sent = true;
+        }
+        if(message_data[message_details["user_selected"]] == undefined)
+        {
+            message_data[message_details["user_selected"]] = [];
+        }
+        message_data[message_details["user_selected"]].forEach((message_obj) => {
+            if(message_obj.message_id == message_details["selected_message_id"])
+            {
+                is_saved = true;
+            }
+        });
+        if(is_saved == false)
+        {
+            message_data[message_details["user_selected"]].push({
+                "is_sent" : is_sent,
+                "message_id" :message_details["selected_message_id"],
+                "message" :document.getElementById(`message_text_${message_details["selected_message_id"]}`).innerText,
+                "message_time" :document.getElementById(`message_time_${message_details["selected_message_id"]}`).innerText,
+                "message_timestemp" : parseInt(document.getElementById(`message_timestemp_${message_details["selected_message_id"]}`).innerText),
+                "user_id" :message_details["user_selected"],
+            });
+            message_data[message_details["user_selected"]].sort(function(a, b) {
+                return a.message_timestemp - b.message_timestemp;
+            });
+            localStorage.setItem("dashboard_messages" , JSON.stringify(message_data));
+            document.getElementById(`message_saved_star_${message_details["selected_message_id"]}`).classList.remove("hidd");
+            short_notification("Message was saved",3000);
+        }
+        else
+        {
+            short_notification("Message was already saved",3000);
+        }
+        // document.getElementById(`message_box_${message_details["selected_message_id"]}`) = `<i style="font-size : small;">This message was saved</i>`;
+       
+        document.getElementById("message-ac-detail-container").style.display = "none";
+    }
+    
+    document.getElementById("message_detail_unsave").onclick = () => {
+
+        message_data = JSON.parse(localStorage.getItem("dashboard_messages"));
+        if(message_data[message_details["user_selected"]] == undefined)
+        {
+            message_data[message_details["user_selected"]] = [];
+        }
+        message_data[message_details["user_selected"]].forEach((message_obj) => {
+            if(message_obj.message_id == message_details["selected_message_id"])
+            {
+                document.getElementById(`message_saved_star_${message_obj.message_id}`).classList.add("hidd");
+                short_notification(`${message_obj.message} was unsaved`,3000);
+                message_data[message_details["user_selected"]].splice(message_data[message_details["user_selected"]].indexOf(message_obj),1);
+            }
+        });
+        localStorage.setItem("dashboard_messages" , JSON.stringify(message_data));
+        document.getElementById("message-ac-detail-container").style.display = "none";
+    }
+    var message_ac_more_box_state = 0;
+    document.getElementById("message_ac_more_btn").onclick = () => {
+        console.log("more control bubtton cllicked");
+        if(message_ac_more_box_state == 0)
+        {
+            message_ac_more_box_state = 1;
+            document.getElementById("message_ac_more_btn_box").classList.remove("hidd");
+            setTimeout(() => {
+                document.getElementById("message_ac_more_btn_box").style.height = "auto";
+                document.getElementById("message_ac_more_btn_box").style.width = "20%";
+                document.getElementById("message_ac_more_btn_box").style.opacity = "100%";
+            },1)
+        }
+        else
+        {
+            message_ac_more_box_state = 0
+            document.getElementById("message_ac_more_btn_box").style.height = "0px";
+            document.getElementById("message_ac_more_btn_box").style.width = "40px";
+            document.getElementById("message_ac_more_btn_box").style.opacity = "0%";
+            setTimeout(() => {
+                document.getElementById("message_ac_more_btn_box").classList.add("hidd");
+            },500)
+        }
+    }
+
+    document.getElementById("saved_message_outer_box_btn").onclick = () => {
+        message_ac_more_box_state = 0
+        document.getElementById("message_ac_more_btn_box").style.height = "0px";
+        document.getElementById("message_ac_more_btn_box").style.width = "40px";
+        document.getElementById("message_ac_more_btn_box").style.opacity = "0%";
+        setTimeout(() => {
+            document.getElementById("message_ac_more_btn_box").classList.add("hidd");
+        },500)
+
+        message_data = JSON.parse(localStorage.getItem("dashboard_messages"))
+        Array.from(message_data[message_details["user_selected"]]).forEach((message_obj) => {
+            if(message_obj.is_sent == true)
+            {
+                document.getElementById(`saved_message_box`).innerHTML += `
+                            <div class="message-aligner-right" >
+                            <img class="message-star-img " id="message_saved_star_${message_obj.message_id}" src="/static/icon/star.svg"
+                                alt="">
+                            <p class = "hidd" id="message_timestemp_${message_obj.message_id}">${(new Date()).getTime()}</p>
+                                <div class="message-box" onclick="show_more_opt('${message_obj.message_id}')" id="message_box_${message_obj.message_id}">
+                                    <span class="message-text" id="message_text_${message_obj.message_id}">${message_obj.message}</span>
+                                    <span class="message-info-container">
+                                        <span class="message-time" id="message_time_${message_obj.message_id}">${message_obj.message_time}</span>
+                                        <img class="message-state-img hidd" id="message_${message_obj.message_id}" src="/static/icon/wait_watch.svg"
+                                            alt="">
+                                            </span>
+                                            </div>
+                                            </div>
+                            
+                            `;
+            }
+            else
+            {
+                document.getElementById(`saved_message_box`).innerHTML += `
+                            <div class="message-aligner-left" >
+                            <img class="message-star-img" id="message_saved_star_${message_obj.message_id}" src="/static/icon/star.svg"
+                                alt="">
+                            <p class = "hidd" id="message_timestemp_${message_obj.message_id}">${(new Date()).getTime()}</p>
+                                <div class="message-box" onclick="show_more_opt('${message_obj.message_id}')" id="message_box_${message_obj.message_id}">
+                                    <span class="message-text" id="message_text_${message_obj.message_id}">${message_obj.message}</span>
+                                    <span class="message-info-container">
+                                        <span class="message-time" id="message_time_${message_obj.message_id}">${message_obj.message_time}</span>
+                                        <img class="message-state-img hidd" id="message_${message_obj.message_id}" src="/static/icon/wait_watch.svg"
+                                            alt="">
+                                            </span>
+                                            </div>
+                                            </div>
+                            
+                            `;
+
+            }
+        })
+
+
+        document.getElementById("saved_message_outer_box").classList.remove("hidd");
+    }
+
+    document.getElementById("saved_message_outer_box").addEventListener("click", (e) => {
+        if (e.target.id == "saved_message_outer_box") {
+            document.getElementById("saved_message_outer_box").classList.add("hidd"); 
+            document.getElementById(`saved_message_box`).innerHTML = "";
+        }
+    })
     
     document.getElementById("add_new_message").onclick = add_new_message;
 
