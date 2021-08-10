@@ -15,7 +15,7 @@ import os
 import socket
 import django
 import django_heroku
-django.setup()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '6*1ah$lqtgy2*&bp38=rrs3pqpc!gbkk!!jpe=zm@qkk-^d1p5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ["127.0.0.1", '.herokuapp.com' , str(socket.gethostbyname(socket.gethostname()))]
 ALLOWED_HOSTS = ["127.0.0.1", 'hfact.herokuapp.com' ]
@@ -60,7 +60,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Helpfact.urls'
 ASGI_APPLICATION = 'Helpfact.asgi.application'
-WSGI_APPLICATION = 'Helpfact.wsgi.application'
+# WSGI_APPLICATION = 'Helpfact.wsgi.application'
 
 TEMPLATES = [
     {
@@ -99,8 +99,8 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-            "symmetric_encryption_keys": [SECRET_KEY]
+            "hosts": [os.environ.get('REDIS_URL', 'redis://:p3586966750fa6d8f1dd7152876c7c6923f967682462f32840556a5c31e0b4164@ec2-54-87-116-88.compute-1.amazonaws.com:22089')],
+            # "symmetric_encryption_keys": [SECRET_KEY]
         },
     },
 }
@@ -160,4 +160,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR , "media")
 MEDIA_URL = '/media/'
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
