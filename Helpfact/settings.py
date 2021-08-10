@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '6*1ah$lqtgy2*&bp38=rrs3pqpc!gbkk!!jpe=zm@qkk-^d1p5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ["127.0.0.1", '.herokuapp.com' , str(socket.gethostbyname(socket.gethostname()))]
 ALLOWED_HOSTS = ["127.0.0.1", 'hfact.herokuapp.com' ]
