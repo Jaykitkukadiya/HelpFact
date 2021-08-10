@@ -85,12 +85,21 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [os.environ.get('REDISTOGO_URL',('redis', 6379))],
+#             "symmetric_encryption_keys": [SECRET_KEY]
+#         },
+#     },
+# }
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDISTOGO_URL',('redis', 6379))],
-            "symmetric_encryption_keys": [SECRET_KEY]
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     },
 }
