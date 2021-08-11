@@ -19,7 +19,7 @@ class expire(WebsocketConsumer):
     def connect(self):
         self.accept()
         user = self.scope["user"]
-        print(user)
+        print(self.scope)
         
     
 
