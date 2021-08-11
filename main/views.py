@@ -58,7 +58,7 @@ def payment(request):
             print(request.POST)
             if request.FILES['image'] and request.POST['address'] and request.POST['full_name'] and request.POST['pincode'] and request.POST['deadline'] and request.POST['gmaplink'] and request.POST['mobile_number']:
                 task_obj , _ = task_detail.objects.get_or_create(address=request.POST['address'], image=request.FILES['image'], user=request.user, name=request.POST['full_name'],
-                                                    pincode=request.POST['pincode'], mobile_number=request.POST['mobile_number'], deadline=request.POST['deadline'], 
+                                                    pincode=request.POST['pincode'], mobile_number=str(request.POST['mobile_number']), deadline=request.POST['deadline'], 
                                                     gmaplink=request.POST['gmaplink'] , gender=request.POST['gender'])
                 if 'proof' in request.FILES.keys():
                     task_obj.proof = request.FILES['proof']
