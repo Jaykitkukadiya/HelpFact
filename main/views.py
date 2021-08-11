@@ -72,10 +72,7 @@ def payment(request):
                 task_obj.save()
 
                 hostname = request.META["HTTP_HOST"]
-                if request.is_secure():
-                    ipt = f'https://{hostname}/paytm_payget/'
-                else:
-                    ipt = f'http://{hostname}/paytm_payget/'
+                
 
                 param_dict = {
 
@@ -86,7 +83,7 @@ def payment(request):
                     'INDUSTRY_TYPE_ID': 'Retail',
                     'WEBSITE': 'DIYtestingweb',
                     'CHANNEL_ID': 'WEB',
-                    'CALLBACK_URL': ipt
+                    'CALLBACK_URL': f'https://{hostname}/paytm_payget/'
                 }
                 param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(
                     param_dict, MERCHANT_KEY)
