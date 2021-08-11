@@ -1,3 +1,2 @@
 web: daphne Helpfact.asgi:application --port $PORT --bind 0.0.0.0 -v2 
-chatworker: python manage.py runworker channel_layer --settings=Helpfact.settings -v2
-worker: python manage.py process_tasks
+worker: python manage.py runworker process_tasks channel_layer --settings=Helpfact.settings -v2
