@@ -126,7 +126,7 @@ def success_payment_triggers(sender , instance , created , **kwargs):
                                 "image"  : str(completed_task_obj.task_detail_link.image),
                                 "task_name" : completed_task_obj.task_detail_link.name,
                                 "gender" : completed_task_obj.task_detail_link.gender,
-                                "mobile_number" : int(completed_task_obj.task_detail_link.mobile_number),
+                                "mobile_number" : completed_task_obj.task_detail_link.mobile_number,
                                 "task_id" : completed_task_obj.task_detail_link.id,
                             }
                         )
@@ -145,7 +145,7 @@ def success_payment_triggers(sender , instance , created , **kwargs):
                                 "image" : str(completed_task_obj.task_detail_link.image),
                                 "name" : completed_task_obj.task_detail_link.name,
                                 "gender" : completed_task_obj.task_detail_link.gender,
-                                "user_mobile" : int(completed_task_obj.completed_task_user.extended_user_details.mobile_number),
+                                "user_mobile" : completed_task_obj.completed_task_user.extended_user_details.mobile_number,
                                 "payment_status" : completed_task_obj.payment.agent_payment_status
                             }
                             )
@@ -189,7 +189,7 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                                 'pending_id': instance.id,
                                 'image': str(instance.task_detail_link.image),
                                 'name': instance.task_detail_link.name,
-                                'mobile': int(instance.task_detail_link.mobile_number),
+                                'mobile': instance.task_detail_link.mobile_number,
                                 'gmaplink': instance.task_detail_link.gmaplink,
                                 'deadline': instance.task_detail_link.deadline,
                             }
@@ -206,7 +206,7 @@ def task_notification_triggers(sender, instance, created, **kwargs):
                                 'pending_id': instance.id,
                                 'task_name': instance.task_detail_link.name,
                                 'agent_name': instance.pending_task_agent.username,
-                                'agent_mobile': (instance.pending_task_agent.extended_user_details.mobile_number),
+                                'agent_mobile': instance.pending_task_agent.extended_user_details.mobile_number,
                                 'agent_image': str(instance.pending_task_agent.extended_user_details.image),
                                 'agent_location': instance.agent_location,
                                 'accepted_time': str(instance.accept_time),
@@ -250,7 +250,7 @@ def completed_task_tregger(sender, instance, created, **kwargs):
                             'task_id': instance.task_detail_link.id,
                             'image': str(instance.task_detail_link.image),
                             'name': instance.task_detail_link.name,
-                            'mobile_number': int(instance.task_detail_link.mobile_number),
+                            'mobile_number': instance.task_detail_link.mobile_number,
                             'gender': instance.task_detail_link.gender,
                             'refund_status': instance.refund_status,
                             'accepted': instance.accepted,

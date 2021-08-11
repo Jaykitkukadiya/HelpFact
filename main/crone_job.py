@@ -87,7 +87,7 @@ def expire_task(user_id , pending_id):
                             "image" : str( completed_obj.task_detail_link.image),
                             "name" : completed_obj.task_detail_link.name,
                             "gender" : completed_obj.task_detail_link.gender,
-                            "user_mobile" : int(completed_obj.completed_task_user.extended_user_details.mobile_number),
+                            "user_mobile" : completed_obj.completed_task_user.extended_user_details.mobile_number,
                             "payment_status" : completed_obj.payment.agent_payment_status
                         }
                         )
@@ -99,7 +99,7 @@ def expire_task(user_id , pending_id):
         event['task_name'] = completed_obj.task_detail_link.name
         event['image'] = str(completed_obj.task_detail_link.image)
         event['gender'] = completed_obj.task_detail_link.gender
-        event['mobile_number'] = int(completed_obj.task_detail_link.mobile_number)
+        event['mobile_number'] = completed_obj.task_detail_link.mobile_number
         event['accepted'] = completed_obj.accepted
 
         channel_name = online.objects.filter(user = User.objects.filter(id = user_id).first() ,state="user")

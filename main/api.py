@@ -343,7 +343,7 @@ def get_more_details(request):
         'gender' : pending_task_obj.task_detail_link.gender,
         'address' : pending_task_obj.task_detail_link.address,
         'pincode' : pending_task_obj.task_detail_link.pincode,
-        'mobile_number' : int(pending_task_obj.task_detail_link.mobile_number),
+        'mobile_number' : pending_task_obj.task_detail_link.mobile_number,
         'deadline' : pending_task_obj.task_detail_link.deadline,
         'gmaplink' : pending_task_obj.task_detail_link.gmaplink,
         'note' : pending_task_obj.task_detail_link.note,
@@ -372,7 +372,7 @@ def get_more_details(request):
             data["accepted"] = 1
             data["accepted_time"] = pending_task_obj.accept_time
             data["user_name"] = pending_task_obj.pending_task_user.username
-            data["user_mobile"] = int(pending_task_obj.pending_task_user.extended_user_details.mobile_number)
+            data["user_mobile"] = pending_task_obj.pending_task_user.extended_user_details.mobile_number
             data["user_image"] = str(pending_task_obj.pending_task_user.extended_user_details.image)
             data["user_xender"] = str(pending_task_obj.pending_task_user.extended_user_details.xender)
 
@@ -403,7 +403,7 @@ def complete_task_more_details(request):
             data['document'] = str(completed_task_obj.task_detail_link.document)
             data['proof'] = str(completed_task_obj.task_detail_link.proof)
             data['note'] = completed_task_obj.task_detail_link.note
-            data['mobile_number'] = int(completed_task_obj.task_detail_link.mobile_number)
+            data['mobile_number'] = completed_task_obj.task_detail_link.mobile_number
             data['payment_status'] = completed_task_obj.payment.user_payment_status
             data['user_bankname'] = completed_task_obj.payment.user_bankname
             data['user_paymentmode'] = completed_task_obj.payment.user_paymentmode
@@ -420,7 +420,7 @@ def complete_task_more_details(request):
             data["accepted"] = 1
             data["agent_name"] = completed_task_obj.completed_task_agent.username
             data["accepted_time"] = completed_task_obj.accept_time
-            data["agent_mobile"] = int(completed_task_obj.completed_task_agent.extended_user_details.mobile_number)
+            data["agent_mobile"] = completed_task_obj.completed_task_agent.extended_user_details.mobile_number
             data["agent_image"] = str(completed_task_obj.completed_task_agent.extended_user_details.image)
             data["agent_xender"] = str(completed_task_obj.completed_task_agent.extended_user_details.xender)
             # data["agent_location"] = "/#"
@@ -430,7 +430,7 @@ def complete_task_more_details(request):
             data["accepted_time"] = completed_task_obj.accept_time
             data["user_name"] = completed_task_obj.completed_task_user.username
             data["user_image"] = str(completed_task_obj.completed_task_user.extended_user_details.image)
-            data["user_mobile"] = int(completed_task_obj.completed_task_user.extended_user_details.mobile_number)
+            data["user_mobile"] = completed_task_obj.completed_task_user.extended_user_details.mobile_number
             data["user_gender"] = completed_task_obj.completed_task_user.extended_user_details.xender
             data["agent_payment_status"] = completed_task_obj.payment.agent_payment_status
 
@@ -487,7 +487,7 @@ def update_user_profile(request):
         if 'email' in data:
             user_obj.email = data['email']
         if 'mobile' in data:
-            ext_obj.mobile_number = str(data['mobile'])
+            ext_obj.mobile_number = data['mobile']
         if 'address' in data:
             ext_obj.address = data['address']
         if 'pincode' in data:
@@ -506,7 +506,7 @@ def update_task(request):
     if(request.method == "POST"):
         print(request.POST)
         task_detail_obj = pending_task.objects.get(id=int(request.POST['id'])).task_detail_link
-        task_detail_obj.mobile_number = str(request.POST['update_task_mobile'])
+        task_detail_obj.mobile_number = request.POST['update_task_mobile']
         task_detail_obj.deadline = request.POST['update_task_deadline']
         task_detail_obj.address = request.POST['update_task_address']
         task_detail_obj.gmaplink = request.POST['update_task_gmap']
