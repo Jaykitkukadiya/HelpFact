@@ -492,7 +492,7 @@ def update_user_profile(request):
             ext_obj.address = data['address']
         if 'pincode' in data:
             ext_obj.pincode = data['pincode']
-        print(data['mobile'])
+        print(type(data['mobile']))
         user_obj.save()
         ext_obj.save()
         return JsonResponse({"cause": "", "data": "", "code": 200, "detail": "profile updated successfully"}, safe=False)
