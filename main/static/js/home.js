@@ -50,6 +50,18 @@ window.onload = () => {
         }
     }
 
+    document.getElementById("more_menu").addEventListener( 'click' ,() => {
+        document.getElementById("more_menu_container").classList.remove("hidd");
+        document.body.classList.add("scrolllock");
+    });
+    
+    document.getElementById("more_menu_container").addEventListener("click", (e) => {
+        if (e.target.id == "more_menu_container") {
+            document.getElementById("more_menu_container").classList.add("hidd"); 
+            document.body.classList.remove("scrolllock");
+        }
+    })
+
     document.getElementById("backtohome").onclick = () => {
         window.scrollTo({
             top: 0,

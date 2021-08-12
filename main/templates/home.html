@@ -5,17 +5,34 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=1200, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=1200, initial-scale=1.0"> -->
     <link rel="icon" href="{% static 'icon/fav.svg' %}" type="image/svg">
+    <link rel="stylesheet" href="{% static 'css/commoncss.css' %}">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/media_home.css' %}">
     <script src="{% static 'js/home.js' %}"></script>
     <title>Home</title>
 </head>
 
 <body>
     {% csrf_token %}
-    <div class="lower-screen-resolution-notify">
-        please open website with minimum resolution of 1366 X 766<br>or<br>use desktop mode
+
+    <div class="home-menu-container hidd" id="more_menu_container">
+        <div class="home-menu-inner-container">
+            <a href="/">
+                <p class="home-menu-tab">Home</p>
+            </a>
+            <a href="#features">
+                <p class="home-menu-tab">Features</p>
+            </a>
+            <a href="#contactus">
+                <p class="home-menu-tab">Contact</p>
+            </a>
+            <a href="">
+                <p class="home-menu-tab">About</p>
+            </a>
+        </div>
     </div>
 
     <div class="navbar" id="navbar">
@@ -36,11 +53,32 @@
                 <div class="navbar-button">About</div>
             </a>
         </div>
+        <div class="menu-btn-div" id="more_menu_box">
+            <img class="menu-btn" id="more_menu" src="{% static 'icon/3bar.svg' %}" alt="">
+        </div>
     </div>
 
     <div class="upbtn-container" id="backtohome">
         <img class="upbtn" src="{% static 'icon/up.png' %}" alt="dsf">
     </div>
+
+    <div class="home-page-container-mobile">
+        <div class="home-page-login-card">
+            <p class="home-page-intro-message">We provide a best platform for our customer to get complete their
+                required contact</p>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'deshboard' %}">
+                    <div class="home-page-login-btn">Dashboard</div>
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}">
+                    <div class="home-page-login-btn">Login</div>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+   
 
     <div class="home-page-container" id="home">
         <div class="home-page-customer-container">
@@ -118,6 +156,30 @@
         </div>
     </div>
 
+    <div class="feature-title-mobile">Key Features</div>
+    <div class="home-page-fetures-outer-box">
+        <div class="home-page-fetures-inner-box">
+            <div class="home-page-fetures-container">
+                <img class="home-page-fetures-img" src="{% static 'icon/easy.png' %}" alt="">
+                <p class="home-page-fetures-info">Easy Requests</p>
+            </div>
+            <div class="home-page-fetures-container">
+                <img class="home-page-fetures-img" src="{% static 'icon/fast1.png' %}" alt="">
+                <p class="home-page-fetures-info">Fast Response</p>
+            </div>
+        </div>
+        <div class="home-page-fetures-inner-box">
+            <div class="home-page-fetures-container">
+                <img class="home-page-fetures-img" src="{% static 'icon/update.png' %}" alt="">
+                <p class="home-page-fetures-info">Constent Updates</p>
+            </div>
+            <div class="home-page-fetures-container">
+                <img class="home-page-fetures-img" src="{% static 'icon/live.png' %}" alt="">
+                <p class="home-page-fetures-info">Easy To Instruct</p>
+            </div>
+        </div>
+    </div>
+
     <div class="request-outer-container">
         <div class="request-inner-container">
             <div class="request-detail-container">
@@ -188,7 +250,7 @@
                 <div class="footer-inner-icon-container"><img class="footer-icon" src="{% static 'icon/skype.png' %}"
                         alt=""></div>
             </div>
-            <div class="navbar-buttons-container">
+            <div class="navbar-buttons-container footer">
                 <a href="#home">
                     <div class="navbar-button">Home</div>
                 </a>
