@@ -19,7 +19,8 @@ class expire(WebsocketConsumer):
     def connect(self):
         self.accept()
         user = self.scope["user"]
-        self.group_name = 'grp_%s' % user.extended_user_details.pincode
+        print(self.scope)
+        
     
 
 
@@ -37,6 +38,7 @@ class expire(WebsocketConsumer):
         if text_data in ["user","agent"]:
             user = self.scope["user"]
             print(text_data)
+            self.group_name = 'grp_%s' % user.extended_user_details.pincode
 
             # below code will help to use parallel screen
             

@@ -89,21 +89,10 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-            # "symmetric_encryption_keys": [SECRET_KEY]
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     },
 }
-
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels_redis.core.RedisChannelLayer",
-#         "CONFIG": {
-#             "hosts": [os.environ.get('REDIS_URL', 'redis://:p3586966750fa6d8f1dd7152876c7c6923f967682462f32840556a5c31e0b4164@ec2-54-87-116-88.compute-1.amazonaws.com:22089')],
-#             # "symmetric_encryption_keys": [SECRET_KEY]
-#         },
-#     },
-# }
 
 DATABASES = {
     'default': {
@@ -149,15 +138,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
+STATIC_ROOT = os.path.join(BASE_DIR ,'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR , 'static'),)
 STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR , "staticfiles")
-STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
-
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR , "media")
 
 MEDIA_URL = '/media/'
-
 # Activate Django-Heroku.
-# django_heroku.settings(locals())
+django_heroku.settings(locals())

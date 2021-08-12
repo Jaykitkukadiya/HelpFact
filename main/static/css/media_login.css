@@ -1,0 +1,125 @@
+@media only screen and (max-width: 600px) {
+    /* .lower-screen-resolution-notify
+    {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width:100%;
+        height: 100vh;
+        backdrop-filter: blur(50px);
+        text-overflow: wrap;
+        color: black;
+        font-family: -webkit-pictograph;
+        text-align:center;
+        background-color:rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+    } */
+    .navbar-buttons-container
+    {
+        display:none;
+    }
+    .navbar
+    {
+        justify-content:center;
+        align-items:center;
+        height:80px;
+    }
+    .login_outer_container
+    {
+        height : calc( 100vh - 80px );
+        min-height : 600px;
+    }
+    .login-outer-container
+    {
+        margin:0px;
+    }
+    .login-card
+    {
+        min-width : 0px;
+        width : 90%;
+        /* height:auto; */
+    }
+    .login-card-title
+    {
+        font-size:x-large;
+        margin : 10px 0px;
+        padding : 0px var(--home-side-padding)
+    }
+    .login-field-container
+    {
+        width : 90%;
+
+    }
+    .login-field {
+        border: 1px solid #686868c0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        width: calc(100% - 22px);
+        height: 25px;
+        border-radius: 0px;
+    }
+    .chkbtn
+    {
+        width : 15px;
+        height : 15px;
+    }
+    .accept-tandc-text
+    {
+        line-height : 25px;
+        font-size : small;
+    }
+    .login-btn
+    {
+        border-radius:0px;
+        line-height : 30px;
+    }
+    .create-or-forgot-container
+    {
+        flex-direction : column-reverse;
+        width : 90%;
+    }
+    .see-tandc
+    {
+        width : 90%;
+    }
+
+    .signup-field-inner-container
+    {
+        display : block;
+        width : 100%;
+    }
+    .login-half-field
+    {
+        border: 1px solid #686868c0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        width: calc(100% - 22px);
+        height: 25px;
+        border-radius: 0px;
+    }
+    .signup-field-address
+    {
+        border: 1px solid #686868c0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        width: calc(100% - 22px);
+        height: 50px;
+        border-radius: 0px;
+    }
+    .noti-container
+    {
+        width : 100%;
+    }
+    .notification-box
+    {
+        min-width: 300px;
+        max-width: 300px;
+    }
+}
+

@@ -1,0 +1,137 @@
+
+
+.noti-overlay {
+    position: fixed;
+    display: none;
+    width: 0px;
+    height: 0px;
+    bottom: 0;
+    left: 0;
+    z-index: 25;
+    cursor: pointer;
+}
+
+.noti-container {
+    width: 0px;
+    position: fixed;
+    display: block;
+    min-height: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 25;
+    cursor: pointer;
+}
+
+.notification-box {
+    position: absolute;
+    left: 10px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    min-width: 400px;
+    max-width: 600px;
+    padding: 0px 10px;
+    border-radius: 3px;
+    background-color: rgb(245, 244, 244);
+    box-shadow: 0px 0px 13px -8px var(--site-color);
+    font-family: -webkit-pictograph;
+    color: #212121c0;
+    line-height: 20px;
+    font-weight: 500;
+    text-align: justify;
+    bottom: -500px;
+    transition: bottom 0.2s ease-in;
+}
+
+
+.loading-dots-container
+{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width:100%;
+    height: 100vh;
+    backdrop-filter: blur(1px);
+    background-color:rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 35;
+}
+
+.loading-dots-container-page
+{
+    position: fixed;
+    top: var(--nav-height);
+    left: var(--deshboard-sidebar-width);
+    width: calc(100% - var(--deshboard-sidebar-width));
+    height: calc(100vh - var(--nav-height));
+    backdrop-filter: blur(1px);
+    background-color:rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+}
+
+.loading-dots-img
+{
+    width: 20px;
+    height: 20px;
+    background-color: var(--site-color);
+    padding: 10px;
+    border-radius: 100%;
+    animation: loding_rotater 1.2s linear infinite;
+}
+
+
+@keyframes loding_rotater {
+    50% {
+        background-color: var(--site-color-dark);
+        transform:rotate(180deg);
+    }
+    100% {
+        background-color: var(--site-color);
+        transform:rotate(360deg);
+    }
+}
+@font-face {
+    font-family: norwester;
+    font-weight: lighter;
+    src: url("/static/font/norwester.otf");
+}
+
+.hidd {
+    display: none !important ;
+}
+
+a {
+    text-decoration: none;
+    color: #212121c0;
+}
+
+.upbtn-container {
+
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0px 0px 6px -2px grey;
+    transition: all 0.1s ease-in;
+    visibility: hidden;
+}
+
+.upbtn-container:hover {
+    transform: scale(1.1);
+}
+
+.upbtn {
+    width: 20px;
+    height: 20px;
+}

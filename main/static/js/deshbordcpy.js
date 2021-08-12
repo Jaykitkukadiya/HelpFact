@@ -369,86 +369,6 @@ function completed_task_select_listener() {
     });
 }
 
-var shortnoti_open = {
-    0: 0,
-    1: 0,
-    2: 0
-}
-
-function short_notification(texts = "notification", timex = 5000, action = "") {
-
-    if (document.getElementById("notificationbx").style.display == "block") {
-        clearTimeout(shortnoti_open[1]);
-        clearTimeout(shortnoti_open[2]);
-        document.getElementById("notif_name").style.bottom = "-500px";
-        shortnoti_open[0] = setTimeout(() => {
-            document.getElementById("notif_name").innerHTML = texts;
-            document.getElementById("notif_name").style.bottom = "10px";
-        }, 150);
-        shortnoti_open[1] = setTimeout(() => {
-            document.getElementById("notif_name").style.bottom = "-500px";
-        }, timex + 100);
-        shortnoti_open[2] = setTimeout(() => {
-            document.getElementById("notificationbx").style.display = "none";
-            eval(action);
-        }, timex + 200);
-    } else {
-        document.getElementById("notificationbx").style.display = "block";
-        shortnoti_open[0] = setTimeout(() => {
-            document.getElementById("notif_name").innerHTML = texts;
-            document.getElementById("notif_name").style.bottom = "10px";
-        }, 100);
-        shortnoti_open[1] = setTimeout(() => {
-            document.getElementById("notif_name").style.bottom = "-500px";
-        }, timex + 100);
-        shortnoti_open[2] = setTimeout(() => {
-            document.getElementById("notificationbx").style.display = "none";
-            eval(action);
-        }, timex + 200);
-    }
-}
-
-// var short_noti_ids = [];
-// var short_noti_counter = 0;
-
-// function notitimer(id, texts, bottom_pad, timex, action) {
-//     document.getElementById(`short_noti_texts_${id}`).innerHTML = texts;
-//     setTimeout(() => {
-//         document.getElementById(`short_noti_texts_${id}`).style.bottom = `${bottom_pad}px`;
-//     }, 100);
-//     setTimeout(() => {
-//         document.getElementById(`short_noti_texts_${id}`).style.bottom = "-500px";
-
-//         let array_pointer = short_noti_ids.indexOf(id);
-//         short_noti_ids.splice(array_pointer, 1);
-//         if (short_noti_ids.length == 0) {
-//             short_noti_counter = 0;
-//         }
-
-//     }, timex + 100);
-//     setTimeout(() => {
-//         document.getElementById(`short_noti_texts_${id}`).remove();
-//         eval(action);
-//     }, timex + 200);
-// }
-
-// function short_notification(texts = "notification", timex = 5000, action = "") {
-//     if (short_noti_ids.length == 0) {
-//         bottom_pad = 10;
-//     } else {
-//         bottom_pad = (short_noti_ids.length * (50)) + 10;
-//     }
-//     id = short_noti_counter + 1;
-//     var div = document.createElement('div');
-//     div.id = `short_noti_texts_${id}`;
-//     div.innerHTML = `...`;
-//     div.className = 'notification-box';
-//     document.getElementById("noti_container").appendChild(div);
-
-//     short_noti_ids.push(id);
-//     notitimer(id, texts, bottom_pad, timex, action);
-//     short_noti_counter++;
-// }
 
 
 // this is for google map loading
@@ -568,23 +488,6 @@ function clearmenu() {
         document.getElementById(allpage).style.display = "none";
     });
 }
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 
 function get_task_details() {
     favi.href = "/static/icon/favicon_offline.svg";
@@ -1510,7 +1413,7 @@ window.onload = () => {
 
 
 
-    var message_socket = new WebSocket(`ws://${window.location.host}/ws/message/`);
+    var message_socket = new WebSocket(`wss://${window.location.host}/ws/message/`);
 
     message_socket.onopen = (e) => {
         // send that socket is now connected as user mode
@@ -1996,7 +1899,7 @@ window.onload = () => {
 
 
 
-    var socket = new WebSocket(`ws://${window.location.host}/ws/expire/`);
+    var socket = new WebSocket(`wss://${window.location.host}/ws/expire/`);
 
     socket.onopen = (e) => {
         // send that socket is now connected as user mode

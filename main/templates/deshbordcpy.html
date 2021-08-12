@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{% static 'icon/fav.svg' %}" type="image/svg">
     <title>deshbord</title>
+    <script src="{% static 'js/commonjs.js' %}"></script>
     <script>
         var userid = "{{request.user.id}}";
     </script>
@@ -1875,24 +1876,15 @@
 
 
 
-    <!-- this is activate while scroll is grater then some value and used to smooth scroll up -->
-    <div class="upbtn-container" id="backtohome">
-        <img class="upbtn" src="{% static 'icon/up.png' %}" alt="dsf">
-    </div>
+    
 
-    <!-- this is short notification -->
+    
 
-    <div class="noti-overlay" id="notificationbx">
-        <div class="notification-box" id="notif_name">
-            I am notification.
-        </div>
-    </div>
+    {% include 'commonhtml.html' %}
 
-    <div class="loading-dots-container" id="loading_rounder">
-        <img class="loading-dots-img" src="{% static 'icon/four_dots_loading.svg' %}" alt="">
-    </div>
+    
 
-    <!-- <div class="noti-container" id="noti_container"></div> -->
+    
 
 
 </body>

@@ -3,6 +3,7 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from PayTm import Checksum
 from django.db.models import Q
+import socket
 
 MERCHANT_KEY = 'bKMfNxPPf_QdZppa'
 
@@ -12,6 +13,7 @@ def home(request):
         role = request.user.extended_user_details.role
     else:
         role = "nouser"
+    print(request.is_secure())
     return render(request, 'home.html', {'user_role': role})
 
 
@@ -69,6 +71,9 @@ def payment(request):
 
                 task_obj.save()
 
+                hostname = request.META["HTTP_HOST"]
+                
+
                 param_dict = {
 
                     'MID': 'DIY12386817555501617',
@@ -78,7 +83,7 @@ def payment(request):
                     'INDUSTRY_TYPE_ID': 'Retail',
                     'WEBSITE': 'DIYtestingweb',
                     'CHANNEL_ID': 'WEB',
-                    'CALLBACK_URL': 'http://127.0.0.1:8000/paytm_payget/',
+                    'CALLBACK_URL': f'https://{hostname}/paytm_payget/'
                 }
                 param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(
                     param_dict, MERCHANT_KEY)

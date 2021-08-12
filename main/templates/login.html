@@ -6,8 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    <link rel="stylesheet" href="{% static 'css/commoncss.css' %}">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/media_login.css' %}">
     <link rel="icon" href="{% static 'icon/fav.svg' %}" type="image/svg">
+    <script src="{% static 'js/commonjs.js' %}"></script>
     <script src="{% static 'js/login.js' %}"></script>
 </head>
 
@@ -20,7 +23,7 @@
 
     <div class="navbar" id="navbar">
         <div class="site-logo-container">
-            <img class="site-logo" src="{% static 'icon/siteLogo1.svg' %}" alt="site logo">
+           <a href="/"><img class="site-logo" src="{% static 'icon/siteLogo1.svg' %}" alt="site logo"></a>
         </div>
         <div class="navbar-buttons-container">
             <a href="/">
@@ -64,6 +67,7 @@
                 <div id="signup_go_btn" style="color:white;">signup</div>
             </div>
         </div> -->
+
         <div class="login-outer-container" id="login_box" style="display: flex;">
             <div class="login-card">
                 <div class="login-card-title">Login</div>
@@ -71,7 +75,7 @@
                     <input type="text" id="username" placeholder="User Name" class="login-field">
                     <input type="password" id="password" placeholder="Password" class="login-field">
                     <div class="accept-tandc-container">
-                        <input id="tandcbx_login" type="checkbox" class="chkbtn" unchecked>
+                        <input id="tandcbx_login" type="checkbox" class="chkbtn" checked>
                         <div class="accept-tandc-text">
                             Accept Terms & Conditions
                         </div>
@@ -79,7 +83,7 @@
                     <div class="login-btn" id="login_btn" >Submit</div>
                 </div>
                 <div class="create-or-forgot-container">
-                    <div class="forgot-btn">Forgot Password?&nbsp;|&nbsp;</div>
+                    <div class="forgot-btn">Forgot Password?&nbsp;&nbsp;</div>
                     <div class="signup-btn" id="signup_go_btn">Create a new account.</div>
                 </div>
                 <div class="see-tandc"><a href="">Terms and Condition</a></div>
@@ -103,7 +107,7 @@
                     <textarea type="text" placeholder="address.." id="signup_address" class="signup-field-address"></textarea>
                     <input type="text" id="signup_pincode" placeholder="pincode" style="height:30px; margin: 5px 0px;" class="login-field">
                     <div class="accept-tandc-container">
-                        <input id="tandcbx_signup" type="checkbox" class="chkbtn" unchecked>
+                        <input id="tandcbx_signup" type="checkbox" class="chkbtn" checked>
                         <div class="accept-tandc-text">
                             Accept Terms & Conditions
                         </div>
@@ -112,6 +116,7 @@
                         <div class="login-btn" id="signup_btn" >Submit</div>
                         <div class="login-btn" id="login_go_btn" >Login</div>
                     </div>
+                    <div class="see-tandc"><a href="">Terms and Condition</a></div>
                 </div>
             </div>
         </div>
@@ -198,11 +203,8 @@
     </div>
 
 
-    <div class="noti-overlay" id="notificationbx">
-        <div class="notification-box" id="notif_name">
-            I am notification.
-        </div>
-    </div>
+    {% include 'commonhtml.html' %}
+    
 
 </body>
 

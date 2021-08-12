@@ -1,38 +1,13 @@
-function short_notification(texts = "notification", timex = 5000, action = "") {
-    document.getElementById("notificationbx").style.display = "block";
-    document.getElementById("notif_name").innerHTML = texts;
-    setTimeout(() => {
-        document.getElementById("notif_name").style.bottom = "10px";
-    }, 100);
-    setTimeout(() => {
-        document.getElementById("notif_name").style.bottom = "-500px";
-    }, timex + 100);
-    setTimeout(() => {
-        document.getElementById("notificationbx").style.display = "none";
-        eval(action);
-    }, timex + 200);
-}
 
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
 
 
 window.onload = () => {
 
+    document.getElementById("loading_rounder").classList.add("hidd");
+    document.getElementById("password").addEventListener("keyup", function(event) {
+        document.getElementById("login_btn").click();
+    });
     var favi = document.querySelector("link[rel~='icon']");
 
     document.getElementById("signup_go_btn").onclick = () => {
@@ -61,19 +36,18 @@ window.onload = () => {
                 .then((result) => {
                     favi.href="/static/icon/fav.svg";
                     if (result.code == 200) {
-                        short_notification("login successful", 3000, "location.href ='/'");
+                        location.href = '/dashboard/'
                     } else if (result.code == 404) {
                         short_notification(`${result.detail}`, 3000);
                     } else if (result.code == 405) {
                         short_notification(`${result.detail}`, 3000);
                     } else if (result.code == 406) {
                         short_notification(`${result.detail}`, 3000);
+                    } else if (result.code == 505) {
+                        short_notification(`${result.detail}`, 3000);
                     }
                 })
-                .catch((error) => {
-                    favi.href="/static/icon/fav.svg";
-                    short_notification(`<b>${error}</b>`);
-                });
+
             } else {
             favi.href="/static/icon/fav.svg";
             short_notification("please accept&nbsp;<b>terms and condition for login</b>");
@@ -84,44 +58,89 @@ window.onload = () => {
     document.getElementById("signup_btn").onclick = () => {
         favi.href="/static/icon/favicon_offline.svg";
         if (document.getElementById("tandcbx_signup").checked) {
+            errors = "<p>"
+            errflag = false
+            let fname = document.getElementById("signup_fname").value;
+            let lname = document.getElementById("signup_lname").value;
             let username = document.getElementById("signup_username").value;
             let password = document.getElementById("signup_password").value;
             let email = document.getElementById("signup_email").value;
             let mobile = document.getElementById("signup_mobile").value;
             let address = document.getElementById("signup_address").value;
             let pincode = document.getElementById("signup_pincode").value;
-            fetch('/api/signup/', {
-                method: 'POST',
-                headers : {'X-CSRFToken' : getCookie('csrftoken')},
-                body: JSON.stringify({
-                    "username": username,
-                    "password": password,
-                    "email": email,
-                    "mobile": mobile,
-                    "address": address,
-                    "pincode": pincode
+            var emailpattern=/^[a-zA-Z0-9.!#$%&'*/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;////Regular expression
+	        if(!(emailpattern.test(email)))
+            {
+                errors += " Invalid EMAIL (+ symbol not allowed) ";
+                errflag = true;
+            }
+	        if(!(/[0-9]{10}/.test(mobile)))
+            {
+                errors += " Invalid MOBILE NUMBER ";
+                errflag = true;
+            }
+	        if(!(/[0-9]{6}/.test(pincode)))
+            {
+                errors += " Invalid PINCODE ";
+                errflag = true;
+            }
+	        if(!(/[0-9A-Za-z]{5,}/.test(username)))
+            {
+                errors += " USERNAME should only contains Latters and numbers with min length of 5 ";
+                errflag = true;
+            }
+	        if(!(/[0-9A-Za-z@#$&^*"'/!~`|+-_=]{5,}/.test(password)))
+            {
+                errors += " PASSWORD has Min length should be 5 and should not contains % or \\ or any breckets ";
+                errflag = true;
+            }
+            errors += "</p>";
+            if(errflag == true)
+            {
+                if(errors.length > 65)
+                {
+                    short_notification(errors , 15000);
+                }
+                else
+                {
+                    short_notification(errors);
+                }
+                favi.href="/static/icon/fav.svg";
+            }
+            else
+            {
+                fetch('/api/signup/', {
+                    method: 'POST',
+                    headers : {'X-CSRFToken' : getCookie('csrftoken')},
+                    body: JSON.stringify({
+                        "fname": fname,
+                        "lname": lname,
+                        "username": username,
+                        "password": password,
+                        "email": email,
+                        "mobile": mobile,
+                        "address": address,
+                        "pincode": pincode
+                    })
                 })
-            })
-            .then((response) => response.json())
-            .then((result) => {
-                    favi.href="/static/icon/fav.svg";
-                    if (result.code == 200) {
-                        short_notification("signup successful", 3000, "location.href ='/login'");
-                    } else if (result.code == 404) {
-                        short_notification(`${result.detail}`, 3000);
-                    } else if (result.code == 405) {
-                        short_notification(`${result.detail}`, 3000);
-                    } else if (result.code == 406) {
-                        short_notification(`${result.detail}`, 3000);
-                    }
-                    console.log(result);
-                })
-                .catch((error) => {
-                    favi.href="/static/icon/fav.svg";
-                    console.log(error);
-                    short_notification(`<b>${error}</b>`);
-                });
-            } else {
+                .then((response) => response.json())
+                .then((result) => {
+                        favi.href="/static/icon/fav.svg";
+                        if (result.code == 200) {
+                            document.getElementById("login_go_btn").click();
+                        } else if (result.code == 404) {
+                            short_notification(`${result.detail}`, 3000);
+                        } else if (result.code == 405) {
+                            short_notification(`${result.detail}`, 3000);
+                        } else if (result.code == 406) {
+                            short_notification(`${result.detail}`, 3000);
+                        } else if (result.code == 505) {
+                            short_notification(`${result.detail}`, 3000);
+                        }
+                    });
+            }
+        }
+        else {
             favi.href="/static/icon/fav.svg";
             short_notification("please accept&nbsp;<b>terms and condition for signup</b>");
         }

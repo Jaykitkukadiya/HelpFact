@@ -99,52 +99,61 @@ def task_payment(request):
 
 @csrf_protect
 def log_in(request):
-    if request.method == "POST":
-        data = JSONParser().parse(request)
-        username = data['username']
-        password = data['password']
-        if data['username'] and data['password']:
-            user = authenticate(username=data[
-                'username'], password=data['password'])
-            if user:
-                login(request, user)
-                return JsonResponse({"cause": "", "data":"", "code": 200, "detail": "successful login"}, safe=False)
+    try:
+        if request.method == "POST":
+            data = JSONParser().parse(request)
+            username = data['username']
+            password = data['password']
+            if data['username'] and data['password']:
+                user = authenticate(username=data[
+                    'username'], password=data['password'])
+                if user:
+                    login(request, user)
+                    return JsonResponse({"cause": "", "data":"", "code": 200, "detail": " Login successfull "}, safe=False)
+                else:
+                    return JsonResponse({"cause": "invalid creadential", "data": "", "code": 404, "detail": " user not found "}, safe=False)
             else:
-                return JsonResponse({"cause": "invalid creadential", "data": "", "code": 404, "detail": "user not found"}, safe=False)
+                return JsonResponse({"cause": "", "data": "", "code": 406, "detail": " please fill valid data "}, safe=False)
+            
         else:
-            return JsonResponse({"cause": "", "data": "", "code": 406, "detail": "please fill valid data"}, safe=False)
-        
-    else:
-        return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
+            return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
+    except:
+        return JsonResponse({"cause": "", "data": "", "code": 505, "detail": " error in server connect admin for this issue "}, safe=False)
 
 @csrf_protect
 def signup(request):
-    if request.method == "POST":
-        data = JSONParser().parse(request)
-        username = data['username']
-        password = data['password']
-        email = data['email']
-        mobile = data['mobile']
-        address = data['address']
-        pincode = data['pincode']
-        if username and password and email and mobile and address and pincode:
-            user_obj = User.objects.filter(username = username)
-            if len(user_obj) > 0:
-                return JsonResponse({"cause": "invalid creadential", "data": "", "code": 404, "detail": "username already exist"}, safe=False)
+    try:
+        if request.method == "POST":
+            data = JSONParser().parse(request)
+            first_name = data['fname']
+            last_name = data['lname']
+            username = data['username']
+            password = data['password']
+            email = data['email']
+            mobile = data['mobile']
+            address = data['address']
+            pincode = data['pincode']
+            if username and password and email and mobile and address and pincode:
+                user_obj = User.objects.filter(Q(username = username) | Q(email = email) )
+                if len(user_obj) > 0:
+                    return JsonResponse({"cause": "invalid creadential", "data": "", "code": 404, "detail": "username or email already exist"}, safe=False)
+                else:
+                    user_obj = User.objects.create(username=username , first_name = first_name , last_name = last_name , email=email)
+                    user_obj.set_password(password)
+                    user_obj.save()
+                    exnted_obj = extended_user_details.objects.get(user = user_obj)
+                    exnted_obj.address = address
+                    exnted_obj.pincode = pincode
+                    exnted_obj.mobile_number = mobile
+                    exnted_obj.save()
+                    return JsonResponse({"cause": "", "data":"", "code": 200, "detail": "successful signup"}, safe=False)
             else:
-                user_obj = User.objects.create(username=username , email=email)
-                user_obj.set_password(password)
-                user_obj.save()
-                exnted_obj = extended_user_details.objects.get(user = user_obj)
-                exnted_obj.address = address
-                exnted_obj.pincode = pincode
-                exnted_obj.mobile_number = mobile
-                exnted_obj.save()
-                return JsonResponse({"cause": "", "data":"", "code": 200, "detail": "successful signup"}, safe=False)
+                return JsonResponse({"cause": "no data", "data": "", "code": 406, "detail": "please fill valid data"}, safe=False)
         else:
-            return JsonResponse({"cause": "", "data": "", "code": 406, "detail": "please fill valid data"}, safe=False)
-    else:
-        return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
+            return JsonResponse({"cause": "invalid method", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
+    except:
+        return JsonResponse({"cause": "invalid method", "data": "", "code": 505, "detail": " error in server connect admin for this issue "}, safe=False)
+
 
 @csrf_protect
 @login_required
@@ -454,8 +463,8 @@ def contact_us(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
         print(data)
-        # contactobj = contactus.objects.create(first_name=data['first_name'] , last_name= data['last_name'] , email_address=data['email_address'] , mobile_number=data['mobile_number'] , message=data['message'])
-        # contactobj.save()
+        contactobj = contactus.objects.create(first_name=data['first_name'] , last_name= data['last_name'] , email_address=data['email_address'] , mobile_number=str(data['mobile_number']) , message=data['message'])
+        contactobj.save()
         return JsonResponse({"cause": "", "data": "", "code": 200, "detail": "contact recorded successful"}, safe=False)
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
@@ -492,7 +501,7 @@ def update_user_profile(request):
             ext_obj.address = data['address']
         if 'pincode' in data:
             ext_obj.pincode = data['pincode']
-        
+        print(type(data['mobile']))
         user_obj.save()
         ext_obj.save()
         return JsonResponse({"cause": "", "data": "", "code": 200, "detail": "profile updated successfully"}, safe=False)
@@ -506,7 +515,7 @@ def update_task(request):
     if(request.method == "POST"):
         print(request.POST)
         task_detail_obj = pending_task.objects.get(id=int(request.POST['id'])).task_detail_link
-        task_detail_obj.mobile_number = int(request.POST['update_task_mobile'])
+        task_detail_obj.mobile_number = request.POST['update_task_mobile']
         task_detail_obj.deadline = request.POST['update_task_deadline']
         task_detail_obj.address = request.POST['update_task_address']
         task_detail_obj.gmaplink = request.POST['update_task_gmap']
