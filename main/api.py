@@ -463,8 +463,8 @@ def contact_us(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
         print(data)
-        # contactobj = contactus.objects.create(first_name=data['first_name'] , last_name= data['last_name'] , email_address=data['email_address'] , mobile_number=str(data['mobile_number']) , message=data['message'])
-        # contactobj.save()
+        contactobj = contactus.objects.create(first_name=data['first_name'] , last_name= data['last_name'] , email_address=data['email_address'] , mobile_number=str(data['mobile_number']) , message=data['message'])
+        contactobj.save()
         return JsonResponse({"cause": "", "data": "", "code": 200, "detail": "contact recorded successful"}, safe=False)
     else:
         return JsonResponse({"cause": "", "data": "", "code": 405, "detail": "use POST method"}, safe=False)
