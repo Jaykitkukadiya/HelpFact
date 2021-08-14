@@ -16,16 +16,18 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzscb1NF7BS9BUTR17ftaAobbJ9t84cZQ&callback=initMap&libraries=&v=3">
         </script>
     <link rel="stylesheet" href="{% static 'css/deshbordcpy.css' %}">
+    <link rel="stylesheet" href="{% static 'css/media_deshboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/commoncss.css' %}">
     <script src="{% static 'js/deshbordcpy.js' %}"></script>
 </head>
 
 
 <body>
     {% csrf_token %}
-    <div class="lower-screen-resolution-notify">
-        please open website with minimum resolution of 1366 X 766<br>or<br>use desktop
-    </div>
     <!-- nav bar -->
+
+
+    {% include 'mobile_header.html' %}
 
     <div class="stickynav" id="navbar">
         <div class="site-logo-container">
@@ -44,6 +46,9 @@
             <a href="">
                 <div class="navbar-button">About</div>
             </a>
+        </div>
+        <div class="menu-btn-div hidd" id="more_menu_box">
+            <img class="menu-btn" id="more_menu" src="{% static 'icon/3bar.svg' %}" alt="">
         </div>
     </div>
 
@@ -174,9 +179,10 @@
             <!-- profile page -->
             <div class="dashboard-page-profile" id="dashboard_page_profile">
                 <div class="dashboard-profile-title-container">
-                    <h2 style=" margin: 0px 0px 0px 20px; line-height: 30px; color:var(--title-color);">
+                    <p
+                        class="dashboard-pages-title">
                         Profile Detail
-                    </h2>
+                    </p>
                     {% if request.user.extended_user_details.role == "user" %}
                     <div class="dashboard-title-btn-container">
                         <div class="dashboard-profile-update-submit-btn" id="agent_request_btn">Become agent</div>
@@ -188,9 +194,10 @@
                 </div>
                 <div class="dashboard-page-profile-inner-container">
                     <div class="dashboard-page-profile-image-container">
-                        <div class="dashboard-profile-image-photo-container">
-                            <img class="dashboard-profile-image" id="dashboard_profile_image_show"
-                                src="/media/{{request.user.extended_user_details.image}}" alt="noimage">
+                        <div id="dashboard_profile_image_show" class="dashboard-profile-image-photo-container"
+                            style="background-image: url('/media/{{request.user.extended_user_details.image}}')">
+                            <!-- <img class="dashboard-profile-image" id="dashboard_profile_image_show"
+                                src="/media/{{request.user.extended_user_details.image}}" alt="noimage"> -->
                             <a href="/media/{{request.user.extended_user_details.image}}"
                                 id="dashboard_profile_image_link" class="dashboard-profile-image" target="_blank"
                                 rel="">
@@ -198,10 +205,13 @@
                             </a>
                         </div>
                         <input type="file" id="dashboard_profile_image_updated" class="hidd" accept="image/*">
-                        <div class="dashboard-profile-image-photo-btn" id="dashboard_profile_image_update_btn">Change
-                            Image</div>
+                        <div class="dashboard-profile-image-button-container">
+                            <div class="dashboard-profile-image-photo-btn" id="dashboard_profile_image_update_btn">
+                                Change
+                                Image</div>
+                        </div>
                     </div>
-                    <div class="dashboard-page-profile-info-container">
+                    <div class="dashboard-page-profile-info-container" id="dashboard_page_profile">
                         <div class="dashboard-completed-page-part-list-container">
                             <div class="dashboard-completed-page-part-selector dashboard-page-part-selector-selected"
                                 id="dashboard_profile_page_profile_detail">
@@ -211,80 +221,86 @@
                             </div>
                         </div>
                         <div class="dashboard-profile-detail-detail" id="dashboard_profile_page_profile_detail_page">
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">user name</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">user name</div>
                                 <div class="dashboard-profile-detail">{{request.user}}</div>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">full name</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">full name</div>
                                 <div class="dashboard-profile-detail"><span
                                         id="dashboard_profile_detail_fname">{{request.user.first_name}}</span> <span
                                         id="dashboard_profile_detail_lname">{{request.user.last_name}}</span></div>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">Email address</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">Email address</div>
                                 <div class="dashboard-profile-detail" id="dashboard_profile_detail_email">
                                     {{request.user.email}}</div>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">mobile number</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">mobile number</div>
                                 <div class="dashboard-profile-detail" id="dashboard_profile_detail_mobile">
                                     {{request.user.extended_user_details.mobile_number}}</div>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">gender</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">gender</div>
                                 <div class="dashboard-profile-detail">{{request.user.extended_user_details.xender}}
                                 </div>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">Address</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">Address</div>
                                 <div class="dashboard-profile-detail" id="dashboard_profile_detail_address">
                                     {{request.user.extended_user_details.address}}</div>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">pincode</div>:
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">pincode</div>
                                 <div class="dashboard-profile-detail" id="dashboard_profile_detail_pincode">
                                     {{request.user.extended_user_details.pincode}}</div>
                             </div>
                         </div>
                         <div class="dashboard-profile-detail-update hidd"
                             id="dashboard_profile_page_update_detail_page">
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">first name</div>:&nbsp;&nbsp;&nbsp;
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">first name</div>
+                                <span class="d-none-sm">:&nbsp;&nbsp;&nbsp;</span>
                                 <input class="dashboard-profile-detail-update-input" type="text"
-                                    id="dashboard_profile_detail_update_fname"
-                                    placeholder="{{request.user.first_name}}">
+                                id="dashboard_profile_detail_update_fname"
+                                placeholder="{{request.user.first_name}}">
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">last name</div>:&nbsp;&nbsp;&nbsp;
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">last name</div>
+                                <span class="d-none-sm">:&nbsp;&nbsp;&nbsp;</span>
                                 <input class="dashboard-profile-detail-update-input" type="text"
-                                    id="dashboard_profile_detail_update_lname" placeholder="{{request.user.last_name}}">
+                                id="dashboard_profile_detail_update_lname" placeholder="{{request.user.last_name}}">
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">Email address</div>:&nbsp;&nbsp;&nbsp;
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">Email address</div>
+                                <span class="d-none-sm">:&nbsp;&nbsp;&nbsp;</span>
                                 <input class="dashboard-profile-detail-update-input" type="email"
-                                    id="dashboard_profile_detail_update_email" placeholder="{{request.user.email}}">
+                                id="dashboard_profile_detail_update_email" placeholder="{{request.user.email}}">
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">mobile number</div>:&nbsp;&nbsp;&nbsp;
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">mobile number</div>
+                                <span class="d-none-sm">:&nbsp;&nbsp;&nbsp;</span>
                                 <input class="dashboard-profile-detail-update-input" type="number"
                                     id="dashboard_profile_detail_update_mobile" max=9999999999
                                     placeholder="{{request.user.extended_user_details.mobile_number}}">
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">Address</div>:&nbsp;&nbsp;&nbsp;
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">Address</div>
+                                <span class="d-none-sm">:&nbsp;&nbsp;&nbsp;</span>
                                 <textarea class="dashboard-profile-detail-update-input-textarea"
                                     id="dashboard_profile_detail_update_address"
                                     placeholder="{{request.user.extended_user_details.address}}"></textarea>
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-lable">pincode</div>:&nbsp;&nbsp;&nbsp;
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-lable">pincode</div>
+                                <span class="d-none-sm">:&nbsp;&nbsp;&nbsp;</span>
                                 <input class="dashboard-profile-detail-update-input" type="number"
                                     id="dashboard_profile_detail_update_pincode" max=999999
                                     placeholder="{{request.user.extended_user_details.pincode}}">
                             </div>
-                            <div class="dashboard-field-container flx">
-                                <div class="dashboard-profile-update-submit-btn"
+                            <div class="dashboard-field-container flx flex-column-sm">
+                                <div class="dashboard-profile-image-photo-btn"
                                     id="dashboard_profile_detail_update_btn">submit</div>
                             </div>
 
@@ -829,8 +845,9 @@
                     <div class="popup-outer-container hidd" style="z-index: 10;" id="update_map_popup">
                         <div class="popup-map-box">
                             <div class="popup-content" id="update_googlemap_container"></div>
-                            <svg id="update_map_popup_exit" style="z-index: 11;" class="popup-exit" xmlns="http://www.w3.org/2000/svg"
-                                width="512" height="512" viewBox="0 0 384 384" version="1.2">
+                            <svg id="update_map_popup_exit" style="z-index: 11;" class="popup-exit"
+                                xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 384 384"
+                                version="1.2">
                                 <defs>
                                     <clipPath id="a">
                                         <path d="M44.707 44.707h294.75v294.75H44.707zm0 0" />
@@ -1743,12 +1760,13 @@
                             </div> -->
                             <div class="search_box">
                                 <div class="new-message-btn-container">
-                                    <input type="text" id="new_message_ac_search_taxt" placeholder="Enter Pincode or email or username"
-                                    class="new-message-ac-search-taxt">
-                                    <img src="{% static 'icon/search_btn.svg' %}" alt="" 
-                                    class="new-message-ac-search-btn">
-                                    <img src="{% static 'icon/search_arrow.svg' %}" alt="" id="new_message_ac_search_btn"
-                                    class="new-message-ac-search-arrow">
+                                    <input type="text" id="new_message_ac_search_taxt"
+                                        placeholder="Enter Pincode or email or username"
+                                        class="new-message-ac-search-taxt">
+                                    <img src="{% static 'icon/search_btn.svg' %}" alt=""
+                                        class="new-message-ac-search-btn">
+                                    <img src="{% static 'icon/search_arrow.svg' %}" alt=""
+                                        id="new_message_ac_search_btn" class="new-message-ac-search-arrow">
                                 </div>
                             </div>
                             <div class="new-message-empty-message-container" id="new_message_no_user">
@@ -1769,27 +1787,31 @@
                                 <p class="message-header-user-name" id="message_ac_name">jaykit kukadiya</p>
                             </div>
                             <div class="message-header-secound-part">
-                                <img class="message-header-more-img" id="message_ac_more_btn" src="{% static 'icon/3_dots.svg' %}" alt="">
+                                <img class="message-header-more-img" id="message_ac_more_btn"
+                                    src="{% static 'icon/3_dots.svg' %}" alt="">
                             </div>
 
                         </div>
-                        <div class="message-ac-more-box hidd" id="message_ac_more_btn_box" >
+                        <div class="message-ac-more-box hidd" id="message_ac_more_btn_box">
                             <div class="message-ac-more-menu-btn" id="saved_message_outer_box_btn">Saved Messages</div>
                             <div class="message-ac-more-menu-btn">Delete Chat</div>
                         </div>
-                        <div class="message-ac-container" >
+                        <div class="message-ac-container">
                             <div class="message-ac-inner-container" id="message_ac_container"></div>
                             <!-- this is more options -->
                             <div class="message-ac-saved-message-outer-box hidd" id="saved_message_outer_box">
                                 <div class="message-ac-saved-message-box" id="saved_message_box">
-                                    
+
                                 </div>
                             </div>
                             <div id="message-ac-detail-container" class="message-ac-inner-container-message-detail">
                                 <div id="message-ac-detail-box" class="message-ac-message-detail-btn-outer-container">
-                                   <p class="message-ac-messsage-detail-btn hidd" id="message_detail_save">Save Message</p> 
-                                   <p class="message-ac-messsage-detail-btn hidd" id="message_detail_unsave">Unsave Message</p> 
-                                   <p class="message-ac-messsage-detail-btn hidd" id="message_detail_delete">Delete Message</p> 
+                                    <p class="message-ac-messsage-detail-btn hidd" id="message_detail_save">Save Message
+                                    </p>
+                                    <p class="message-ac-messsage-detail-btn hidd" id="message_detail_unsave">Unsave
+                                        Message</p>
+                                    <p class="message-ac-messsage-detail-btn hidd" id="message_detail_delete">Delete
+                                        Message</p>
                                 </div>
                             </div>
                         </div>
@@ -1813,10 +1835,14 @@
                                 src="/media/{{user_connection.connection.extended_user_details.image}}" alt="none">
                             <div class="message-indecator-detail-container">
                                 {% if user_connection.connection.first_name != "" %}
-                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.connection.id}}">{{user_connection.connection.first_name}}
+                                <p class="message-indecator-field"
+                                    id="message_indecator_name_{{user_connection.connection.id}}">
+                                    {{user_connection.connection.first_name}}
                                     {{user_connection.connection.last_name}}</p>
                                 {% else %}
-                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.connection.id}}">{{user_connection.connection.username}}</p>
+                                <p class="message-indecator-field"
+                                    id="message_indecator_name_{{user_connection.connection.id}}">
+                                    {{user_connection.connection.username}}</p>
                                 {% endif %}
                                 <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
                                     {{user_connection.connection.extended_user_details.pincode}}</p>
@@ -1832,7 +1858,7 @@
                             </div>
 
                             `;
-                            
+
                         </script>
                         {% elif user_connection.connection.id == request.user.id %}
                         <div class="message-account-indecator" id="message_indecator_{{user_connection.user.id}}">
@@ -1840,10 +1866,14 @@
                                 src="/media/{{user_connection.user.extended_user_details.image}}" alt="none">
                             <div class="message-indecator-detail-container">
                                 {% if user_connection.user.first_name != "" %}
-                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.user.id}}">{{user_connection.user.first_name}}
+                                <p class="message-indecator-field"
+                                    id="message_indecator_name_{{user_connection.user.id}}">
+                                    {{user_connection.user.first_name}}
                                     {{user_connection.user.last_name}}</p>
                                 {% else %}
-                                <p class="message-indecator-field" id="message_indecator_name_{{user_connection.user.id}}">{{user_connection.connection.username}}</p>
+                                <p class="message-indecator-field"
+                                    id="message_indecator_name_{{user_connection.user.id}}">
+                                    {{user_connection.connection.username}}</p>
                                 {% endif %}
                                 <p class="message-indecator-field" style="color: gray; font-size: small;">pincode :
                                     {{user_connection.user.extended_user_details.pincode}}</p>
@@ -1876,15 +1906,15 @@
 
 
 
-    
 
-    
+
+
 
     {% include 'commonhtml.html' %}
 
-    
 
-    
+
+
 
 
 </body>

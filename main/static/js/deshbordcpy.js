@@ -803,23 +803,41 @@ window.onload = () => {
         console.log("user is authenticated as agent");
     }
 
-    document.getElementById("logout_request_btn").onclick = () => {
-        document.getElementById("loading_rounder").classList.remove("hidd");
-        fetch('/api/logout/', {
-            method: 'POST',
-            headers: { 'X-CSRFToken': getCookie('csrftoken') },
-        }).then((response) => response.json())
-            .then((result) => {
-                if (result.code == 200) {
-                    document.getElementById("loading_rounder").classList.add("hidd");
-                    location.href = "/login/";
-                }
-                else {
-                    document.getElementById("loading_rounder").classList.add("hidd");
-                    short_notification(result.detail, 5000);
-                }
-            });
-    }
+    var startX,startY;
+    document.getElementById("dashboard_page_profile").addEventListener('mousedown', function (event) {
+        startX = event.pageX;
+        startY = event.pageY;
+      });
+      
+      document.getElementById("dashboard_page_profile").addEventListener('mouseup', function (event) {
+        const diffX = event.pageX - startX;
+        const diffY = event.pageY - startY;
+        if(diffX < -80)
+        {
+            document.getElementById("dashboard_profile_page_profile_detail").click();
+        }
+        else if (diffX > 80)
+        {
+            document.getElementById("dashboard_profile_page_update_detail").click();
+        }
+      });
+    
+      var X;
+    document.getElementById("dashboard_page_profile").addEventListener('touchstart', function (event) {
+        X = (event.targetTouches[0] ? event.targetTouches[0].pageX : event.changedTouches[event.changedTouches.length-1].pageX);
+    });
+    document.getElementById("dashboard_page_profile").addEventListener('touchend', function (event) {
+        let diffX = (event.targetTouches[0] ? event.targetTouches[0].pageX : event.changedTouches[event.changedTouches.length-1].pageX) - X;
+        if(diffX < -80)
+        {
+            document.getElementById("dashboard_profile_page_profile_detail").click();
+        }
+        else if (diffX > 80)
+        {
+            
+            document.getElementById("dashboard_profile_page_update_detail").click();
+        }
+    });
 
     Array.from(profile_pages).forEach((pages) => {
         document.getElementById(`dashboard_profile_page_${pages}`).onclick = () => {
@@ -859,7 +877,7 @@ window.onload = () => {
                         document.getElementById("loading_rounder").classList.add("hidd")
                         if (result.code == 200) {
                             short_notification(result.detail, 5000);
-                            document.getElementById("dashboard_profile_image_show").src = imag.target.result;
+                            document.getElementById("dashboard_profile_image_show").style.backgroundImage = `url(${imag.target.result})`;
                             document.getElementById("dashboard_profile_image_link").href = `/media/${result.data.img_url}`;
                         }
                         else {

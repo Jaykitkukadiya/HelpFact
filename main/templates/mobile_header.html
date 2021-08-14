@@ -1,0 +1,19 @@
+<div class="home-menu-container hidd" id="more_menu_container">
+    <div class="home-menu-inner-container">
+        <a href="/">
+            <p class="home-menu-tab">Home</p>
+        </a>
+        <a href="#features">
+            <p class="home-menu-tab">Features</p>
+        </a>
+        <a href="#contactus">
+            <p class="home-menu-tab">Contact</p>
+        </a>
+        <a href="">
+            <p class="home-menu-tab">About</p>
+        </a>
+        {% if request.user.is_authenticated %}
+            <p class="home-menu-tab" id="logout_request_btn">Logout</p>
+        {% endif %}
+    </div>
+</div>

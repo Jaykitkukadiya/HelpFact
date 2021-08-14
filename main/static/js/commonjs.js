@@ -39,6 +39,45 @@ function short_notification(texts = "notification", timex = 5000, action = "") {
 }
 
 
+
+window.addEventListener('load' , function() {
+    document.getElementById("more_menu").addEventListener( 'click' ,() => {
+        document.getElementById("more_menu_container").classList.remove("hidd");
+        document.body.classList.add("scrolllock");
+    });
+    
+    document.getElementById("more_menu_container").addEventListener("click", (e) => {
+        if (e.target.id == "more_menu_container") {
+            document.getElementById("more_menu_container").classList.add("hidd"); 
+            document.body.classList.remove("scrolllock");
+        }
+    })
+    try
+    {
+        document.getElementById("logout_request_btn").onclick = () => {
+            document.getElementById("loading_rounder").classList.remove("hidd");
+            fetch('/api/logout/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            }).then((response) => response.json())
+                .then((result) => {
+                    if (result.code == 200) {
+                        document.getElementById("loading_rounder").classList.add("hidd");
+                        location.href = "/login/";
+                    }
+                    else {
+                        document.getElementById("loading_rounder").classList.add("hidd");
+                        short_notification(result.detail, 5000);
+                    }
+                });
+        }
+    }
+    catch
+    {
+        console.log("logout has some problem");
+    }
+});
+
 // var short_noti_ids = [];
 // var short_noti_counter = 0;
 
